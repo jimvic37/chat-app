@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,16 +34,22 @@ public class Chat implements Serializable{
 	
 	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
 	private List<Message> messages;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
+	private List<UserChat> user_chat;
 
 	public Chat() {
 	}
 
-	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created, List<Message> messages) {
+	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created, List<Message> messages,
+			List<UserChat> user_chat) {
 		super();
 		this.id = id;
 		this.chat_name = chat_name;
 		this.created = created;
 		this.messages = messages;
+		this.user_chat = user_chat;
 	}
 
 	public Integer getId() {
@@ -75,9 +84,17 @@ public class Chat implements Serializable{
 		this.messages = messages;
 	}
 
-	@Override
-	public String toString() {
-		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + ", messages=" + messages + "]";
+	public List<UserChat> getUser_chat() {
+		return user_chat;
 	}
 
+	public void setUser_chat(List<UserChat> user_chat) {
+		this.user_chat = user_chat;
+	}
+
+	@Override
+	public String toString() {
+		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + ", messages=" + messages
+				+ ", user_chat=" + user_chat + "]";
+	}
 }
