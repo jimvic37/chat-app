@@ -5,10 +5,13 @@ import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -26,15 +29,20 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	@NotBlank
 	private String password;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "message_id", nullable = false)
+	private Message message;
 
 	public User() {
 	}
 
-	public User(Integer id, @NotBlank String username, @NotBlank String password) {
+	public User(Integer id, @NotBlank String username, @NotBlank String password, Message message) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.message = message;
 	}
 
 	public Integer getId() {
@@ -61,9 +69,17 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", message=" + message + "]";
 	}
 	
 }

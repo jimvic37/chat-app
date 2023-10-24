@@ -2,13 +2,16 @@ package com.jump.backend.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -25,15 +28,19 @@ public class Chat implements Serializable{
 	
 	@Column(unique = true, nullable = false)
 	private LocalDateTime created;
+	
+	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
+	private List<Message> messages;
 
 	public Chat() {
 	}
 
-	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created) {
+	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created, List<Message> messages) {
 		super();
 		this.id = id;
 		this.chat_name = chat_name;
-		this.created = LocalDateTime.now();
+		this.created = created;
+		this.messages = messages;
 	}
 
 	public Integer getId() {
@@ -60,8 +67,17 @@ public class Chat implements Serializable{
 		this.created = created;
 	}
 
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
+
 	@Override
 	public String toString() {
-		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + "]";
+		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + ", messages=" + messages + "]";
 	}
+
 }
