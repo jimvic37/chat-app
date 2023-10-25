@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jump.backend.model.AuthenticationRequest;
@@ -17,6 +18,7 @@ import com.jump.backend.util.JwtUtil;
 
 
 @RestController
+@RequestMapping("/api")
 public class AuthenticationController {
 	
 	// authentication manager -> validates/authenticates user credentials
@@ -29,7 +31,7 @@ public class AuthenticationController {
 	@Autowired
 	JwtUtil jwtUtil;
 	
-	@PostMapping("/authenticate")
+	@PostMapping("/login")
 	public ResponseEntity<?> createJwtToken(@RequestBody AuthenticationRequest request) throws Exception {
 		
 		// try to catch the exception for bad credentials, just so we can set our own
