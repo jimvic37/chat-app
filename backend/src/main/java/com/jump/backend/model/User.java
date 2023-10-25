@@ -4,12 +4,14 @@ package com.jump.backend.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,9 +36,9 @@ public class User implements Serializable {
 	@NotBlank
 	private String password;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "message_id", nullable = false)
-	private Message message;
+//	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user" )
+//	@JsonIgnore
+//	private Message message;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -45,13 +47,13 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(Integer id, @NotBlank String username, @NotBlank String password, Message message,
+	public User(Integer id, @NotBlank String username, @NotBlank String password,
 			List<UserChat> user_chat) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.message = message;
+//		this.message = message;
 		this.user_chat = user_chat;
 	}
 
@@ -79,13 +81,13 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public Message getMessage() {
-		return message;
-	}
-
-	public void setMessage(Message message) {
-		this.message = message;
-	}
+//	public Message getMessage() {
+//		return message;
+//	}
+//
+//	public void setMessage(Message message) {
+//		this.message = message;
+//	}
 
 	public List<UserChat> getUser_chat() {
 		return user_chat;
@@ -97,7 +99,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", message=" + message
+		return "User [id=" + id + ", username=" + username + ", password=" + password
 				+ ", user_chat=" + user_chat + "]";
 	}
 	
