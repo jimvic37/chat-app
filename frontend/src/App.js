@@ -7,7 +7,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { AppContextProvider } from "./Contexts/AppContext";
-
+import { ModalProvider, Modal } from "./Contexts/Modal";
 import AuthGuard from "./components/Auth/AuthGuard.js";
 import UnAuthGuard from "./components/Auth/UnAuthGuard";
 import Home from "./components/Home/Home";
@@ -61,9 +61,12 @@ function App() {
   return (
     <div>
       <AppContextProvider>
-        <div className="App-container">
-          <RouterProvider router={router} />
-        </div>
+	      <ModalProvider>
+	        <div className="App-container">
+	          <RouterProvider router={router} />
+	        </div>
+	        <Modal />
+	      </ModalProvider>
       </AppContextProvider>
     </div>
   );
