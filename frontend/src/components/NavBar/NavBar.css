@@ -1,0 +1,27 @@
+.my-store-icon:hover {
+  color: white;
+}
+
+.my-nav-btn {
+  background: none;
+  margin-right: 5px;
+}
+
+.my-nav-btn:hover {
+  background: black;
+}
+.my-nav-btn > a {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.show-info {
+  display: none;
+}
+
+.menu-avatar-small{
+  height: 40px; 
+  width: 40px;
+  border-radius: 100%;
+  
+}
