@@ -1,6 +1,7 @@
 package com.jump.backend.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,13 @@ public class ChatController {
 	@Autowired
 	ChatRepository repo;
 	
+	
+	//Get chat
+	@GetMapping("/chat")
+	public List<Chat> getChats() {
+		return repo.findAll();
+	}
+	
 	//Create chat
 	@PostMapping("/chat")
 	public ResponseEntity<?> createChat(@RequestBody Chat chat) {
@@ -40,12 +49,6 @@ public class ChatController {
 	}
 	
 
-	
-	//leave chat
-	@PutMapping("/chat/leave/chat_id")
-	public ResponseEntity<?> leaveChat() {
-		return null;
-	}
 	
 }
 

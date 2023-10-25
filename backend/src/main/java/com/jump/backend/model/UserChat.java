@@ -1,5 +1,6 @@
 package com.jump.backend.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,15 +22,19 @@ public class UserChat {
 	@ManyToOne
 	@JoinColumn(name = "chat_id", referencedColumnName = "id")
 	private Chat chat;
+	
+    @Column(columnDefinition = "boolean default false")
+	private boolean leftChat;
 
 	public UserChat() {
 	}
 
-	public UserChat(Integer id, User user, Chat chat) {
+	public UserChat(Integer id, User user, Chat chat, boolean leftChat) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.chat = chat;
+		this.leftChat = leftChat;
 	}
 
 	public Integer getId() {
@@ -43,6 +48,10 @@ public class UserChat {
 	public User getUser() {
 		return user;
 	}
+	
+	public boolean isLeftChat() {
+		return leftChat;
+	}
 
 	public void setUser(User user) {
 		this.user = user;
@@ -55,10 +64,15 @@ public class UserChat {
 	public void setChat(Chat chat) {
 		this.chat = chat;
 	}
+	
+	public void setLeftChat(boolean leftChat) {
+		this.leftChat = leftChat;
+	}
 
 	@Override
 	public String toString() {
-		return "UserChat [id=" + id + ", user=" + user + ", chat=" + chat + "]";
+		return "UserChat [id=" + id + ", user=" + user + ", chat=" + chat + ", leftChat=" + leftChat + "]";
 	}
+
 	
 }
