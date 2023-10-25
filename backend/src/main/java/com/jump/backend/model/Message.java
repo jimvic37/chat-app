@@ -33,7 +33,7 @@ public class Message implements Serializable {
 	private LocalDateTime created;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_id")
 	private User user;
 	
 	@ManyToOne
