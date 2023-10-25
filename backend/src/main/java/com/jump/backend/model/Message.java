@@ -31,7 +31,7 @@ public class Message implements Serializable {
 	@Column(unique = true, nullable = false)
 	private LocalDateTime created;
 	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user" )
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "message" )
 	@JsonIgnore
 	private User user;
 	
