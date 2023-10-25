@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.jump.backend.model.User;
 
 
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	public Optional<User> findByUsername(String username);
+
 }
