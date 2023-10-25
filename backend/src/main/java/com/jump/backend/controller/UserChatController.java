@@ -28,12 +28,12 @@ public class UserChatController {
 	ChatRepository chatRepo;
 	
 	//add member to chat
-	@PostMapping("/userChat/join/{chatId}/{userId}")
-	public ResponseEntity<?> addMemberToChat(@PathVariable int chatId, @PathVariable int userId) {
-		Optional<Chat> = chatRepo.findById(chatId);
-		Optional<User> = 
-		return null;
-	}
+//	@PostMapping("/userChat/join/{chatId}/{userId}")
+//	public ResponseEntity<?> addMemberToChat(@PathVariable int chatId, @PathVariable int userId) {
+//		Optional<Chat> = chatRepo.findById(chatId);
+//		Optional<User> = 
+//		return null;
+//	}
 	
 	
 }

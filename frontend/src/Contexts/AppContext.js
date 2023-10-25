@@ -8,6 +8,7 @@ export const AppContextProvider = ({ children }) => {
 
   const value = {
     userInfo,
+    
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
