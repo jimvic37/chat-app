@@ -8,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.cognixia.jump.model.User;
-import com.cognixia.jump.repository.UserRepository;
+import com.jump.backend.model.User;
+import com.jump.backend.repository.UserRepository;
+
 
 @Service
 public class MyUserDetailsService implements UserDetailsService{

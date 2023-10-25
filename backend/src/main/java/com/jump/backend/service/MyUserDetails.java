@@ -1,14 +1,13 @@
 package com.jump.backend.service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cognixia.jump.model.User;
+import com.jump.backend.model.User;
+
 
 public class MyUserDetails implements UserDetails{
 	
@@ -22,7 +21,6 @@ public class MyUserDetails implements UserDetails{
 		
 		this.username = user.getUsername();
 		this.password = user.getPassword();
-		this.authorities = Arrays.asList( new SimpleGrantedAuthority( user.getRole().name() ) );
 	}
 
 	@Override
