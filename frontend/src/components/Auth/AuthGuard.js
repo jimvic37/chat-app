@@ -9,6 +9,7 @@ const AuthGuard = ({ children }) => {
   const { userInfo } = useContext(AppContext);
 
   const location = useLocation();
+  
   if (userInfo) {
     return children;
   } else {

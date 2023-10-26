@@ -36,6 +36,9 @@ public class User implements Serializable {
 	@NotBlank
 	private String password;
 	
+	@Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'https://static.thenounproject.com/png/4530368-200.png'")
+	private String profile;
+	
 //	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user" )
 //	@JsonIgnore
 //	private Message message;
@@ -47,13 +50,13 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(Integer id, @NotBlank String username, @NotBlank String password,
+	public User(Integer id, @NotBlank String username, @NotBlank String password, String profile,
 			List<UserChat> user_chat) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
-//		this.message = message;
+		this.profile = profile;
 		this.user_chat = user_chat;
 	}
 
@@ -81,13 +84,13 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-//	public Message getMessage() {
-//		return message;
-//	}
-//
-//	public void setMessage(Message message) {
-//		this.message = message;
-//	}
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
 
 	public List<UserChat> getUser_chat() {
 		return user_chat;
@@ -99,8 +102,8 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", profile=" + profile
 				+ ", user_chat=" + user_chat + "]";
 	}
-	
+
 }

@@ -17,6 +17,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import StoreIcon from "@mui/icons-material/Store";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import TelegramIcon from "@mui/icons-material/Telegram";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DrawerComp from "../Drawer/DrawerComp";
 import "./NavBar.css";
@@ -25,8 +27,9 @@ import { AppContext } from "../../Contexts/AppContext";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
+import OpenModalButton from "../OpenModalButton";
 
-const NavBar = () => {
+const NavBar = ({ setOpenModal }) => {
   const navigate = useNavigate();
   const { userInfo, setUserInfo, cart } = useContext(AppContext);
   const theme = useTheme();
@@ -111,8 +114,9 @@ const NavBar = () => {
     <AppBar
       sx={{
         position: "sticky",
-        backgroundImage:
-          "linear-gradient(90deg, rgba(180,58,58,1) 2%, rgba(49,49,116,1) 36%, rgba(105,0,161,1) 73%, rgba(166,69,252,1) 100%)",
+        backgroundColor: "black",
+        // backgroundImage:
+        //   "linear-gradient(90deg, rgba(180,58,58,1) 2%, rgba(49,49,116,1) 36%, rgba(105,0,161,1) 73%, rgba(166,69,252,1) 100%)",
       }}
     >
       <Toolbar>
@@ -120,7 +124,7 @@ const NavBar = () => {
           <>
             <Typography>
               <Link to="/">
-                <StoreIcon />
+                <TelegramIcon />
               </Link>
             </Typography>
 
@@ -131,7 +135,7 @@ const NavBar = () => {
             <Grid item xs={2}>
               <Typography>
                 <Link to="/">
-                  <StoreIcon
+                  <TelegramIcon
                     sx={{ fontSize: "2.5rem" }}
                     className="my-store-icon"
                   />
@@ -153,7 +157,7 @@ const NavBar = () => {
             </Grid>
             <Grid item xs={1}></Grid>
             <Grid item xs={3}>
-              <Box display={userInfo ? "none" : "flex"}>
+              {/* <Box display={userInfo ? "none" : "flex"}>
                 <Button
                   className="my-nav-btn"
                   sx={loginButtonStyles}
@@ -169,8 +173,8 @@ const NavBar = () => {
                 >
                   <Link to="/signup">Signup</Link>
                 </Button>
-              </Box>
-              <Box display={userInfo ? "flex" : "none"}>
+              </Box> */}
+              <Box display={"flex"}>
                 <Button
                   className="my-nav-btn"
                   to="/login"
@@ -178,7 +182,7 @@ const NavBar = () => {
                   variant="contained"
                   onClick={onLogOut}
                 >
-                  Logout
+                  Chat+
                 </Button>
                 <Box sx={accountIconStyles}>
                   <IconButton
@@ -195,7 +199,7 @@ const NavBar = () => {
                       }
                       color="error"
                     >
-                      <ShoppingCartIcon />
+                      <NotificationsIcon />
                     </Badge>
                   </IconButton>
                 </Box>
@@ -226,10 +230,8 @@ const NavBar = () => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={goToAccount}>My account</MenuItem>
-                    <MenuItem onClick={goToShop}>Shop</MenuItem>
-                    <MenuItem onClick={goToCart}>Cart</MenuItem>
-                    <MenuItem onClick={goToTransactions}>Transactions</MenuItem>
+                    <MenuItem onClick={goToShop}>Account</MenuItem>
+                    <MenuItem onClick={goToTransactions}>Log out</MenuItem>
                   </Menu>
                 </div>
                 {/* <Button
