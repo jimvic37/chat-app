@@ -14,7 +14,7 @@ import "./Drawer.css";
 import { useNavigate } from "react-router-dom";
 
 const DrawerComp = () => {
-  const { setUserInfo, userInfo } = useContext(AppContext);
+  const { setUserInfo } = useContext(AppContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 

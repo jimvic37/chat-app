@@ -9,13 +9,14 @@ import {
 } from "react-router-dom";
 import { AppContextProvider } from "./Contexts/AppContext";
 import { ModalProvider, Modal } from "./Contexts/Modal";
-import AuthGuard from "./components/Auth/AuthGuard.js";
-import UnAuthGuard from "./components/Auth/UnAuthGuard";
+// import AuthGuard from "./components/Auth/AuthGuard.js";
+// import UnAuthGuard from "./components/Auth/UnAuthGuard";
 import Home from "./components/Home/Home";
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
 import CreateChat from "./components/CreateChat/CreateChat";
 import Chat from "./components/Chat/Chat";
+import Profile from "./components/Profile/Profile";
 
 function App() {
   const router = createBrowserRouter(
@@ -35,6 +36,14 @@ function App() {
           element={
             // <AuthGuard>
             <CreateChat />
+            // </AuthGuard>
+          }
+        ></Route>
+        <Route
+          path="/profile"
+          element={
+            // <AuthGuard>
+            <Profile />
             // </AuthGuard>
           }
         ></Route>
