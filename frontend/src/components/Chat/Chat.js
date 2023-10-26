@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
 import "./Chat.css";
+import ChatWindow from "./ChatWindow/ChatWindow";
 import NavBar from "../NavBar/NavBar";
 import {
   Modal,
@@ -95,6 +95,7 @@ const Chat = () => {
       <NavBar />
       <div className="chat-wrap">
         <Button onClick={handleOpen}>Open modal</Button>
+        <ChatWindow />
         <Modal
           sx={modalStyles}
           open={open}
