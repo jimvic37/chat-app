@@ -36,12 +36,8 @@ public class User implements Serializable {
 	@NotBlank
 	private String password;
 	
-	@Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'https://static.thenounproject.com/png/4530368-200.png'")
+//	@Column(columnDefinition = "varchar(255) default 'https://static.thenounproject.com/png/4530368-200.png'")
 	private String profile;
-	
-//	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user" )
-//	@JsonIgnore
-//	private Message message;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
