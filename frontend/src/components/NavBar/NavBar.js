@@ -1,12 +1,10 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import {
   AppBar,
   Box,
   Button,
   Grid,
-  Tab,
-  Tabs,
   Toolbar,
   Typography,
   useTheme,
@@ -15,11 +13,8 @@ import {
   Badge,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import StoreIcon from "@mui/icons-material/Store";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DrawerComp from "../Drawer/DrawerComp";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
@@ -27,21 +22,19 @@ import { AppContext } from "../../Contexts/AppContext";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
-import OpenModalButton from "../OpenModalButton";
+// import OpenModalButton from "../OpenModalButton";
 
 const NavBar = ({ setOpenModal }) => {
   const navigate = useNavigate();
   const { userInfo, setUserInfo, cart } = useContext(AppContext);
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
-  const [value, setValue] = useState();
-
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+  // const [value, setValue] = useState();
+  // const [auth, setAuth] = React.useState(true);
+  // const handleChange = (event) => {
+  //   setAuth(event.target.checked);
+  // };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,24 +59,6 @@ const NavBar = ({ setOpenModal }) => {
       color: "rgba(255, 255, 255, 1)",
     },
   };
-  const loginButtonStyles = {
-    color: "rgba(255, 255, 255, 0.7)",
-    marginLeft: "auto",
-    background: "none",
-    "&:hover": {
-      backgroundColor: "transparent",
-      color: "rgba(255, 255, 255, 1)",
-    },
-  };
-  const signUpButtonStyles = {
-    color: "rgba(255, 255, 255, 0.7)",
-    marginLeft: 1,
-    background: "none",
-    "&:hover": {
-      backgroundColor: "transparent",
-      color: "rgba(255, 255, 255, 1)",
-    },
-  };
 
   const accountIconStyles = {
     transition: "border-radius 1s ease-in-out, background-color 0.3s ease-in",
@@ -103,11 +78,12 @@ const NavBar = ({ setOpenModal }) => {
   const goToCart = () => {
     navigate("/cart");
   };
-  const goToAccount = () => {
-    navigate("/account");
-  };
+
   const goToTransactions = () => {
     navigate("/transactions");
+  };
+  const goTo = (destination) => {
+    navigate(`/${destination}`);
   };
 
   return (
@@ -115,8 +91,6 @@ const NavBar = ({ setOpenModal }) => {
       sx={{
         position: "sticky",
         backgroundColor: "black",
-        // backgroundImage:
-        //   "linear-gradient(90deg, rgba(180,58,58,1) 2%, rgba(49,49,116,1) 36%, rgba(105,0,161,1) 73%, rgba(166,69,252,1) 100%)",
       }}
     >
       <Toolbar>
@@ -144,36 +118,9 @@ const NavBar = ({ setOpenModal }) => {
             </Grid>
             <Grid xs={6}>
               <p></p>
-              {/* <Tabs
-                indicatorColor="secondary"
-                textColor="inherit"
-                value={value}
-                onChange={(e, val) => setValue(val)}
-              >
-                {links.map((link, index) => (
-                  <Tab key={index} label={link} /> 
-                ))}
-              </Tabs> */}
             </Grid>
             <Grid item xs={1}></Grid>
             <Grid item xs={3}>
-              {/* <Box display={userInfo ? "none" : "flex"}>
-                <Button
-                  className="my-nav-btn"
-                  sx={loginButtonStyles}
-                  to="/login"
-                  variant="contained"
-                >
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button
-                  className="my-nav-btn"
-                  sx={signUpButtonStyles}
-                  variant="contained"
-                >
-                  <Link to="/signup">Signup</Link>
-                </Button>
-              </Box> */}
               <Box display={"flex"}>
                 <Button
                   className="my-nav-btn"
@@ -230,17 +177,10 @@ const NavBar = ({ setOpenModal }) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={goToShop}>Account</MenuItem>
-                    <MenuItem onClick={goToTransactions}>Log out</MenuItem>
+                    <MenuItem onClick={() => goTo("profile")}>Profile</MenuItem>
+                    <MenuItem onClick={() => goTo("profile")}>Log out</MenuItem>
                   </Menu>
                 </div>
-                {/* <Button
-                  className="my-nav-btn"
-                  sx={{ marginLeft: 1, background: "none" }}
-                  variant="contained"
-                >
-                  <Link to="/signup">Signup</Link>
-                </Button> */}
               </Box>
             </Grid>
           </Grid>

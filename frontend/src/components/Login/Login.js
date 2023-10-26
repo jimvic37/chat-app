@@ -1,11 +1,11 @@
-import React, {useContext} from "react";
+// import React, {useContext} from "react";
 import "./Login.css";
 import { Link } from "react-router-dom";
-import { AppContext } from "../../Contexts/AppContext";
+// import { AppContext } from "../../Contexts/AppContext";
 
 
 const Login = () => {
-  const [userInfo] = useContext(AppContext); 
+  // const [userInfo] = useContext(AppContext); 
 
 
   return (
