@@ -1,5 +1,7 @@
 package com.jump.backend.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,7 +45,7 @@ public class AuthenticationController {
 
 		} catch (BadCredentialsException e) {
 			// provide our own message on why login didn't work
-			throw new Exception("Incorrect username or password");
+			return ResponseEntity.status(403).body(Map.of("error", "Incorrect credentials"));
 		}
 
 		// as long as no exception was thrown, user is valid
