@@ -1,5 +1,7 @@
 import React, {useContext, useState} from "react";
 import { AppContext } from "../../Contexts/AppContext";
+import { useModal } from "../../Contexts/Modal";
+import { redirect } from 'react-router-dom';
 
 import "./Login.css";
 
@@ -8,9 +10,44 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const { closeModal } = useModal();
 
   const handleSubmit =  async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
+
+    const requestObject =
+    {
+      "username": username,
+      "password": password
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/api/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(requestObject),
+      });
+      if (response.ok) {
+        const data =  await response.json()
+        localStorage.setItem("jwtToken", data.jwt)
+        closeModal()
+        toChat()
+      } else {
+        const data = await response.json()
+        setErrors([data.error])
+      }
+
+    } catch (error) {
+      setErrors([
+				"An error has occured. Please try again later.",
+			]);
+    }
+  }
+
+  const toChat = () => {
+    window.location.href = "/chat";
   }
 
   return (
