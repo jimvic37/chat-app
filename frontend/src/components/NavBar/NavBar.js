@@ -27,6 +27,7 @@ import { AppContext } from "../../Contexts/AppContext";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
+import OpenModalButton from "../OpenModalButton";
 
 const NavBar = ({ setOpenModal }) => {
   const navigate = useNavigate();
