@@ -5,6 +5,7 @@ import {
   Route,
   Outlet,
   RouterProvider,
+  BrowserRouter,
 } from "react-router-dom";
 import { AppContextProvider } from "./Contexts/AppContext";
 import { ModalProvider, Modal } from "./Contexts/Modal";
@@ -61,12 +62,12 @@ function App() {
   return (
     <div>
       <AppContextProvider>
-	      <ModalProvider>
-	        <div className="App-container">
-	          <RouterProvider router={router} />
-	        </div>
-	        <Modal />
-	      </ModalProvider>
+        <ModalProvider>
+          <div className="App-container">
+            <RouterProvider router={router} />
+          </div>
+          <Modal />
+        </ModalProvider>
       </AppContextProvider>
     </div>
   );
