@@ -5,6 +5,7 @@ import {
   Route,
   Outlet,
   RouterProvider,
+  BrowserRouter,
 } from "react-router-dom";
 import { AppContextProvider } from "./Contexts/AppContext";
 import { ModalProvider, Modal } from "./Contexts/Modal";

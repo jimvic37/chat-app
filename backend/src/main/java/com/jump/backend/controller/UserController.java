@@ -1,5 +1,8 @@
 package com.jump.backend.controller;
 
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,14 +27,21 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> createUser(@RequestBody User user) {
-
-		user.setId(null);
-
-		user.setPassword(encoder.encode(user.getPassword()));
-
-		User created = repo.save(user);
-
-		return ResponseEntity.status(201).body(created);
+		
+		Optional<User> foundUser = repo.findByUsername(user.getUsername());
+		if (foundUser.isEmpty()) {
+			user.setId(null);
+			
+			user.setPassword(encoder.encode(user.getPassword()));
+			
+			user.setProfile("https://static.thenounproject.com/png/4530368-200.png");
+			
+			User created = repo.save(user);
+			
+			return ResponseEntity.status(201).body(created);
+		} else {
+			return ResponseEntity.status(403).body(Map.of("error", "Username is not available"));
+		}
 	}
 
 }
