@@ -44,7 +44,9 @@ public class SecurityConfiguration {
 				.requestMatchers("/api/login").permitAll()
 				.requestMatchers("/api/signup").permitAll()
 				.requestMatchers("/api/chat").permitAll()
-				.requestMatchers("/api/message").permitAll()
+				.requestMatchers("/api/message/**").permitAll()
+				.requestMatchers("/api/userChat/**").permitAll()
+
 				.anyRequest().authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
