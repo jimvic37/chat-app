@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,8 +32,8 @@ public class Message implements Serializable {
 	@Column(unique = true, nullable = false)
 	private LocalDateTime created;
 	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "message" )
-	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	
 	@ManyToOne

@@ -42,6 +42,9 @@ public class SecurityConfiguration {
 		http.csrf().disable()
 				.authorizeRequests()
 				.requestMatchers("/api/login").permitAll()
+				.requestMatchers("/api/signup").permitAll()
+				.requestMatchers("/api/chat").permitAll()
+				.requestMatchers("/api/message").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

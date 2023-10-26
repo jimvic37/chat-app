@@ -63,6 +63,10 @@ public class JwtUtil {
 	
 	// creates the token
 	private String createToken(Map<String, Object> claims, String subject) {
+//		if (claims == null || subject == null || SECRET_KEY == null) {
+//	        // Handle null values gracefully, log an error, or throw an exception
+//	        return null;
+//	    }
 		// sets claims
 		// subject (user that is being authenticated)
 		// set when the token was issued
