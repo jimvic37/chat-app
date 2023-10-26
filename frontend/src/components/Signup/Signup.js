@@ -1,15 +1,57 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useModal } from "../../Contexts/Modal";
+
+import './Signup.css'
 
 const Signup = () => {
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const { closeModal } = useModal();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  }
+
   return (
-    <div>
-      <h1>Signup</h1>
-      <div>
-        <Link to="/">Home </Link>
-        <Link to="/login">Login</Link>
-      </div>
-    </div>
+    <>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit}>
+        <ul>
+          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+        </ul>
+        <label>
+          Username
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Confirm Password
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit">Sign Up</button>
+      </form>
+    </>
   );
 };
 
