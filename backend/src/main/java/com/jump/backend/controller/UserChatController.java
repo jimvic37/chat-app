@@ -33,6 +33,7 @@ public class UserChatController {
 	//add member to chat
 //	@PostMapping("/userChat/join/{chatId}/{userId}")
 //	public ResponseEntity<?> addMemberToChat(@PathVariable int chatId, @PathVariable int userId) {
+
 //		Optional<Chat> chatFound = chatRepo.findById(chatId);
 //		Optional<User> userFound = userRepo.findById(userId);
 //		if (chatFound.isEmpty()) {
@@ -45,6 +46,7 @@ public class UserChatController {
 	public ResponseEntity<?> leaveChat() {
 		return null;
 	}
+
 	
 	
 	
