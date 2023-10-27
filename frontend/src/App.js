@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { AppContextProvider } from "./Contexts/AppContext";
 import { ModalProvider, Modal } from "./Contexts/Modal";
-// import AuthGuard from "./components/Auth/AuthGuard.js";
+import AuthGuard from "./components/Auth/AuthGuard.js";
 // import UnAuthGuard from "./components/Auth/UnAuthGuard";
 import Home from "./components/Home/Home";
 import Signup from "./components/Signup/Signup";

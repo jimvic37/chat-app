@@ -13,7 +13,7 @@ const AuthGuard = ({ children }) => {
   if (userInfo) {
     return children;
   } else {
-    return <Navigate to={"/login"} state={{ from: location }} replace />;
+    return <Navigate to={"/"} state={{ from: location }} replace />;
   }
 };
 

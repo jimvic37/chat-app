@@ -1,9 +1,11 @@
 import React from "react";
 import "./Profile.css";
+import NavBar from "../NavBar/NavBar";
 
 const Profile = () => {
   return (
     <div>
+      <NavBar />
       <div class="profile-container">
         <div class="box">
           <img

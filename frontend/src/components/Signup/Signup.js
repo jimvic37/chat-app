@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { redirect } from "react-router-dom"
 import { useModal } from "../../Contexts/Modal";
 
 import './Signup.css'
@@ -49,42 +48,42 @@ const Signup = () => {
   }
 
   return (
-    <>
+    <div className="form-container">
       <h1>Sign Up</h1>
-      <form onSubmit={handleSignup}>
+      <form className="form" onSubmit={handleSignup}>
         <ul>
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
-        <label>
-          Username
+        <div className="form-group">
+          <label>Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password
+        </div>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Confirm Password
+        </div>
+        <div className="form-group">
+          <label>Confirm Password</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        <button type="submit">Sign Up</button>
+        </div>
+        <button className="form-submit-btn" type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 };
 

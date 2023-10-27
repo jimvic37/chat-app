@@ -1,12 +1,10 @@
 import React, { useContext, useState } from "react";
-import { AppContext } from "../../Contexts/AppContext";
 import { useModal } from "../../Contexts/Modal";
-import { redirect } from "react-router-dom";
 
 import "./Login.css";
 
 const Login = () => {
-  // const [userInfo] = useContext(AppContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -47,35 +45,35 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div className="form-container">
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <ul>
+      <form className="form" onSubmit={handleSubmit}>
+        <ul className="form-error">
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
-        <label>
-          Username
+        <div className="form-group">
+          <label>Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password
+        </div>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <button type="submit">Log In</button>
+        </div>
+        <button className="form-submit-btn" type="submit">Log In</button>
       </form>
-    </>
+    </div>
   );
 };
 
