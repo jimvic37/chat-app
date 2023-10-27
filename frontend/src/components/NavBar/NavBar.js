@@ -109,10 +109,7 @@ const NavBar = ({ setOpenModal }) => {
             <Grid item xs={2}>
               <Typography>
                 <Link to="/">
-                  <TelegramIcon
-                    sx={{ fontSize: "2.5rem" }}
-                    className="my-store-icon"
-                  />
+                  <h3 className="nav-logo">BlinkTalk</h3>
                 </Link>
               </Typography>
             </Grid>
