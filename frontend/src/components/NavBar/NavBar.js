@@ -108,7 +108,7 @@ const NavBar = ({ setOpenModal }) => {
           <Grid sx={{ placeItems: "center" }} container>
             <Grid item xs={2}>
               <Typography>
-                <Link to="/">
+                <Link to="/chat">
                   <h3 className="nav-logo">BlinkTalk</h3>
                 </Link>
               </Typography>
