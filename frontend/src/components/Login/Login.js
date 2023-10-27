@@ -1,12 +1,10 @@
 import React, { useContext, useState } from "react";
-import { AppContext } from "../../Contexts/AppContext";
 import { useModal } from "../../Contexts/Modal";
-import { redirect } from "react-router-dom";
 
 import "./Login.css";
 
 const Login = () => {
-  // const [userInfo] = useContext(AppContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);

@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
+import React from "react";
 import "./Home.css";
-import { Link } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
@@ -16,8 +15,8 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <h1 className="logo">CHAT-APP</h1>
-      {/* <Button onClick={handleLogin}>go to chat</Button> */}
+      <h1 className="logo">BlinkTalk</h1>
+      <Button onClick={handleLogin}>go to chat</Button>
       <div className="button-div">
         <OpenModalButton 
           modalComponent={<Login />} 
