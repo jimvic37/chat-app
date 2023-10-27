@@ -9,19 +9,26 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
-  const ulRef = useRef();
 
   const handleLogin = () => {
     navigate("/chat");
   };
 
   return (
-    <div>
-      <h1>Home</h1>
-      <Button onClick={handleLogin}>go to chat</Button>
-      <div>
-        <OpenModalButton modalComponent={<Login />} buttonText="Login" />
-        <OpenModalButton modalComponent={<Signup />} buttonText="Signup" />
+    <div className="home-page">
+      <h1 className="logo">CHAT-APP</h1>
+      {/* <Button onClick={handleLogin}>go to chat</Button> */}
+      <div className="button-div">
+        <OpenModalButton 
+          modalComponent={<Login />} 
+          buttonText="Login"
+          className="button"
+          />
+        <OpenModalButton 
+          modalComponent={<Signup />} 
+          buttonText="Signup" 
+          className="button"
+        />
       </div>
     </div>
   );
