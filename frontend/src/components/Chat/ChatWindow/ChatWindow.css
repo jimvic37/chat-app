@@ -49,13 +49,15 @@
   box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
   .gradient-custom {
     height: auto;
+    min-height: 100vh;
   }
   #message-window {
-    height: 90vh;
+    /* height: 90vh;
     overflow-y: scroll;
-    padding-bottom: 5px;
+    padding-bottom: 5px; */
+    display: none;
   }
 }

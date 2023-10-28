@@ -1,0 +1,20 @@
+#message-window-mobile {
+  height: 85vh;
+  overflow-y: scroll;
+  padding-bottom: 5px;
+}
+.backspace-icon-wrap {
+  padding: 0 1rem 1rem 1rem;
+}
+.backspace-icon:hover{
+    color: white;
+    cursor: pointer;
+}
+#message-window-mobile::-webkit-scrollbar {
+  width: 0px;
+}
+#message-window-mobile::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+}
+@media screen and (max-width: 768) {
+}

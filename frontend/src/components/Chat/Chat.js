@@ -11,9 +11,11 @@ import {
   Autocomplete,
   TextField,
 } from "@mui/material";
+import MessageWindowMobile from "./MessageWindowMobile/MessageWindowMobile";
 
 const Chat = () => {
   const [open, setOpen] = useState(false);
+  const [showChatHideMessage, setShowChatHideMessage] = useState(true);
 
   const handleClose = () => {
     setOpen(false);
@@ -44,7 +46,7 @@ const Chat = () => {
     "&:hover": {},
     "@media (max-width: 780px)": {
       width: "95%",
-      padding: "1rem"
+      padding: "1rem",
     },
   };
   const modalHeaderStyles = {
@@ -56,7 +58,7 @@ const Chat = () => {
     width: "50%",
     "@media (max-width: 1000px)": {
       width: "90%",
-      margin: "0 auto 2rem auto"
+      margin: "0 auto 2rem auto",
     },
   };
   const createButtonWrapStyles = {
@@ -92,10 +94,18 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      
       <div className="chat-wrap">
-        
-        <ChatWindow handleOpen={handleOpen}/>
+        {showChatHideMessage ? (
+          <ChatWindow
+            handleOpen={handleOpen}
+            setShowChatHideMessage={setShowChatHideMessage}
+          />
+        ) : (
+          <MessageWindowMobile
+            handleOpen={handleOpen}
+            setShowChatHideMessage={setShowChatHideMessage}
+          />
+        )}
         <Modal
           sx={modalStyles}
           open={open}
@@ -144,7 +154,6 @@ const Chat = () => {
             </Box>
           </Box>
         </Modal>
-        
       </div>
     </div>
   );
