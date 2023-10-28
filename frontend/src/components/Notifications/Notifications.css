@@ -1,0 +1,7 @@
+.notifications-wrap {
+  background: linear-gradient(to right, #a020f0, #ffb6c1, #1e90ff);
+  min-height: 100vh;
+}
+.notifications-wrap > h1{
+    text-align: center;
+}

@@ -21,7 +21,8 @@ const DrawerComp = () => {
   const handleOnLogOut = () => {
     setOpen(false);
     setUserInfo(null);
-    navigate("/login");
+    localStorage.removeItem("jwtToken");
+    navigate("/");
   };
 
   return (
@@ -30,7 +31,7 @@ const DrawerComp = () => {
         className="my-drawer"
         PaperProps={{
           sx: {
-            background: "gray",
+            background: "rgb(0 , 0, 0, 0.4)",
             width: "65%",
           },
         }}
@@ -38,35 +39,32 @@ const DrawerComp = () => {
         onClose={() => setOpen(false)}
       >
         <List>
-          <h1 className="drawer-header">Spring Chat App</h1>
-          
-            <>
-              <ListItemButton onClick={() => navigate("/cart")} divider>
-                <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
-                  <ListItemText sx={{ color: "white" }}>Chat +</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-              <ListItemButton onClick={() => navigate("/account")} divider>
-                <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
-                  <ListItemText sx={{ color: "white" }}>Account</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-              <ListItemButton onClick={() => navigate("/transactions")} divider>
-                <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
-                  <ListItemText sx={{ color: "white" }}>
-                    Notifications
-                  </ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-              <ListItemButton onClick={() => handleOnLogOut()} divider>
-                <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
-                  <ListItemText sx={{ color: "white" }}>Logout</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </>
-          
+          <h1 className="drawer-header">BlinkTalk</h1>
 
-   
+          <div className="drawer-items-wrap">
+            <ListItemButton onClick={() => navigate("/cart")} divider>
+              <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
+                <ListItemText sx={{ color: "white" }}>Chat +</ListItemText>
+              </ListItemIcon>
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate("/profile")} divider>
+              <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
+                <ListItemText sx={{ color: "white" }}>Profile</ListItemText>
+              </ListItemIcon>
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate("/transactions")} divider>
+              <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
+                <ListItemText sx={{ color: "white" }}>
+                  Notifications
+                </ListItemText>
+              </ListItemIcon>
+            </ListItemButton>
+            <ListItemButton onClick={() => handleOnLogOut()} divider>
+              <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
+                <ListItemText sx={{ color: "white" }}>Logout</ListItemText>
+              </ListItemIcon>
+            </ListItemButton>
+          </div>
         </List>
       </Drawer>
       <IconButton

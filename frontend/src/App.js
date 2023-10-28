@@ -17,6 +17,7 @@ import Login from "./components/Login/Login";
 import CreateChat from "./components/CreateChat/CreateChat";
 import Chat from "./components/Chat/Chat";
 import Profile from "./components/Profile/Profile";
+import Notifications from "./components/Notifications/Notifications";
 
 function App() {
   const router = createBrowserRouter(
@@ -56,11 +57,20 @@ function App() {
             // </UnAuthGuard>
           }
         ></Route>
+
         <Route
           path="/signup"
           element={
             // <UnAuthGuard>
             <Signup />
+            // </UnAuthGuard>
+          }
+        ></Route>
+        <Route
+          path="/notifications"
+          element={
+            // <UnAuthGuard>
+            <Notifications />
             // </UnAuthGuard>
           }
         ></Route>

@@ -45,7 +45,8 @@ const NavBar = ({ setOpenModal }) => {
   };
   const onLogOut = () => {
     setUserInfo(null);
-    navigate("/login");
+    localStorage.removeItem("jwtToken");
+    navigate("/");
   };
 
   const logOutStyles = {
@@ -98,8 +99,8 @@ const NavBar = ({ setOpenModal }) => {
         {isMatch ? (
           <>
             <Typography>
-              <Link to="/">
-                <TelegramIcon />
+              <Link to="/chat">
+                <span className="nav-logo">BlinkTalk</span>
               </Link>
             </Typography>
 
@@ -122,10 +123,9 @@ const NavBar = ({ setOpenModal }) => {
               <Box display={"flex"}>
                 <Button
                   className="my-nav-btn"
-                  to="/login"
                   sx={logOutStyles}
                   variant="contained"
-                  onClick={onLogOut}
+                  onClick={() => goTo("chat")}
                 >
                   Chat+
                 </Button>
@@ -134,7 +134,7 @@ const NavBar = ({ setOpenModal }) => {
                     size="large"
                     aria-label="show 17 new notifications"
                     color="inherit"
-                    onClick={goToCart}
+                    onClick={() => goTo("notifications")}
                   >
                     <Badge
                       badgeContent={
@@ -176,7 +176,7 @@ const NavBar = ({ setOpenModal }) => {
                     onClose={handleClose}
                   >
                     <MenuItem onClick={() => goTo("profile")}>Profile</MenuItem>
-                    <MenuItem onClick={() => goTo("profile")}>Log out</MenuItem>
+                    <MenuItem onClick={() => onLogOut()}>Log out</MenuItem>
                   </Menu>
                 </div>
               </Box>
