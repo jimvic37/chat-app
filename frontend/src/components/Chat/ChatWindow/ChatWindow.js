@@ -15,7 +15,7 @@ import {
   MDBCardHeader,
 } from "mdb-react-ui-kit";
 
-const ChatWindow = ({ handleOpen }) => {
+const ChatWindow = ({ handleOpen, setShowChatHideMessage }) => {
   const messagesContainerRef = useRef(null);
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -48,6 +48,7 @@ const ChatWindow = ({ handleOpen }) => {
                   style={{
                     borderBottom: "1px solid rgba(255,255,255,.3) !important",
                   }}
+                  onClick={() => setShowChatHideMessage(false)}
                 >
                   <a
                     href="#!"
