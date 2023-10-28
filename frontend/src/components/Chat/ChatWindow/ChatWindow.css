@@ -1,20 +1,43 @@
 .gradient-custom {
   /* fallback for old browsers */
   background: #fccb90;
-
   /* Chrome 10-25, Safari 5.1-6 */
   background: -webkit-linear-gradient(
     to bottom right,
     rgba(252, 203, 144, 1),
     rgba(213, 126, 235, 1)
   );
-
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: linear-gradient(
     to bottom right,
     rgba(252, 203, 144, 1),
     rgba(213, 126, 235, 1)
   );
+
+  padding-top: 0 !important;
+  height: 100vh;
+}
+#message-window {
+  height: 85vh;
+  overflow-y: scroll;
+  padding-bottom: 5px;
+}
+#message-window::-webkit-scrollbar {
+  width: 0px;
+}
+#message-window::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+}
+.member-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.4rem;
+  padding: 0 1rem;
+  color: black !important;
+}
+.member-header > span:hover {
+  color: white;
+  cursor: pointer;
 }
 
 .mask-custom {
@@ -24,4 +47,15 @@
   border: 2px solid rgba(255, 255, 255, 0.05);
   background-clip: padding-box;
   box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+}
+
+@media screen and (max-width: 800px) {
+  .gradient-custom {
+    height: auto;
+  }
+  #message-window {
+    height: 90vh;
+    overflow-y: scroll;
+    padding-bottom: 5px;
+  }
 }
