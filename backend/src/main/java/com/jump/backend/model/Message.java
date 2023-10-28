@@ -37,7 +37,7 @@ public class Message implements Serializable {
 	private ZoneId timeZone;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
 	@ManyToOne

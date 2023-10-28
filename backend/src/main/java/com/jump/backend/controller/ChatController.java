@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,10 +31,16 @@ public class ChatController {
 	ChatRepository repo;
 	
 	
-	//Get chat
-	@GetMapping("/chat")
-	public List<Chat> getChats() {
-		return repo.findAll();
+	//Get chat for specific user
+	@GetMapping("/chat/{userId}")
+	public ResponseEntity<List<Chat>> getChatsByUser(@PathVariable int userId) {
+		List<Chat> userChats = repo.findChatsByUserId(userId);
+
+	    if (userChats.isEmpty()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    return ResponseEntity.ok(userChats);
 	}
 	
 	//Create chat
@@ -44,11 +51,11 @@ public class ChatController {
         ZoneId timeZone = zonedDateTime.getZone();
         
 	    chat.setId(null);
-	    chat.setChat_name(chat.getChat_name());
+	    chat.setChatName(chat.getChatName());
 	    chat.setCreated(localDateTime);
 	    chat.setTimeZone(timeZone);
 	    chat.setMessages(null);
-	    chat.setUser_chat(null);
+	    chat.setUserChat(null);
 		Chat created = repo.save(chat);
 		return ResponseEntity.status(201).body(created);
 		
