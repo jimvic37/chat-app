@@ -1,6 +1,8 @@
 package com.jump.backend.controller;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,10 +39,14 @@ public class ChatController {
 	//Create chat
 	@PostMapping("/chat")
 	public ResponseEntity<?> createChat(@RequestBody Chat chat) {
-	    LocalDateTime currentDateTime = LocalDateTime.now();
+	    LocalDateTime localDateTime  = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        ZoneId timeZone = zonedDateTime.getZone();
+        
 	    chat.setId(null);
 	    chat.setChat_name(chat.getChat_name());
-	    chat.setCreated(currentDateTime);
+	    chat.setCreated(localDateTime);
+	    chat.setTimeZone(timeZone);
 	    chat.setMessages(null);
 	    chat.setUser_chat(null);
 		Chat created = repo.save(chat);

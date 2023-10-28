@@ -1,6 +1,8 @@
 package com.jump.backend.controller;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +30,14 @@ public class MessageController {
 //	Create message
 	@PostMapping("/message")
 	public ResponseEntity<?> createMessage(@RequestBody Message message) {
-	    LocalDateTime currentDateTime = LocalDateTime.now();
+    	LocalDateTime localDateTime  = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        ZoneId timeZone = zonedDateTime.getZone();
+        
 		message.setId(null);
 		message.setContent(message.getContent());
-		message.setCreated(currentDateTime);
+		message.setCreated(localDateTime);
+		message.setTimeZone(timeZone);
 		message.setUser(null);
 		message.setChat(null);
 		
@@ -42,12 +48,18 @@ public class MessageController {
 	//Edit message
 	@PutMapping("/message/{messageId}")
 	public ResponseEntity<?> editMessage(@RequestBody Message updatedMessage, @PathVariable int messageId) {
+		
+		LocalDateTime localDateTime  = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        ZoneId timeZone = zonedDateTime.getZone();
+        
 	    Optional<Message> existingMessageOptional = repo.findById(messageId);
 	    
 	    if (existingMessageOptional.isPresent()) {
 	        Message existingMessage = existingMessageOptional.get();
 	        existingMessage.setContent(updatedMessage.getContent());
-	        existingMessage.setCreated(LocalDateTime.now());
+	        existingMessage.setCreated(localDateTime);
+	        existingMessage.setTimeZone(timeZone);
 
 	        Message updated = repo.save(existingMessage);
 	        
