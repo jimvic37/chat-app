@@ -14,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
@@ -27,12 +28,12 @@ public class Chat implements Serializable{
 	
 	@Column(unique = true, nullable = false)
 	@NotBlank
-	private String chat_name;
+	private String chatName;
 	
-	@Column(unique = true, nullable = false)
+	@Column
 	private LocalDateTime created;
 	
-	@Column(nullable = false)
+	@Column
 	private ZoneId timeZone;
 	
 	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
@@ -40,20 +41,20 @@ public class Chat implements Serializable{
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
-	private List<UserChat> user_chat;
+	private List<UserChat> userChat;
 
 	public Chat() {
 	}
 
-	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created, ZoneId timeZone, List<Message> messages,
-			List<UserChat> user_chat) {
+	public Chat(Integer id, @NotBlank String chatName, LocalDateTime created, ZoneId timeZone, List<Message> messages,
+			List<UserChat> userChat) {
 		super();
 		this.id = id;
-		this.chat_name = chat_name;
+		this.chatName = chatName;
 		this.created = created;
 		this.timeZone = timeZone;
 		this.messages = messages;
-		this.user_chat = user_chat;
+		this.userChat = userChat;
 	}
 
 	public Integer getId() {
@@ -64,12 +65,12 @@ public class Chat implements Serializable{
 		this.id = id;
 	}
 
-	public String getChat_name() {
-		return chat_name;
+	public String getChatName() {
+		return chatName;
 	}
 
-	public void setChat_name(String chat_name) {
-		this.chat_name = chat_name;
+	public void setChatName(String chatName) {
+		this.chatName = chatName;
 	}
 
 	public LocalDateTime getCreated() {
@@ -88,12 +89,12 @@ public class Chat implements Serializable{
 		this.messages = messages;
 	}
 
-	public List<UserChat> getUser_chat() {
-		return user_chat;
+	public List<UserChat> getUserChat() {
+		return userChat;
 	}
 
-	public void setUser_chat(List<UserChat> user_chat) {
-		this.user_chat = user_chat;
+	public void setUserChat(List<UserChat> userChat) {
+		this.userChat = userChat;
 	}
 
 	public ZoneId getTimeZone() {
@@ -106,8 +107,8 @@ public class Chat implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + ", timeZone=" + timeZone
-				+ ", messages=" + messages + ", user_chat=" + user_chat + "]";
+		return "Chat [id=" + id + ", chatName=" + chatName + ", created=" + created + ", timeZone=" + timeZone
+				+ ", messages=" + messages + ", userChat=" + userChat + "]";
 	}
 
 }

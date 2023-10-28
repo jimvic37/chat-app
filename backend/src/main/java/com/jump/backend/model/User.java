@@ -41,19 +41,23 @@ public class User implements Serializable {
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserChat> user_chat;
+	private List<UserChat> userChat;
+	
+	@OneToOne(mappedBy ="user", cascade = CascadeType.ALL)
+	private Message message;
 
 	public User() {
 	}
 
 	public User(Integer id, @NotBlank String username, @NotBlank String password, String profile,
-			List<UserChat> user_chat) {
+			List<UserChat> userChat, Message message) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.profile = profile;
-		this.user_chat = user_chat;
+		this.userChat = userChat;
+		this.message = message;
 	}
 
 	public Integer getId() {
@@ -88,18 +92,28 @@ public class User implements Serializable {
 		this.profile = profile;
 	}
 
-	public List<UserChat> getUser_chat() {
-		return user_chat;
+	public List<UserChat> getUserChat() {
+		return userChat;
 	}
 
-	public void setUser_chat(List<UserChat> user_chat) {
-		this.user_chat = user_chat;
+	public void setUserChat(List<UserChat> userChat) {
+		this.userChat = userChat;
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", profile=" + profile
-				+ ", user_chat=" + user_chat + "]";
+				+ ", userChat=" + userChat + ", message=" + message + "]";
 	}
+
+	
 
 }

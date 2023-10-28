@@ -28,6 +28,7 @@ const Chat = () => {
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
+    { title: "Test", year: 1974 }
   ];
 
   const modalStyles = {
