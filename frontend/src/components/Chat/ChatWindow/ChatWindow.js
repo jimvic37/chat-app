@@ -17,6 +17,10 @@ import {
 
 const ChatWindow = ({ handleOpen, setShowChatHideMessage }) => {
   const messagesContainerRef = useRef(null);
+
+    
+  const userChats = [];
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       console.log(true);

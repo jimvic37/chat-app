@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useModal } from "../../Contexts/Modal";
-
+import { AppContext } from "../../Contexts/AppContext";
 import "./Login.css";
 
 const Login = () => {
-
+  const { setUserInfo } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -29,6 +29,8 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("jwtToken", data.jwt);
+        
+        setUserInfo(data); 
         closeModal();
         toChat();
       } else {
@@ -71,7 +73,9 @@ const Login = () => {
             required
           />
         </div>
-        <button className="form-submit-btn" type="submit">Log In</button>
+        <button className="form-submit-btn" type="submit">
+          Log In
+        </button>
       </form>
     </div>
   );
