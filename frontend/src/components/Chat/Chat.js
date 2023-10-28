@@ -92,10 +92,10 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <NavBar />
+      
       <div className="chat-wrap">
-        <Button onClick={handleOpen}>Open modal</Button>
-        <ChatWindow />
+        
+        <ChatWindow handleOpen={handleOpen}/>
         <Modal
           sx={modalStyles}
           open={open}
@@ -144,7 +144,7 @@ const Chat = () => {
             </Box>
           </Box>
         </Modal>
-        <h1>Chat</h1>
+        
       </div>
     </div>
   );

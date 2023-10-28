@@ -71,6 +71,12 @@ const NavBar = ({ setOpenModal }) => {
       backgroundColor: "rgba(0, 0, 0, 1)",
     },
   };
+  const navBarStyles = {
+    position: "sticky",
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    padding: "1rem 0",
+  };
   const goToShop = () => {
     navigate("/");
     navigate("/");
@@ -87,12 +93,7 @@ const NavBar = ({ setOpenModal }) => {
   };
 
   return (
-    <AppBar
-      sx={{
-        position: "sticky",
-        backgroundColor: "black",
-      }}
-    >
+    <AppBar sx={navBarStyles}>
       <Toolbar>
         {isMatch ? (
           <>
@@ -109,11 +110,11 @@ const NavBar = ({ setOpenModal }) => {
             <Grid item xs={2}>
               <Typography>
                 <Link to="/chat">
-                  <h3 className="nav-logo">BlinkTalk</h3>
+                  <span className="nav-logo">BlinkTalk</span>
                 </Link>
               </Typography>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <p></p>
             </Grid>
             <Grid item xs={1}></Grid>
