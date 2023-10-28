@@ -2,6 +2,7 @@ package com.jump.backend.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +32,9 @@ public class Chat implements Serializable{
 	@Column(unique = true, nullable = false)
 	private LocalDateTime created;
 	
+	@Column(nullable = false)
+	private ZoneId timeZone;
+	
 	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
 	private List<Message> messages;
 	
@@ -41,12 +45,13 @@ public class Chat implements Serializable{
 	public Chat() {
 	}
 
-	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created, List<Message> messages,
+	public Chat(Integer id, @NotBlank String chat_name, LocalDateTime created, ZoneId timeZone, List<Message> messages,
 			List<UserChat> user_chat) {
 		super();
 		this.id = id;
 		this.chat_name = chat_name;
 		this.created = created;
+		this.timeZone = timeZone;
 		this.messages = messages;
 		this.user_chat = user_chat;
 	}
@@ -91,9 +96,18 @@ public class Chat implements Serializable{
 		this.user_chat = user_chat;
 	}
 
+	public ZoneId getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(ZoneId timeZone) {
+		this.timeZone = timeZone;
+	}
+
 	@Override
 	public String toString() {
-		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + ", messages=" + messages
-				+ ", user_chat=" + user_chat + "]";
+		return "Chat [id=" + id + ", chat_name=" + chat_name + ", created=" + created + ", timeZone=" + timeZone
+				+ ", messages=" + messages + ", user_chat=" + user_chat + "]";
 	}
+
 }
