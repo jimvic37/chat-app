@@ -49,6 +49,8 @@ const Chat = () => {
   useEffect(() => {
     const jwtData = localStorage.getItem("jwtToken");
     const decodedJwt = decodeJWT(jwtData);
+    console.log("This is userId: ", decodedJwt.userId);
+    console.log("This is username: ", decodedJwt.sub);
     console.log(decodedJwt);
     fetchUsers();
   }, []);
