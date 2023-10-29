@@ -8,59 +8,75 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.jump.backend.service.MyUserDetails;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class JwtUtil {
-	
+
 	// used with algorithm to hash/encode our token
 	private final String SECRET_KEY = "group2";
-	
+
 	// get the username for this token
 	public String extractUsername(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
-	
+
 	// get expiration date for this token
 	public Date extractExpiration(String token) {
-		
+
 		// :: -> method reference
-		//    -> pointer, access a method in a class
-		//	  -> that way we can pass a method as an argument
+		// -> pointer, access a method in a class
+		// -> that way we can pass a method as an argument
 		return extractClaim(token, Claims::getExpiration);
 	}
-	
-	// takes a token and a claims resolver to find out what the claims are for that particular token
-	// so find that data that was passed in through the token and be able to access it again (username, expiration date)
-	private <T> T extractClaim(String token, Function<Claims, T> claimsResolver ) {
-		
+
+	// takes a token and a claims resolver to find out what the claims are for that
+	// particular token
+	// so find that data that was passed in through the token and be able to access
+	// it again (username, expiration date)
+	private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
-	
+
 	private Claims extractAllClaims(String token) {
-		
+
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 	}
-	
-	// checks if the token has expired yet by checking the current date & time and comparing it to the expiration
+
+	// checks if the token has expired yet by checking the current date & time and
+	// comparing it to the expiration
 	private Boolean isTokenExpired(String token) {
-		
+
 		return extractExpiration(token).before(new Date());
 	}
 
 	// returns those generated tokens after a successful authentication
 	public String generateTokens(UserDetails userDetails) {
-		
-		// claims info/data you want to include in payload of token besides the user info
+
+		// claims info/data you want to include in payload of token besides the user
+		// info
 		Map<String, Object> claims = new HashMap<>();
-		
+
+		// Include user ID in the claims
+		claims.put("userId", getUserIDFromUserDetails(userDetails));
+
 		// returns token for user given along with any claims
 		return createToken(claims, userDetails.getUsername());
 	}
-	
+
+	private Integer getUserIDFromUserDetails(UserDetails userDetails) {
+		if (userDetails instanceof MyUserDetails) {
+			return ((MyUserDetails) userDetails).getId(); // Replace with the actual method to get user ID
+		}
+		return null;
+	}
+
 	// creates the token
 	private String createToken(Map<String, Object> claims, String subject) {
 //		if (claims == null || subject == null || SECRET_KEY == null) {
@@ -70,20 +86,22 @@ public class JwtUtil {
 		// sets claims
 		// subject (user that is being authenticated)
 		// set when the token was issued
-		// set expiration when token expires and can be no longer used (here its set for 10 hrs)
-		// sign it with particular algorithm and secret key that lets you know this token is authentic
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt( new Date( System.currentTimeMillis() ) )
-				.setExpiration( new Date( System.currentTimeMillis() + 1000 * 60 * 60 * 10 ) )
-				.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-				.compact();
+		// set expiration when token expires and can be no longer used (here its set for
+		// 10 hrs)
+		// sign it with particular algorithm and secret key that lets you know this
+		// token is authentic
+		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
-	
-	// will validate the token and check if the current token is for the right user requesting it and that the token isn't expired
+
+	// will validate the token and check if the current token is for the right user
+	// requesting it and that the token isn't expired
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		
+
 		final String username = extractUsername(token);
-		
-		return ( username.equals( userDetails.getUsername() ) && !isTokenExpired(token) );
+
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 
 }
