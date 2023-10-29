@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Chat.css";
+import axios from "axios";
 import ChatWindow from "./ChatWindow/ChatWindow";
 import decodeJWT from "../../Services/jwtService";
 import NavBar from "../NavBar/NavBar";
@@ -17,6 +18,7 @@ import MessageWindowMobile from "./MessageWindowMobile/MessageWindowMobile";
 const Chat = () => {
   const [open, setOpen] = useState(false);
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
+  const [users, setUsers] = useState([]); // State variable to hold users data
 
   const handleClose = () => {
     setOpen(false);
@@ -32,17 +34,30 @@ const Chat = () => {
     }
   };
 
+  // fetch users data
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/users");
+      setUsers(response.data); // Save the users data to the state
+      console.log(response.data);
+      console.log("We got it - ", response.data[0].username);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   useEffect(() => {
     const jwtData = localStorage.getItem("jwtToken");
     const decodedJwt = decodeJWT(jwtData);
     console.log(decodedJwt);
+    fetchUsers();
   }, []);
 
   const top100Films = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
-    { title: "Test", year: 1974 }
+    { title: "Test", year: 1974 },
   ];
 
   const modalStyles = {
@@ -142,9 +157,9 @@ const Chat = () => {
                 <Autocomplete
                   multiple
                   id="tags-standard"
-                  options={top100Films}
-                  getOptionLabel={(option) => option.title}
-                  defaultValue={[top100Films[0]]}
+                  options={users}
+                  getOptionLabel={(user) => user.username}
+                  defaultValue={[users[0]]}
                   renderInput={(params) => (
                     <TextField
                       {...params}
