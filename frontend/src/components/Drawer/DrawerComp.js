@@ -25,6 +25,8 @@ const DrawerComp = () => {
     navigate("/");
   };
 
+  
+
   return (
     <>
       <Drawer
@@ -42,9 +44,9 @@ const DrawerComp = () => {
           <h1 className="drawer-header">BlinkTalk</h1>
 
           <div className="drawer-items-wrap">
-            <ListItemButton onClick={() => navigate("/cart")} divider>
+            <ListItemButton onClick={() => navigate("/chat")} divider>
               <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
-                <ListItemText sx={{ color: "white" }}>Chat +</ListItemText>
+                <ListItemText sx={{ color: "white" }}>Chat</ListItemText>
               </ListItemIcon>
             </ListItemButton>
             <ListItemButton onClick={() => navigate("/profile")} divider>
@@ -52,7 +54,7 @@ const DrawerComp = () => {
                 <ListItemText sx={{ color: "white" }}>Profile</ListItemText>
               </ListItemIcon>
             </ListItemButton>
-            <ListItemButton onClick={() => navigate("/transactions")} divider>
+            <ListItemButton onClick={() => navigate("/notifications")} divider>
               <ListItemIcon sx={{ textAlign: "center", width: "100%" }}>
                 <ListItemText sx={{ color: "white" }}>
                   Notifications
