@@ -11,7 +11,7 @@ import com.jump.backend.model.User;
 public class MyUserDetails implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
-	
+	private Integer id;
 	private String username;
 	private String password;
 	
@@ -19,6 +19,7 @@ public class MyUserDetails implements UserDetails{
 		
 		this.username = user.getUsername();
 		this.password = user.getPassword();
+		this.id = user.getId();
 	}
 
 	@Override
@@ -56,4 +57,9 @@ public class MyUserDetails implements UserDetails{
 		return null;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	
 }
