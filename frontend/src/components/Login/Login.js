@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
+import decodeJWT from "../../Services/jwtService";
 import { useModal } from "../../Contexts/Modal";
 import { AppContext } from "../../Contexts/AppContext";
+
 import "./Login.css";
 
 const Login = () => {
@@ -11,6 +13,7 @@ const Login = () => {
   const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
+    console.log("submitted");
     e.preventDefault();
 
     const requestObject = {
@@ -28,9 +31,11 @@ const Login = () => {
       });
       if (response.ok) {
         const data = await response.json();
+        const decodedJwt = decodeJWT(data.jwt);
+        console.log(decodedJwt);
         localStorage.setItem("jwtToken", data.jwt);
-        
-        setUserInfo(data); 
+
+        setUserInfo(data);
         closeModal();
         toChat();
       } else {

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Chat.css";
 import ChatWindow from "./ChatWindow/ChatWindow";
+import decodeJWT from "../../Services/jwtService";
 import NavBar from "../NavBar/NavBar";
 import {
   Modal,
@@ -23,6 +24,19 @@ const Chat = () => {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const handleClickGroupChat = () => {
+    if (window.innerWidth < 768) {
+      setShowChatHideMessage(!showChatHideMessage);
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    const jwtData = localStorage.getItem("jwtToken");
+    const decodedJwt = decodeJWT(jwtData);
+    console.log(decodedJwt);
+  }, []);
 
   const top100Films = [
     { title: "The Shawshank Redemption", year: 1994 },
@@ -98,12 +112,12 @@ const Chat = () => {
         {showChatHideMessage ? (
           <ChatWindow
             handleOpen={handleOpen}
-            setShowChatHideMessage={setShowChatHideMessage}
+            handleClickGroupChat={handleClickGroupChat}
           />
         ) : (
           <MessageWindowMobile
             handleOpen={handleOpen}
-            setShowChatHideMessage={setShowChatHideMessage}
+            handleClickGroupChat={handleClickGroupChat}
           />
         )}
         <Modal

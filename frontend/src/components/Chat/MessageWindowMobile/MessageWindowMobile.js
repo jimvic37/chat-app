@@ -5,7 +5,7 @@ import "../ChatWindow/ChatWindow.css";
 import NavBar from "../../NavBar/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import "./MessageWindowMobile.css"
+import "./MessageWindowMobile.css";
 import {
   MDBContainer,
   MDBRow,
@@ -19,19 +19,29 @@ import {
   MDBCardHeader,
 } from "mdb-react-ui-kit";
 
-const MessageWindowMobile = ({ setShowChatHideMessage, handleOpen }) => {
+const MessageWindowMobile = ({ handleClickGroupChat, handleOpen }) => {
   const messagesContainerRef = useRef(null);
 
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      console.log(true);
+      const container = messagesContainerRef.current;
+      console.log(messagesContainerRef.current);
+      container.scrollTop = container.scrollHeight; // Initialize scroll to the bottom
+    } else {
+      console.log(false);
+    }
+  }, []);
   return (
     <div>
       {/* MessageWindowMobile
-      <Button onClick={() => setShowChatHideMessage(true)}>
+      <Button onClick={() => handleClickGroupChat(true)}>
         Show Chat List
       </Button> */}
       <MDBContainer fluid className="py-5 gradient-custom">
         <NavBar />
         <div className="backspace-icon-wrap">
-          <span onClick={() => setShowChatHideMessage(true)}>
+          <span onClick={() => handleClickGroupChat(true)}>
             <KeyboardBackspaceIcon className="backspace-icon" />
           </span>
         </div>
@@ -41,7 +51,7 @@ const MessageWindowMobile = ({ setShowChatHideMessage, handleOpen }) => {
             lg="7"
             xl="8"
             id="message-window-mobile"
-            // ref={messagesContainerRef}
+            ref={messagesContainerRef}
           >
             <MDBTypography listUnStyled className="text-white">
               <li className="d-flex justify-content-between mb-4">

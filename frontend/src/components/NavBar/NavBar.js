@@ -127,7 +127,7 @@ const NavBar = ({ setOpenModal }) => {
                   variant="contained"
                   onClick={() => goTo("chat")}
                 >
-                  Chat+
+                  Chat
                 </Button>
                 <Box sx={accountIconStyles}>
                   <IconButton

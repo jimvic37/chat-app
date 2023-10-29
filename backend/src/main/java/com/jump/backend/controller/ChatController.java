@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.jump.backend.repository.ChatRepository;
 import com.jump.backend.model.Chat;
 
@@ -53,9 +52,6 @@ public class ChatController {
 		return ResponseEntity.status(201).body(created);
 		
 	}
-	
-
-	
 }
 
 
