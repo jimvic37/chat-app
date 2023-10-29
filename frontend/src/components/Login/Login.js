@@ -32,10 +32,9 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         const decodedJwt = decodeJWT(data.jwt);
+        setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
         console.log(decodedJwt);
         localStorage.setItem("jwtToken", data.jwt);
-
-        setUserInfo(data);
         closeModal();
         toChat();
       } else {
