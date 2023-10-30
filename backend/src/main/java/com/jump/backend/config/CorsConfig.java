@@ -20,14 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class CorsConfig implements WebMvcConfigurer {
 	
-//	// define the rules of which APIs can be consumed and by who
-//	@Override
-//	public void addCorsMappings(CorsRegistry registry)  {
-//		
-//		registry.addMapping("/**"); // which paths are open to be consumed
-//				//.allowedMethods( "GET", "POST", "PUT", "DELETE", "PATCH" ); // this request types also available
-//		
-//	}
 	private static final Long MAX_AGE = 3600L;
     private static final int CORS_FILTER_ORDER = -102;
 
