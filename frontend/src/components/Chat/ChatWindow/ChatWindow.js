@@ -4,7 +4,9 @@ import axios from "axios";
 
 import NavBar from "../../NavBar/NavBar";
 import AddIcon from "@mui/icons-material/Add";
+
 import decodeJWT from "../../../Services/jwtService.js";
+
 
 import {
   MDBContainer,
@@ -19,7 +21,14 @@ import {
   MDBCardHeader,
 } from "mdb-react-ui-kit";
 
-const ChatWindow = ({ handleOpen, handleClickGroupChat }) => {
+
+const ChatWindow = ({
+  handleOpen,
+  handleClickGroupChat,
+  handleSendMessage,
+  messageInputText,
+  setMessageInputText,
+}) => {
   const messagesContainerRef = useRef(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userChats, setUserChats] = useState([]);
@@ -140,7 +149,6 @@ const ChatWindow = ({ handleOpen, handleClickGroupChat }) => {
           {/* <MDBCard className="mask-custom">
             <MDBCardBody>
               <MDBTypography listUnStyled className="mb-0">
-
                 <li
                   className="p-2 border-bottom"
                   style={{
@@ -417,9 +425,21 @@ const ChatWindow = ({ handleOpen, handleClickGroupChat }) => {
               </MDBCard>
             </li>
             <li className="mb-3">
-              <MDBTextArea label="Message" id="textAreaExample" rows={4} />
+              <MDBTextArea
+                label="Message"
+                id="textAreaExample"
+                rows={4}
+                value={messageInputText}
+                onChange={(e) => setMessageInputText(e.target.value)}
+              />
             </li>
-            <MDBBtn color="light" size="lg" rounded className="float-end">
+            <MDBBtn
+              color="light"
+              size="lg"
+              rounded
+              className="float-end"
+              onClick={handleSendMessage}
+            >
               Send
             </MDBBtn>
           </MDBTypography>
