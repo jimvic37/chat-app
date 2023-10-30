@@ -43,21 +43,22 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserChat> userChat;
 	
-	@OneToOne(mappedBy ="user", cascade = CascadeType.ALL)
-	private Message message;
+//	@JsonIgnore
+//	@OneToOne(mappedBy ="user", cascade = CascadeType.ALL)
+//	private Message message;
 
 	public User() {
 	}
 
 	public User(Integer id, @NotBlank String username, @NotBlank String password, String profile,
-			List<UserChat> userChat, Message message) {
+			List<UserChat> userChat) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.profile = profile;
 		this.userChat = userChat;
-		this.message = message;
+//		this.message = message;
 	}
 
 	public Integer getId() {
@@ -100,18 +101,18 @@ public class User implements Serializable {
 		this.userChat = userChat;
 	}
 
-	public Message getMessage() {
-		return message;
-	}
-
-	public void setMessage(Message message) {
-		this.message = message;
-	}
+//	public Message getMessage() {
+//		return message;
+//	}
+//
+//	public void setMessage(Message message) {
+//		this.message = message;
+//	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", profile=" + profile
-				+ ", userChat=" + userChat + ", message=" + message + "]";
+				+ ", userChat=" + userChat + "]";
 	}
 
 	

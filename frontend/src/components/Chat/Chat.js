@@ -18,6 +18,7 @@ import MessageWindowMobile from "./MessageWindowMobile/MessageWindowMobile";
 const Chat = () => {
   const [open, setOpen] = useState(false);
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
 
   const handleClose = () => {
@@ -39,28 +40,19 @@ const Chat = () => {
     try {
       const response = await axios.get("http://localhost:8080/api/users");
       setUsers(response.data); // Save the users data to the state
-      console.log(response.data);
-      console.log("We got it - ", response.data[0].username);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
 
   useEffect(() => {
-    const jwtData = localStorage.getItem("jwtToken");
-    const decodedJwt = decodeJWT(jwtData);
-    console.log("This is userId: ", decodedJwt.userId);
-    console.log("This is username: ", decodedJwt.sub);
-    console.log(decodedJwt);
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      const decodedJwt = decodeJWT(token);
+      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
+    }
     fetchUsers();
   }, []);
-
-  const top100Films = [
-    { title: "The Shawshank Redemption", year: 1994 },
-    { title: "The Godfather", year: 1972 },
-    { title: "The Godfather: Part II", year: 1974 },
-    { title: "Test", year: 1974 },
-  ];
 
   const modalStyles = {
     position: "absolute",
@@ -130,11 +122,13 @@ const Chat = () => {
         {showChatHideMessage ? (
           <ChatWindow
             handleOpen={handleOpen}
+            userInfo={userInfo}
             handleClickGroupChat={handleClickGroupChat}
           />
         ) : (
           <MessageWindowMobile
             handleOpen={handleOpen}
+            userInfo={userInfo}
             handleClickGroupChat={handleClickGroupChat}
           />
         )}

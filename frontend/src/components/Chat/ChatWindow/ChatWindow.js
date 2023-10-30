@@ -15,7 +15,7 @@ import {
   MDBCardHeader,
 } from "mdb-react-ui-kit";
 
-const ChatWindow = ({ handleOpen, handleClickGroupChat }) => {
+const ChatWindow = ({ handleOpen, handleClickGroupChat, userInfo }) => {
   const messagesContainerRef = useRef(null);
 
   const userChats = [];
@@ -37,7 +37,7 @@ const ChatWindow = ({ handleOpen, handleClickGroupChat }) => {
       <MDBRow>
         <MDBCol md="6" lg="5" xl="4" className="mb-4 mb-md-0">
           <h5 className="font-weight-bold mb-3 text-center text-white member-header">
-            Member
+            {userInfo?.username}'s group chats
             <span onClick={handleOpen}>
               <AddIcon className="add-icon" />
             </span>
@@ -46,7 +46,7 @@ const ChatWindow = ({ handleOpen, handleClickGroupChat }) => {
           <MDBCard className="mask-custom">
             <MDBCardBody>
               <MDBTypography listUnStyled className="mb-0">
-                
+
                 <li
                   className="p-2 border-bottom"
                   style={{

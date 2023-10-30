@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -20,47 +21,88 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.jump.backend.repository.ChatRepository;
+import com.jump.backend.repository.UserChatRepository;
+import com.jump.backend.repository.UserRepository;
+import com.jump.backend.dto.CreateChatRequest;
 import com.jump.backend.model.Chat;
+import com.jump.backend.model.User;
+import com.jump.backend.model.UserChat;
 
 @RestController
 @RequestMapping("/api")
 public class ChatController {
-	
+
 	@Autowired
-	ChatRepository repo;
-	
-	
-	//Get chat for specific user
+	ChatRepository chatRepo;
+	@Autowired
+	UserRepository userRepo;
+	@Autowired
+	UserChatRepository userChatRepo;
+
+	// Get chat for specific user
 	@GetMapping("/chat/{userId}")
 	public ResponseEntity<List<Chat>> getChatsByUser(@PathVariable int userId) {
-		List<Chat> userChats = repo.findChatsByUserId(userId);
+		List<Chat> userChats = chatRepo.findChatsByUserId(userId);
 
-	    if (userChats.isEmpty()) {
-	        return ResponseEntity.notFound().build();
-	    }
+		if (userChats.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
 
-	    return ResponseEntity.ok(userChats);
+		return ResponseEntity.ok(userChats);
 	}
-	
-	//Create chat
+
+//	//Create chat
+//	@PostMapping("/chat")
+//	public ResponseEntity<?> createChat(@RequestBody Chat chat) {
+//	    LocalDateTime localDateTime  = LocalDateTime.now();
+//        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+//        ZoneId timeZone = zonedDateTime.getZone();
+//        
+//	    chat.setId(null);
+//	    chat.setChatName(chat.getChatName());
+//	    chat.setCreated(localDateTime);
+//	    chat.setTimeZone(timeZone);
+//	    chat.setMessages(null);
+//	    chat.setUserChat(null);
+//		Chat created = repo.save(chat);
+//		return ResponseEntity.status(201).body(created);
+//		
+//	}
 	@PostMapping("/chat")
-	public ResponseEntity<?> createChat(@RequestBody Chat chat) {
-	    LocalDateTime localDateTime  = LocalDateTime.now();
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        ZoneId timeZone = zonedDateTime.getZone();
-        
-	    chat.setId(null);
-	    chat.setChatName(chat.getChatName());
-	    chat.setCreated(localDateTime);
-	    chat.setTimeZone(timeZone);
-	    chat.setMessages(null);
-	    chat.setUserChat(null);
-		Chat created = repo.save(chat);
-		return ResponseEntity.status(201).body(created);
-		
+	public ResponseEntity<?> createChat(@RequestBody CreateChatRequest createChatRequest) {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+		ZoneId timeZone = zonedDateTime.getZone();
+
+		Chat chat = createChatRequest.getChat();
+		chat.setId(null);
+		chat.setChatName(chat.getChatName());
+		chat.setCreated(localDateTime);
+		chat.setTimeZone(timeZone);
+
+		// Save the chat to create it in the database
+		Chat createdChat = chatRepo.save(chat);
+
+		List<Integer> userIds = createChatRequest.getUserIds();
+
+		// Associate users with the chat
+		for (Integer userId : userIds) {
+			// Load the User entity by ID (You may need to fetch it from the repository)
+			User user = userRepo.findById(userId).orElse(null);
+
+			if (user != null) {
+				UserChat userChat = new UserChat();
+				userChat.setUser(user);
+				userChat.setChat(createdChat);
+
+				// Save the UserChat entity to associate the user with the chat
+				userChatRepo.save(userChat);
+			}
+		}
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdChat);
 	}
 }
-
 
 //@Controller
 //public class ChatController {
@@ -83,6 +125,5 @@ public class ChatController {
 //	}
 //
 //}
-
 
 //package com.jump.backend.controller;

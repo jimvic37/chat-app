@@ -52,7 +52,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/api/message/**").permitAll()
 				.requestMatchers("/api/userChat/**").permitAll()
 
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
