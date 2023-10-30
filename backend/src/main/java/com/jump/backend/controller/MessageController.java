@@ -67,7 +67,7 @@ public class MessageController {
 		Message created = repo.save(message);
 
 		// Create a UserDTO with the desired user information
-		UserDTO userDTO = new UserDTO(user.getId(), user.getUsername());
+		UserDTO userDTO = new UserDTO(user.getId(), user.getUsername(), user.getProfile());
 
 		// Modify the 'created' message to include the simplified user information
 		created.setUserDTO(userDTO);

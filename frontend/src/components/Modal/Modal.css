@@ -1,4 +1,4 @@
-/* #modal {
+#modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -22,4 +22,4 @@
   position: absolute;
   background-color:black;
   border-radius: 20px;
-} */
+}

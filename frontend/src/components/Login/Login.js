@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import decodeJWT from "../../Services/jwtService";
-import { useModal } from "../../Contexts/Modal";
 import { AppContext } from "../../Contexts/AppContext";
 
 import "./Login.css";
@@ -10,7 +9,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
+  const { closeModal } = useContext(AppContext);
 
   const handleSubmit = async (e) => {
     console.log("submitted");
@@ -31,12 +30,26 @@ const Login = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        const decodedJwt = decodeJWT(data.jwt);
-        setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
-        console.log(decodedJwt);
         localStorage.setItem("jwtToken", data.jwt);
+        const decodedJwt = decodeJWT(data.jwt);
+        console.log(decodedJwt)
+        try {
+          const response = await fetch(`http://localhost:8080/api/user/${decodedJwt.userId}`, {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${data.jwt}`,
+            }
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setUserInfo({ profile: data.profile, username: data.username, id: data.id });
+          }
+    
+        } catch (error) {
+          console.log(error);
+        }
         closeModal();
-        toChat();
       } else {
         const data = await response.json();
         setErrors([data.error]);
@@ -44,10 +57,6 @@ const Login = () => {
     } catch (error) {
       setErrors(["An error has occured. Please try again later."]);
     }
-  };
-
-  const toChat = () => {
-    window.location.href = "/chat";
   };
 
   return (

@@ -8,7 +8,6 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import { AppContextProvider } from "./Contexts/AppContext";
-import { ModalProvider, Modal } from "./Contexts/Modal";
 import AuthGuard from "./components/Auth/AuthGuard.js";
 // import UnAuthGuard from "./components/Auth/UnAuthGuard";
 import Home from "./components/Home/Home";
@@ -18,6 +17,7 @@ import CreateChat from "./components/CreateChat/CreateChat";
 import Chat from "./components/Chat/Chat";
 import Profile from "./components/Profile/Profile";
 import Notifications from "./components/Notifications/Notifications";
+import { Modal } from "./components/Modal";
 
 function App() {
   const router = createBrowserRouter(
@@ -81,12 +81,10 @@ function App() {
   return (
     <div>
       <AppContextProvider>
-        <ModalProvider>
-          <div className="App-container">
-            <RouterProvider router={router} />
-          </div>
-          <Modal />
-        </ModalProvider>
+        <div className="App-container">
+          <RouterProvider router={router} />
+        </div>
+        <Modal />
       </AppContextProvider>
     </div>
   );
