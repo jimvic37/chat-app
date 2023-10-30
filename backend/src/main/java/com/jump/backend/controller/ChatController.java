@@ -35,7 +35,6 @@ import com.jump.backend.model.Message;
 
 @RestController
 @RequestMapping("/api")
-
 public class ChatController {
 
 	@Autowired
