@@ -22,9 +22,10 @@ const Chat = () => {
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
-  const [currentChat, setCurrentChat] = useState();
+  const [currentChat, setCurrentChat] = useState({ id: 1 });
   const [groupSelect, setGroupSelect] = useState([]);
   const [createGroupNameInput, setCreateGroupNameInput] = useState("");
+  const [messageInputText, setMessageInputText] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -79,6 +80,48 @@ const Chat = () => {
     }
 
     setOpen(false);
+  };
+
+  const handleSendMessage = async () => {
+    console.log("This is a test");
+
+    const endpoint =
+      BASE_URL + `/api/chat/${currentChat.id}/user/${userInfo.id}/message`;
+    const body = { content: messageInputText };
+
+    // Get the JWT token from localStorage
+    const jwtToken = localStorage.getItem("jwtToken");
+
+    if (!jwtToken) {
+      // Handle the case where the JWT token is missing in localStorage
+      console.error("JWT token not found in localStorage");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`, // Include the token as a bearer token
+        },
+      };
+
+      console.log("This is body: ", body);
+      const bodyString = JSON.stringify(body);
+      console.log(jwtToken);
+
+      console.log(bodyString);
+      console.log(body);
+      const response = await axios.post(endpoint, body, config);
+
+      // Handle the response as needed
+      console.log("Message sent successfully:", response.data);
+
+      // Clear the message input field
+      setMessageInputText("");
+    } catch (error) {
+      // Handle any errors that occur during the POST request
+      console.error("Error sending message:", error);
+    }
   };
   // fetch users data
   const fetchUsers = async (decodedJwt) => {
@@ -176,8 +219,11 @@ const Chat = () => {
         {showChatHideMessage ? (
           <ChatWindow
             handleOpen={handleOpen}
+            handleSendMessage={handleSendMessage}
             userInfo={userInfo}
             handleClickGroupChat={handleClickGroupChat}
+            messageInputText={messageInputText}
+            setMessageInputText={setMessageInputText}
           />
         ) : (
           <MessageWindowMobile
