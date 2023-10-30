@@ -3,12 +3,15 @@ package com.jump.backend.dto;
 public class UserDTO {
 	
 	private Integer id;
-	public UserDTO(Integer integer, String username) {
+	private String profile;
+	private String username;
+	
+	public UserDTO(Integer integer, String username, String profile) {
 		super();
 		this.id = integer;
 		this.username = username;
+		this.profile = profile;
 	}
-	private String username;
 	public Integer getId() {
 		return id;
 	}
@@ -20,5 +23,11 @@ public class UserDTO {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 }

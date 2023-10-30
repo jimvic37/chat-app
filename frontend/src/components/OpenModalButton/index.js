@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useModal } from '../../Contexts/Modal'
+// import { useModal } from '../../Contexts/Modal'
 import { AppContext } from '../../Contexts/AppContext'
 
 function OpenModalButton({
@@ -9,7 +9,7 @@ function OpenModalButton({
   onModalClose, // optional: callback function that will be called once the modal is closed
   className // optional: className to be applied to the button that opens the modal
 }) {
-  const { setModalContent, setOnModalClose } = useModal();
+  const { setModalContent, setOnModalClose } = useContext(AppContext);
   
   const onClick = () => {
     if (onModalClose) setOnModalClose(onModalClose);

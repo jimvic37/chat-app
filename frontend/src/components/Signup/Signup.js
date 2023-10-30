@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useModal } from "../../Contexts/Modal";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../../Contexts/AppContext";
 
 import './Signup.css'
 
@@ -9,7 +9,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
+  const { closeModal } = useContext(AppContext);
 
   const handleSignup = async (e) => {
     e.preventDefault(); 
