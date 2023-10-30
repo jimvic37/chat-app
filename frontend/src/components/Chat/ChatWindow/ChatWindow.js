@@ -1,7 +1,12 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ChatWindow.css";
+import axios from "axios";
+
 import NavBar from "../../NavBar/NavBar";
 import AddIcon from "@mui/icons-material/Add";
+
+import decodeJWT from "../../../Services/jwtService.js";
+
 
 import {
   MDBContainer,
@@ -16,18 +21,17 @@ import {
   MDBCardHeader,
 } from "mdb-react-ui-kit";
 
+
 const ChatWindow = ({
   handleOpen,
   handleClickGroupChat,
-  userInfo,
   handleSendMessage,
   messageInputText,
   setMessageInputText,
 }) => {
   const messagesContainerRef = useRef(null);
-
-  const userChats = [];
-
+  const [userInfo, setUserInfo] = useState(null);
+  const [userChats, setUserChats] = useState([]);
   useEffect(() => {
     if (messagesContainerRef.current) {
       console.log(true);
@@ -36,6 +40,19 @@ const ChatWindow = ({
       container.scrollTop = container.scrollHeight; // Initialize scroll to the bottom
     } else {
       console.log(false);
+    }
+    const token = localStorage.getItem("jwtToken");
+    let decodedJwt;
+    if (token) {
+      decodedJwt = decodeJWT(token);
+      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
+      axios.get(`/api/chat/${decodedJwt.userId}`)
+        .then((response) => {
+          setUserChats(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user chats: ", error);
+        });
     }
   }, []);
 
@@ -50,8 +67,86 @@ const ChatWindow = ({
               <AddIcon className="add-icon" />
             </span>
           </h5>
-
           <MDBCard className="mask-custom">
+          <MDBCardBody>
+            <MDBTypography listUnStyled className="mb-0">
+            {userChats.map((chat) => (
+              <li
+                key={chat.chat.id}
+                className="p-2 border-bottom"
+                style={{
+                  borderBottom: "1px solid rgba(255, 255, 255, 0.3) !important",
+                }}
+                onClick={() => handleClickGroupChat(false)}
+              >
+                <a href="#!" className="d-flex justify-content-between link-light">
+                  <div className="d-flex flex-row">
+                    <img
+                      src={chat.mostRecentMessage?.user?.profile || "https://static.thenounproject.com/png/4530368-200.png"}
+                      alt="avatar"
+                      className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
+                      width="60"
+                    />
+                    <div className="pt-1">
+                      <p className="fw-bold mb-0">{chat.chat.chatName}</p>
+                      <p className="small text-white">{chat.mostRecentMessage?.content || 'No recent messages'}</p>
+                    </div>
+                  </div>
+                  <div className="pt-1">
+                    <p className="small mb-1 text-white">
+                      {chat.mostRecentMessage?.created || 'No recent messages'} {/* Adjust the timestamp property */}
+                    </p>
+                    <span className="badge bg-danger float-end">
+                      {chat.unreadMessages || 0} {/* Provide a default value */}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+
+              {/* {userChats.map((chat) => (
+                <li
+                  key={chat.id}
+            
+                  className="p-2 border-bottom"
+                  style={{
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.3) !important",
+                  }}
+                  onClick={() => handleClickGroupChat(false)}
+                >
+                  <a
+                    href="#!"
+                    className="d-flex justify-content-between link-light"
+                  >
+                    <div className="d-flex flex-row">
+                      <img
+                        src="chat.chat.message"
+                        alt="avatar"
+                        className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
+                        width="60"
+                      />
+                      <div className="pt-1">
+                        <p className="fw-bold mb-0">{chat.chatName}</p>
+                        <p className="small text-white">{chat.mostRecentMessage}</p>
+                      </div>
+                    </div>
+                    <div className="pt-1">
+                      <p className="small mb-1 text-white">
+                        {chat.mostRecentMessageTime}
+                      </p>
+                      <span className="badge bg-danger float-end">
+                        {chat.unreadMessages}
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              ))} */}
+            </MDBTypography>
+          </MDBCardBody>
+        </MDBCard>
+      </MDBCol>
+
+          {/* <MDBCard className="mask-custom">
             <MDBCardBody>
               <MDBTypography listUnStyled className="mb-0">
                 <li
@@ -87,8 +182,8 @@ const ChatWindow = ({
                 </li>
               </MDBTypography>
             </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
+          </MDBCard> */}
+        {/* </MDBCol> */}
 
         <MDBCol
           md="6"
