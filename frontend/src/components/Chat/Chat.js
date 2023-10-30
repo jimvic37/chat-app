@@ -41,7 +41,7 @@ const Chat = () => {
   };
 
   const handleCreateChat = async (value) => {
-    const endpoint = BASE_URL + "/chat";
+    const endpoint = BASE_URL + "/api/chat";
     let userIds = [];
     for (let user of groupSelect) {
       userIds.push(user.id);
