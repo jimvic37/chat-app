@@ -1,6 +1,7 @@
 package com.jump.backend.dto;
 
 public class UserDTO {
+	
 	private Integer id;
 	public UserDTO(Integer integer, String username) {
 		super();

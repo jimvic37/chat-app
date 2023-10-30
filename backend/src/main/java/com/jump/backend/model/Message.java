@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.jump.backend.dto.UserDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,33 +18,40 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Message implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(nullable = false)
 	@NotBlank
 	private String content;
-	
-	@Column(unique = true, nullable = false)
+
+	@Column(nullable = false)
 	private LocalDateTime created;
-	
+
 	@Column(nullable = false)
 	private ZoneId timeZone;
-	
-	@OneToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "chat_id", referencedColumnName = "id")
 	private Chat chat;
+	
+	
+	// Add a UserDTO field with appropriate getters and setters
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@Transient
+	private UserDTO userDTO;
 
 	public Message() {
 	}
@@ -81,6 +90,14 @@ public class Message implements Serializable {
 		this.created = created;
 	}
 
+	public UserDTO getUserDTO() {
+		return userDTO;
+	}
+
+	public void setUserDTO(UserDTO userDTO) {
+		this.userDTO = userDTO;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -89,9 +106,9 @@ public class Message implements Serializable {
 		this.user = user;
 	}
 
-	public Chat getChat() {
-		return chat;
-	}
+//	public Chat getChat() {
+//		return chat;
+//	}
 
 	public void setChat(Chat chat) {
 		this.chat = chat;
@@ -111,6 +128,4 @@ public class Message implements Serializable {
 				+ ", user=" + user + ", chat=" + chat + "]";
 	}
 
-	
-	
 }
