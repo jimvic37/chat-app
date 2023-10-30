@@ -9,12 +9,11 @@ import decodeJWT from "../../Services/jwtService";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState(0);
   const { userInfo, setUserInfo } = useContext(AppContext);
   const jwt = localStorage.getItem("jwtToken");
-  console.log(userId)
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     navigate("/chat");
@@ -25,32 +24,26 @@ const Home = () => {
       setLoggedIn(true);
       const decodedJwt = decodeJWT(jwt);
       console.log(decodedJwt)
-      setUserId(decodedJwt.userId);
+      fetchData(decodedJwt.userId);
     }
-  }, []);
+  }, [jwt]);
 
-  useEffect(() => {
-    fetchData();
-  }, [userId]);
-
-  const fetchData = async () => {
-    if (userId) {
-      try {
-        const response = await fetch(`http://localhost:8080/api/user/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setUserInfo({ profile: data.profile, username: data.username, id: data.id });
+  const fetchData = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/user/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${jwt}`,
         }
-  
-      } catch (error) {
-        console.log(error);
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserInfo({ profile: data.profile, username: data.username, id: data.id });
       }
+
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -59,9 +52,14 @@ const Home = () => {
       <h1 className="logo">BlinkTalk</h1>
       {/* <Button onClick={handleLogin}>go to chat</Button>' */}
       {(loggedIn && userInfo) ? (
-        <div className="button-div">
-          <img onClick={handleLogin} src={userInfo.profile} alt="profile" />
-          <p>{userInfo.username}</p>
+        <div className="home-user-div">
+          <img 
+            onClick={handleLogin} 
+            src={userInfo.profile} 
+            alt="profile" 
+            className="home-profile-img"
+          />
+          <h4 className="home-username">{userInfo.username}</h4>
         </div>
       ) : (
         <div className="button-div">
