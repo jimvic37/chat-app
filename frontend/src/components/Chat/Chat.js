@@ -3,7 +3,6 @@ import "./Chat.css";
 import axios from "axios";
 import ChatWindow from "./ChatWindow/ChatWindow";
 import decodeJWT from "../../Services/jwtService";
-import NavBar from "../NavBar/NavBar";
 import {
   Modal,
   Box,
@@ -15,7 +14,7 @@ import {
 } from "@mui/material";
 import MessageWindowMobile from "./MessageWindowMobile/MessageWindowMobile";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://localhost:8080/api";
 
 const Chat = () => {
   const [open, setOpen] = useState(false);
@@ -41,8 +40,9 @@ const Chat = () => {
   };
 
   const handleCreateChat = async (value) => {
-    const endpoint = BASE_URL + "/api/chat";
+    const endpoint = BASE_URL + "/chat";
     let userIds = [];
+    userIds.push(userInfo.id);
     for (let user of groupSelect) {
       userIds.push(user.id);
     }
@@ -80,6 +80,7 @@ const Chat = () => {
 
     setOpen(false);
   };
+  
   // fetch users data
   const fetchUsers = async (decodedJwt) => {
     try {
