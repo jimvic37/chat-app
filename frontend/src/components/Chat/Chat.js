@@ -15,11 +15,16 @@ import {
 } from "@mui/material";
 import MessageWindowMobile from "./MessageWindowMobile/MessageWindowMobile";
 
+const BASE_URL = "http://localhost:8080";
+
 const Chat = () => {
   const [open, setOpen] = useState(false);
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
+  const [currentChat, setCurrentChat] = useState();
+  const [groupSelect, setGroupSelect] = useState([]);
+  const [createGroupNameInput, setCreateGroupNameInput] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -35,11 +40,59 @@ const Chat = () => {
     }
   };
 
+  const handleCreateChat = async (value) => {
+    const endpoint = BASE_URL + "/chat";
+    let userIds = [];
+    for (let user of groupSelect) {
+      userIds.push(user.id);
+    }
+    const body = {
+      chat: {
+        chatName: createGroupNameInput,
+      },
+      userIds,
+    };
+
+    console.log("here's group select: ", groupSelect);
+    console.log("here's createGroupNameInput: ", createGroupNameInput);
+
+    try {
+      const jwtToken = localStorage.getItem("jwtToken");
+
+      if (!jwtToken) {
+        // Handle the case where the JWT token is missing in localStorage
+        console.error("JWT token not found in localStorage");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`, // Include the token as a bearer token
+        },
+      };
+
+      const response = await axios.post(endpoint, body, config);
+
+      console.log("Chat created successfully:", response.data);
+    } catch (error) {
+      console.error("Error creating chat:", error);
+    }
+
+    setOpen(false);
+  };
   // fetch users data
-  const fetchUsers = async () => {
+  const fetchUsers = async (decodedJwt) => {
     try {
       const response = await axios.get("http://localhost:8080/api/users");
-      setUsers(response.data); // Save the users data to the state
+      const usersData = response.data; // Get the users data from the response
+      console.log("Jwt userId: ", decodedJwt.userId);
+      // Filter out the user with the specified ID
+      const filteredUsers = usersData.filter(
+        (user) => user.id !== decodedJwt.userId
+      );
+
+      // Save the filtered users data to the state
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -47,11 +100,12 @@ const Chat = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
+    let decodedJwt;
     if (token) {
-      const decodedJwt = decodeJWT(token);
+      decodedJwt = decodeJWT(token);
       setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
     }
-    fetchUsers();
+    fetchUsers(decodedJwt);
   }, []);
 
   const modalStyles = {
@@ -155,6 +209,8 @@ const Chat = () => {
                   id="tags-standard"
                   options={users}
                   getOptionLabel={(user) => user.username}
+                  onChange={(event, value) => setGroupSelect(value)}
+                  // onInputChange={(e) => console.log(e)}
                   defaultValue={[users[0]]}
                   renderInput={(params) => (
                     <TextField
@@ -172,11 +228,15 @@ const Chat = () => {
                   id="standard-basic"
                   label="Group name"
                   variant="standard"
+                  value={createGroupNameInput}
+                  onChange={(e) => setCreateGroupNameInput(e.target.value)}
                 />
               </Box>
             </Box>
             <Box sx={createButtonWrapStyles}>
-              <Button sx={createButtonStyles}>Create</Button>
+              <Button sx={createButtonStyles} onClick={handleCreateChat}>
+                Create
+              </Button>
             </Box>
           </Box>
         </Modal>
