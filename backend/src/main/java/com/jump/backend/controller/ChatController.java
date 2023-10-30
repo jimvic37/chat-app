@@ -5,6 +5,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,10 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jump.backend.repository.ChatRepository;
 import com.jump.backend.repository.UserChatRepository;
 import com.jump.backend.repository.UserRepository;
+import com.jump.backend.dto.ChatWithMessageDTO;
 import com.jump.backend.dto.CreateChatRequest;
 import com.jump.backend.model.Chat;
 import com.jump.backend.model.User;
 import com.jump.backend.model.UserChat;
+import com.jump.backend.model.Message;
 
 @RestController
 @RequestMapping("/api")
@@ -39,17 +43,48 @@ public class ChatController {
 	@Autowired
 	UserChatRepository userChatRepo;
 
-	// Get chat for specific user
+	
 	@GetMapping("/chat/{userId}")
-	public ResponseEntity<List<Chat>> getChatsByUser(@PathVariable int userId) {
-		List<Chat> userChats = chatRepo.findChatsByUserId(userId);
+	public ResponseEntity<List<ChatWithMessageDTO>> getChatsWithMostRecentMessageByUser(@PathVariable Integer userId) {
+	    List<Object[]> results = chatRepo.findChatsWithMostRecentMessageByUserId(userId);
+	    List<ChatWithMessageDTO> chatWithMessages = new ArrayList<>();
 
-		if (userChats.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
+	    for (Object[] result : results) {
+	        Chat chat = (Chat) result[0];
+	        Message message = (Message) result[1];
+	        chatWithMessages.add(new ChatWithMessageDTO(chat, message));
+	    }
 
-		return ResponseEntity.ok(userChats);
+	    if (chatWithMessages.isEmpty()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    return ResponseEntity.ok(chatWithMessages);
 	}
+
+	
+	// Get chat for specific user
+//	@GetMapping("/chat/{userId}")
+//	public ResponseEntity<List<Chat>> getChatsByUser(@PathVariable int userId) {
+//		List<Chat> userChats = chatRepo.findChatsByUserId(userId);
+//
+//		if (userChats.isEmpty()) {
+//			return ResponseEntity.notFound().build();
+//		}
+//
+//		return ResponseEntity.ok(userChats);
+//	}
+	
+//	@GetMapping("/chat/{userId}")
+//	public ResponseEntity<List<ChatWithMessageDTO>> getChatsWithMostRecentMessageByUser(@PathVariable Integer userId) {
+//	    List<ChatWithMessageDTO> chatWithMessages = chatRepo.findChatsWithMostRecentMessageByUserId(userId);
+//
+//	    if (chatWithMessages.isEmpty()) {
+//	        return ResponseEntity.notFound().build();
+//	    }
+//
+//	    return ResponseEntity.ok(chatWithMessages);
+//	}
 
 //	//Create chat
 //	@PostMapping("/chat")
