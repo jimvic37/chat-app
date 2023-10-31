@@ -21,7 +21,7 @@ const Chat = () => {
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
-  const [currentChat, setCurrentChat] = useState({ id: 1 });
+  const [currentChat, setCurrentChat] = useState(null);
   const [groupSelect, setGroupSelect] = useState([]);
   const [createGroupNameInput, setCreateGroupNameInput] = useState("");
   const [messageInputText, setMessageInputText] = useState("");
@@ -33,10 +33,13 @@ const Chat = () => {
     setOpen(true);
   };
 
-  const handleClickGroupChat = () => {
+  const handleClickGroupChat = (chat) => {
     if (window.innerWidth < 768) {
       setShowChatHideMessage(!showChatHideMessage);
     } else {
+      // Set the currently selected chat when a chat is clicked
+      console.log('Clicked chat:', chat);
+      setCurrentChat(chat);
     }
   };
  
