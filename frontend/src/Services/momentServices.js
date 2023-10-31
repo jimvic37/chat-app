@@ -1,6 +1,7 @@
 import moment from 'moment';
+// const moment = require('moment');
 
-function timeAgo(time) {
+function momentServices(time) {
   moment.updateLocale('en', {
       relativeTime: {
           future: "in %s",
@@ -32,7 +33,8 @@ function timeAgo(time) {
   }
 };
 
-export default timeAgo;
+export default momentServices;
 
 // test
 // console.log(timeAgo('2021-07-01T18:00:00.000Z')); // 1m ago
+// console.log(timeAgo('2023-10-31 10:23:29.441534')); // 1m ago
