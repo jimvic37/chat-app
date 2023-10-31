@@ -9,7 +9,6 @@ import decodeJWT from "../../Services/jwtService";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
-  console.log(userInfo);
   
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");

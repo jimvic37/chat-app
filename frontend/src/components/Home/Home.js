@@ -3,7 +3,6 @@ import "./Home.css";
 import OpenModalButton from "../OpenModalButton";
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
-import { Button } from "@mui/material";
 import { AppContext } from "../../Contexts/AppContext";
 import decodeJWT from "../../Services/jwtService";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(0);
   const { userInfo, setUserInfo } = useContext(AppContext);
   const jwt = localStorage.getItem("jwtToken");
 
@@ -50,7 +48,6 @@ const Home = () => {
   return (
     <div className="home-page">
       <h1 className="logo">BlinkTalk</h1>
-      {/* <Button onClick={handleLogin}>go to chat</Button>' */}
       {(loggedIn && userInfo) ? (
         <div className="home-user-div">
           <img 
