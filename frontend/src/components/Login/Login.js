@@ -32,23 +32,7 @@ const Login = () => {
         const data = await response.json();
         localStorage.setItem("jwtToken", data.jwt);
         const decodedJwt = decodeJWT(data.jwt);
-        console.log(decodedJwt)
-        try {
-          const response = await fetch(`http://localhost:8080/api/user/${decodedJwt.userId}`, {
-            method: "GET",
-            headers: {
-              "Content-type": "application/json",
-              Authorization: `Bearer ${data.jwt}`,
-            }
-          });
-          if (response.ok) {
-            const data = await response.json();
-            setUserInfo({ profile: data.profile, username: data.username, id: data.id });
-          }
-    
-        } catch (error) {
-          console.log(error);
-        }
+        setUserInfo({ profile: decodedJwt.profile, username: decodedJwt.sub, id: decodedJwt.userId });
         closeModal();
       } else {
         const data = await response.json();

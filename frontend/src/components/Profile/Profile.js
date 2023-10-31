@@ -9,13 +9,14 @@ import decodeJWT from "../../Services/jwtService";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
-  console.log(userInfo);
+
+  console.log(userInfo)
   
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
       const decodedJwt = decodeJWT(token);
-      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
+      setUserInfo({ profile: decodedJwt.profile, username: decodedJwt.sub, id: decodedJwt.userId });
     }
   }, []);
 
@@ -28,15 +29,12 @@ const Profile = () => {
               <span className="nav-logo">BlinkTalk</span>
             </Link>
           </Typography>
-          <Link to="/chat">
-            <ArrowBackIcon id="profile-back-arrow" />
-          </Link>
         </div>
 
         <div class="profile-container">
           <div class="box">
             <img
-              src="https://cdn.icon-icons.com/icons2/3065/PNG/512/profile_user_account_icon_190938.png"
+              src={userInfo?.profile}
               alt=""
             />
             <ul>
@@ -48,8 +46,8 @@ const Profile = () => {
               <h1>Profile</h1>
             </ul>
             <ul>
-              <h3>User ID</h3>
-              <li>{userInfo?.id}</li>
+              <h3>Username</h3>
+              <li>{userInfo?.username}</li>
             </ul>
             <ul>
               <h3>Timezone</h3>

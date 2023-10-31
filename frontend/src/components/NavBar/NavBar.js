@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import TelegramIcon from "@mui/icons-material/Telegram";
 import DrawerComp from "../Drawer/DrawerComp";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
@@ -22,7 +21,6 @@ import { AppContext } from "../../Contexts/AppContext";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
-// import OpenModalButton from "../OpenModalButton";
 
 const NavBar = ({ setOpenModal }) => {
   const navigate = useNavigate();
@@ -77,18 +75,9 @@ const NavBar = ({ setOpenModal }) => {
     backgroundColor: "transparent",
     boxShadow: "none",
     padding: "1rem 0",
+    borderBottom: "5px solid rgba(255, 255, 255, 0.2)",
   };
-  const goToShop = () => {
-    navigate("/");
-    navigate("/");
-  };
-  const goToCart = () => {
-    navigate("/cart");
-  };
-
-  const goToTransactions = () => {
-    navigate("/transactions");
-  };
+  
   const goTo = (destination) => {
     navigate(`/${destination}`);
   };

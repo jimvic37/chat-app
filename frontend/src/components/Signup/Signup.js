@@ -6,6 +6,7 @@ import './Signup.css'
 const Signup = () => {
 
   const [username, setUsername] = useState("");
+  const [profile, setProfile] = useState(""); 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -22,6 +23,7 @@ const Signup = () => {
     const requestObject =
     {
       "username": username,
+      "profile": profile,
       "password": password
     }
 
@@ -61,6 +63,14 @@ const Signup = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+          />
+        </div>
+        <div className="form-group">
+          <label>Profile Image</label>
+          <input
+            type="url"
+            value={profile}
+            onChange={(e) => setProfile(e.target.value)}
           />
         </div>
         <div className="form-group">
