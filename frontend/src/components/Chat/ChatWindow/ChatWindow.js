@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./ChatWindow.css";
 import axios from "axios";
-
+import momentServices from "../../../Services/momentServices";
 import NavBar from "../../NavBar/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -54,6 +54,8 @@ const ChatWindow = ({
           console.error("Error fetching user chats: ", error);
         });
     }
+
+    
   }, []);
 
   return (
@@ -94,7 +96,7 @@ const ChatWindow = ({
                   </div>
                   <div className="pt-1">
                     <p className="small mb-1 text-white">
-                      {chat.mostRecentMessage?.created || 'No recent messages'} {/* Adjust the timestamp property */}
+                      {chat.mostRecentMessage ? momentServices(chat.mostRecentMessage.created) : 'No recent messages'}
                     </p>
                     <span className="badge bg-danger float-end">
                       {chat.unreadMessages || 0} {/* Provide a default value */}
@@ -103,7 +105,10 @@ const ChatWindow = ({
                 </a>
               </li>
             ))}
-
+            </MDBTypography>
+          </MDBCardBody>
+        </MDBCard>
+      </MDBCol>
               {/* {userChats.map((chat) => (
                 <li
                   key={chat.id}
@@ -141,10 +146,7 @@ const ChatWindow = ({
                   </a>
                 </li>
               ))} */}
-            </MDBTypography>
-          </MDBCardBody>
-        </MDBCard>
-      </MDBCol>
+
 
           {/* <MDBCard className="mask-custom">
             <MDBCardBody>

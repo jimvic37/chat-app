@@ -41,8 +41,7 @@ public class Chat implements Serializable{
 	public Chat() {
 	}
 
-	public Chat(Integer id, @NotBlank String chatName, List<Message> messages,
-			List<UserChat> userChat) {
+	public Chat(Integer id, @NotBlank String chatName, List<Message> messages, List<UserChat> userChat) {
 		super();
 		this.id = id;
 		this.chatName = chatName;

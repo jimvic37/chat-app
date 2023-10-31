@@ -39,7 +39,7 @@ const Chat = () => {
     } else {
     }
   };
-
+ 
   const handleCreateChat = async (value) => {
     const endpoint = BASE_URL + "/api/chat";
     let userIds = [];
@@ -47,17 +47,23 @@ const Chat = () => {
     for (let user of groupSelect) {
       userIds.push(user.id);
     }
+
+    if (userIds.length <= 1) {
+      console.log("No other users selected. Cannot create a chat.");
+      return;
+    }
+
     const body = {
       chat: {
         chatName: createGroupNameInput,
       },
       userIds,
     };
-
-    console.log("here's group select: ", groupSelect);
-    console.log("here's createGroupNameInput: ", createGroupNameInput);
-
-    try {
+  
+    console.log("Selected users:", groupSelect);
+    console.log("Chat name:", createGroupNameInput);
+  
+      try {
       const jwtToken = localStorage.getItem("jwtToken");
 
       if (!jwtToken) {
@@ -75,6 +81,9 @@ const Chat = () => {
       const response = await axios.post(endpoint, body, config);
 
       console.log("Chat created successfully:", response.data);
+
+      setGroupSelect([]); // Clear the selected users
+      setCreateGroupNameInput("");
     } catch (error) {
       console.error("Error creating chat:", error);
     }
@@ -133,9 +142,11 @@ const Chat = () => {
       const filteredUsers = usersData.filter(
         (user) => user.id !== decodedJwt.userId
       );
-
-      // Save the filtered users data to the state
-      setUsers(filteredUsers);
+      if (filteredUsers.length === 0) {
+        console.log("No other users can be invited.");
+      } else {
+        setUsers(filteredUsers);
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
     }
