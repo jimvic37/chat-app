@@ -75,6 +75,7 @@ const NavBar = ({ setOpenModal }) => {
     backgroundColor: "transparent",
     boxShadow: "none",
     padding: "1rem 0",
+    borderBottom: "5px solid rgba(255, 255, 255, 0.2)",
   };
   
   const goTo = (destination) => {

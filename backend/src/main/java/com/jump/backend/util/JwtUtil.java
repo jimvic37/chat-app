@@ -65,9 +65,19 @@ public class JwtUtil {
 
 		// Include user ID in the claims
 		claims.put("userId", getUserIDFromUserDetails(userDetails));
+		
+		// Include profile in the claims
+		claims.put("profile", getProfileFromUserDetails(userDetails));
 
 		// returns token for user given along with any claims
 		return createToken(claims, userDetails.getUsername());
+	}
+
+	private Object getProfileFromUserDetails(UserDetails userDetails) {
+		if (userDetails instanceof MyUserDetails) {
+			return ((MyUserDetails) userDetails).getProfile(); // Replace with the actual method to get user profile
+		}
+		return null;
 	}
 
 	private Integer getUserIDFromUserDetails(UserDetails userDetails) {

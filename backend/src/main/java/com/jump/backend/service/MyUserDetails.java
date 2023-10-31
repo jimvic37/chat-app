@@ -14,12 +14,18 @@ public class MyUserDetails implements UserDetails{
 	private Integer id;
 	private String username;
 	private String password;
+	private String profile;
 	
 	public MyUserDetails(User user) {
 		
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.id = user.getId();
+		this.profile = user.getProfile();
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
 	@Override
@@ -30,6 +36,10 @@ public class MyUserDetails implements UserDetails{
 	@Override
 	public String getUsername() {
 		return username;
+	}
+
+	public String getProfile() {
+		return profile;
 	}
 
 	@Override
@@ -57,9 +67,4 @@ public class MyUserDetails implements UserDetails{
 		return null;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	
 }
