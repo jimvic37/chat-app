@@ -30,11 +30,6 @@ public class Chat implements Serializable{
 	@NotBlank
 	private String chatName;
 	
-	@Column
-	private LocalDateTime created;
-	
-	@Column
-	private ZoneId timeZone;
 	
 	@OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
 	private List<Message> messages;
@@ -46,13 +41,11 @@ public class Chat implements Serializable{
 	public Chat() {
 	}
 
-	public Chat(Integer id, @NotBlank String chatName, LocalDateTime created, ZoneId timeZone, List<Message> messages,
+	public Chat(Integer id, @NotBlank String chatName, List<Message> messages,
 			List<UserChat> userChat) {
 		super();
 		this.id = id;
 		this.chatName = chatName;
-		this.created = created;
-		this.timeZone = timeZone;
 		this.messages = messages;
 		this.userChat = userChat;
 	}
@@ -73,14 +66,6 @@ public class Chat implements Serializable{
 		this.chatName = chatName;
 	}
 
-	public LocalDateTime getCreated() {
-		return created;
-	}
-
-	public void setCreated(LocalDateTime created) {
-		this.created = created;
-	}
-
 	public List<Message> getMessages() {
 		return messages;
 	}
@@ -97,18 +82,11 @@ public class Chat implements Serializable{
 		this.userChat = userChat;
 	}
 
-	public ZoneId getTimeZone() {
-		return timeZone;
-	}
-
-	public void setTimeZone(ZoneId timeZone) {
-		this.timeZone = timeZone;
-	}
-
 	@Override
 	public String toString() {
-		return "Chat [id=" + id + ", chatName=" + chatName + ", created=" + created + ", timeZone=" + timeZone
-				+ ", messages=" + messages + ", userChat=" + userChat + "]";
+		return "Chat [id=" + id + ", chatName=" + chatName + ", messages=" + messages + ", userChat=" + userChat + "]";
 	}
+
+	
 
 }

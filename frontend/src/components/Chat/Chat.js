@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import MessageWindowMobile from "./MessageWindowMobile/MessageWindowMobile";
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://localhost:8080";
 
 const Chat = () => {
   const [open, setOpen] = useState(false);
@@ -41,7 +41,7 @@ const Chat = () => {
   };
 
   const handleCreateChat = async (value) => {
-    const endpoint = BASE_URL + "/chat";
+    const endpoint = BASE_URL + "/api/chat";
     let userIds = [];
     userIds.push(userInfo.id);
     for (let user of groupSelect) {

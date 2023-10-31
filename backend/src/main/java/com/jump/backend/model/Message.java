@@ -3,6 +3,7 @@ package com.jump.backend.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,9 +37,6 @@ public class Message implements Serializable {
 	@Column(nullable = false)
 	private LocalDateTime created;
 
-	@Column(nullable = false)
-	private ZoneId timeZone;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
@@ -56,12 +54,11 @@ public class Message implements Serializable {
 	public Message() {
 	}
 
-	public Message(Integer id, @NotBlank String content, LocalDateTime created, ZoneId timeZone, User user, Chat chat) {
+	public Message(Integer id, @NotBlank String content, LocalDateTime created, User user, Chat chat) {
 		super();
 		this.id = id;
 		this.content = content;
 		this.created = created;
-		this.timeZone = timeZone;
 		this.user = user;
 		this.chat = chat;
 	}
@@ -86,8 +83,8 @@ public class Message implements Serializable {
 		return created;
 	}
 
-	public void setCreated(LocalDateTime created) {
-		this.created = created;
+	public void setCreated(LocalDateTime localDateTime) {
+		this.created = localDateTime;
 	}
 
 	public UserDTO getUserDTO() {
@@ -114,18 +111,10 @@ public class Message implements Serializable {
 		this.chat = chat;
 	}
 
-	public ZoneId getTimeZone() {
-		return timeZone;
-	}
-
-	public void setTimeZone(ZoneId timeZone) {
-		this.timeZone = timeZone;
-	}
-
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", content=" + content + ", created=" + created + ", timezone=" + timeZone
-				+ ", user=" + user + ", chat=" + chat + "]";
+		return "Message [id=" + id + ", content=" + content + ", created=" + created + ", user=" + user + ", chat="
+				+ chat + ", userDTO=" + userDTO + "]";
 	}
 
 }
