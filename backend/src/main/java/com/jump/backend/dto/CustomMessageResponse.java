@@ -2,6 +2,7 @@ package com.jump.backend.dto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import com.jump.backend.model.Message;
 
@@ -9,14 +10,12 @@ public class CustomMessageResponse {
 	private Integer id;
 	private String content;
 	private LocalDateTime created;
-	private ZoneId timeZone;
 	private UserDTO userDTO;
 
 	public CustomMessageResponse(Message message) {
 		this.id = message.getId();
 		this.content = message.getContent();
 		this.created = message.getCreated();
-		this.timeZone = message.getTimeZone();
 		this.userDTO = message.getUserDTO();
 	}
 
@@ -42,14 +41,6 @@ public class CustomMessageResponse {
 
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
-	}
-
-	public ZoneId getTimeZone() {
-		return timeZone;
-	}
-
-	public void setTimeZone(ZoneId timeZone) {
-		this.timeZone = timeZone;
 	}
 
 	public UserDTO getUserDTO() {

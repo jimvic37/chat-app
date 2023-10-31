@@ -106,15 +106,11 @@ public class ChatController {
 //	}
 	@PostMapping("/chat")
 	public ResponseEntity<?> createChat(@RequestBody CreateChatRequest createChatRequest) {
-		LocalDateTime localDateTime = LocalDateTime.now();
-		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-		ZoneId timeZone = zonedDateTime.getZone();
 
 		Chat chat = createChatRequest.getChat();
 		chat.setId(null);
 		chat.setChatName(chat.getChatName());
-		chat.setCreated(localDateTime);
-		chat.setTimeZone(timeZone);
+
 
 		// Save the chat to create it in the database
 		Chat createdChat = chatRepo.save(chat);

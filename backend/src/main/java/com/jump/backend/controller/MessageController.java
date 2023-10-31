@@ -2,6 +2,7 @@ package com.jump.backend.controller;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,13 +42,7 @@ public class MessageController {
 
 	// Create message
 	@PostMapping("/chat/{chatId}/user/{user_id}/message")
-	public ResponseEntity<?> createMessage(@RequestBody Message message, @PathVariable Integer chatId,
-			@PathVariable Integer user_id) {
-		LocalDateTime localDateTime = LocalDateTime.now();
-		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-		ZoneId timeZone = zonedDateTime.getZone();
-
-		// Check if the chatId and user_id are valid and retrieve the chat and user
+	public ResponseEntity<?> createMessage(@RequestBody Message message, @PathVariable Integer chatId, @PathVariable Integer user_id) {
 		Chat chat = chatRepo.findById(chatId).orElse(null);
 		User user = userRepo.findById(user_id).orElse(null);
 
@@ -57,8 +52,7 @@ public class MessageController {
 		}
 
 		message.setContent(message.getContent());
-		message.setCreated(localDateTime);
-		message.setTimeZone(timeZone);
+		message.setCreated(LocalDateTime.now(ZoneOffset.UTC));
 
 		// Associate the chat and user with the message
 		message.setChat(chat);
@@ -82,17 +76,12 @@ public class MessageController {
 	@PutMapping("/message/{messageId}")
 	public ResponseEntity<?> editMessage(@RequestBody Message updatedMessage, @PathVariable int messageId) {
 
-		LocalDateTime localDateTime = LocalDateTime.now();
-		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-		ZoneId timeZone = zonedDateTime.getZone();
-
 		Optional<Message> existingMessageOptional = repo.findById(messageId);
 
 		if (existingMessageOptional.isPresent()) {
 			Message existingMessage = existingMessageOptional.get();
 			existingMessage.setContent(updatedMessage.getContent());
-			existingMessage.setCreated(localDateTime);
-			existingMessage.setTimeZone(timeZone);
+			existingMessage.setCreated(LocalDateTime.now(ZoneOffset.UTC));
 
 			Message updated = repo.save(existingMessage);
 
