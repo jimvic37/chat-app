@@ -72,7 +72,12 @@ const ChatWindow = ({
           setCurrentChatMessages(response.data);
         })
         .catch((error) => {
-          console.error("Error fetching messages for the current chat: ", error);
+          if (error.response && error.response.status === 404) {
+            // Handle the case where no messages were found for this chat
+            setCurrentChatMessages([]);
+          } else {
+            console.error("Error fetching messages for the current chat: ", error);
+          }
         });
     }
   }, [currentChat]);
@@ -136,53 +141,54 @@ const ChatWindow = ({
         ref={messagesContainerRef}
       >
          <MDBTypography listUnStyled className="text-white">
-            {currentChatMessages.map((message) => (
-              <li
-                key={message.id}
-                className="d-flex justify-content-between mb-4"
-              >
-                {message.user.id === userInfo.id ? ( // Check if the message is from the current user
-                  <>
-                    <div className="pt-1 ms-auto"> 
-                      <MDBCard className="mask-custom">
-                        <MDBCardHeader
-                          className="d-flex justify-content-between p-3"
-                          style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                        >
-                          <p className="fw-bold mb-0">{message.user.username}</p>
-                          <p className="text-light small mb-0">
-                            <MDBIcon far icon="clock" /> {momentServices(message.created)}
-                          </p>
-                        </MDBCardHeader>
-                        <MDBCardBody>
-                          <p className="mb-0">{message.content}</p>
-                        </MDBCardBody>
-                      </MDBCard>
-                    </div>
-                  </>
-                ) : (
-                  // Render other users' messages on the left
-                  <>
-                    <div className="pt-1 me-auto"> 
-                      <MDBCard className="mask-custom">
-                        <MDBCardHeader
-                          className="d-flex justify-content-between p-3"
-                          style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                        >
-                          <p className="fw-bold mb-0">{message.user.username}</p>
-                          <p className="text-light small mb-0">
-                            <MDBIcon far icon="clock" /> {momentServices(message.created)}
-                          </p>
-                        </MDBCardHeader>
-                        <MDBCardBody>
-                          <p className="mb-0">{message.content}</p>
-                        </MDBCardBody>
-                      </MDBCard>
-                    </div>
-                  </>
-                )}
-              </li>
-            ))}
+            {currentChatMessages.length === 0 ? (
+              <li className="text-center text-muted">No messages available for this chat.</li>
+            ) : (
+              currentChatMessages.map((message) => (
+                <li key={message.id} className="d-flex justify-content-between mb-4">
+                  {message.user.id === userInfo.id ? ( // Check if the message is from the current user
+                    <>
+                      <div className="pt-1 ms-auto">
+                        <MDBCard className="mask-custom">
+                          <MDBCardHeader
+                            className="d-flex justify-content-between p-3"
+                            style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
+                          >
+                            <p className="fw-bold mb-0">{message.user.username}</p>
+                            <p className="text-light small mb-0">
+                              <MDBIcon far icon="clock" /> {momentServices(message.created)}
+                            </p>
+                          </MDBCardHeader>
+                          <MDBCardBody>
+                            <p className="mb-0">{message.content}</p>
+                          </MDBCardBody>
+                        </MDBCard>
+                      </div>
+                    </>
+                  ) : (
+                    // Render other users' messages on the left
+                    <>
+                      <div className="pt-1 me-auto">
+                        <MDBCard className="mask-custom">
+                          <MDBCardHeader
+                            className="d-flex justify-content-between p-3"
+                            style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
+                          >
+                            <p className="fw-bold mb-0">{message.user.username}</p>
+                            <p className="text-light small mb-0">
+                              <MDBIcon far icon="clock" /> {momentServices(message.created)}
+                            </p>
+                          </MDBCardHeader>
+                          <MDBCardBody>
+                            <p className="mb-0">{message.content}</p>
+                          </MDBCardBody>
+                        </MDBCard>
+                      </div>
+                    </>
+                  )}
+                </li>
+              ))
+            )}
             <li className="mb-3">
               <MDBTextArea
                 label="Message"
