@@ -35,6 +35,8 @@ const ChatWindow = ({
   const [userChats, setUserChats] = useState([]);
   const [currentChatMessages, setCurrentChatMessages] = useState([]); 
 
+  console.log('Current chat:', currentChat);
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       console.log(true);
@@ -64,7 +66,7 @@ const ChatWindow = ({
   useEffect(() => {
     if (currentChat) {
       axios
-        .get(`/api/message/chat/${currentChat.id}`)
+        .get(`/api/message/chat/${currentChat.chat.id}`)
         .then((response) => {
           console.log('Messages:', response.data);
           setCurrentChatMessages(response.data);
