@@ -21,7 +21,7 @@ const Chat = () => {
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
-  const [currentChat, setCurrentChat] = useState({ id: 1 });
+  const [currentChat, setCurrentChat] = useState(null);
   const [groupSelect, setGroupSelect] = useState([]);
   const [createGroupNameInput, setCreateGroupNameInput] = useState("");
   const [messageInputText, setMessageInputText] = useState("");
@@ -33,13 +33,16 @@ const Chat = () => {
     setOpen(true);
   };
 
-  const handleClickGroupChat = () => {
+  const handleClickGroupChat = (chat) => {
     if (window.innerWidth < 768) {
       setShowChatHideMessage(!showChatHideMessage);
     } else {
+      // Set the currently selected chat when a chat is clicked
+      console.log('Clicked chat:', chat);
+      setCurrentChat(chat);
     }
   };
-
+ 
   const handleCreateChat = async (value) => {
     const endpoint = BASE_URL + "/api/chat";
     let userIds = [];
@@ -47,17 +50,23 @@ const Chat = () => {
     for (let user of groupSelect) {
       userIds.push(user.id);
     }
+
+    if (userIds.length <= 1) {
+      console.log("No other users selected. Cannot create a chat.");
+      return;
+    }
+
     const body = {
       chat: {
         chatName: createGroupNameInput,
       },
       userIds,
     };
-
-    console.log("here's group select: ", groupSelect);
-    console.log("here's createGroupNameInput: ", createGroupNameInput);
-
-    try {
+  
+    console.log("Selected users:", groupSelect);
+    console.log("Chat name:", createGroupNameInput);
+  
+      try {
       const jwtToken = localStorage.getItem("jwtToken");
 
       if (!jwtToken) {
@@ -75,6 +84,9 @@ const Chat = () => {
       const response = await axios.post(endpoint, body, config);
 
       console.log("Chat created successfully:", response.data);
+
+      setGroupSelect([]); // Clear the selected users
+      setCreateGroupNameInput("");
     } catch (error) {
       console.error("Error creating chat:", error);
     }
@@ -133,9 +145,11 @@ const Chat = () => {
       const filteredUsers = usersData.filter(
         (user) => user.id !== decodedJwt.userId
       );
-
-      // Save the filtered users data to the state
-      setUsers(filteredUsers);
+      if (filteredUsers.length === 0) {
+        console.log("No other users can be invited.");
+      } else {
+        setUsers(filteredUsers);
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
     }

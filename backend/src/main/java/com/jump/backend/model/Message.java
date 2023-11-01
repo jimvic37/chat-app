@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jump.backend.dto.UserDTO;
@@ -35,6 +36,7 @@ public class Message implements Serializable {
 	private String content;
 
 	@Column(nullable = false)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime created;
 
 	@ManyToOne(cascade = CascadeType.ALL)
