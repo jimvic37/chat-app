@@ -97,7 +97,7 @@ const Chat = () => {
     console.log("This is a test");
 
     const endpoint =
-      BASE_URL + `/api/chat/${currentChat.id}/user/${userInfo.id}/message`;
+      BASE_URL + `/api/chat/${currentChat.chat.id}/user/${userInfo.id}/message`;
     const body = { content: messageInputText };
 
     // Get the JWT token from localStorage
@@ -264,7 +264,6 @@ const Chat = () => {
                   getOptionLabel={(user) => user.username}
                   onChange={(event, value) => setGroupSelect(value)}
                   // onInputChange={(e) => console.log(e)}
-                  defaultValue={[users[0]]}
                   renderInput={(params) => (
                     <TextField
                       {...params}

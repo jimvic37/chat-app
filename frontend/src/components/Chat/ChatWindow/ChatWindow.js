@@ -117,9 +117,9 @@ const ChatWindow = ({
                     <p className="small mb-1 text-white">
                       {chat.mostRecentMessage ? momentServices(chat.mostRecentMessage.created) : 'No recent messages'}
                     </p>
-                    <span className="badge bg-danger float-end">
-                      {chat.unreadMessages || 0} {/* Provide a default value */}
-                    </span>
+                    {/*<span className="badge bg-danger float-end">
+                      {chat.unreadMessages || 0} 
+                    </span>*/}
                   </div>
                 </a>
               </li>
@@ -135,34 +135,54 @@ const ChatWindow = ({
         id="message-window"
         ref={messagesContainerRef}
       >
-        <MDBTypography listUnStyled className="text-white">
-          {currentChatMessages.map((message) => (
-            <li
-              key={message.id}
-              className="d-flex justify-content-between mb-4"
-            >
-              <img
-                src={message.user.profile || "https://static.thenounproject.com/png/4530368-200.png"}
-                alt="avatar"
-                className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                width="60"
-              />
-              <MDBCard className="mask-custom">
-                <MDBCardHeader
-                  className="d-flex justify-content-between p-3"
-                  style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                >
-                  <p className="fw-bold mb-0">{message.user.username}</p>
-                  <p className="text-light small mb-0">
-                    <MDBIcon far icon="clock" /> {momentServices(message.created)}
-                  </p>
-                </MDBCardHeader>
-                <MDBCardBody>
-                  <p className="mb-0">{message.content}</p>
-                </MDBCardBody>
-              </MDBCard>
-            </li>
-          ))}
+         <MDBTypography listUnStyled className="text-white">
+            {currentChatMessages.map((message) => (
+              <li
+                key={message.id}
+                className="d-flex justify-content-between mb-4"
+              >
+                {message.user.id === userInfo.id ? ( // Check if the message is from the current user
+                  <>
+                    <div className="pt-1 ms-auto"> 
+                      <MDBCard className="mask-custom">
+                        <MDBCardHeader
+                          className="d-flex justify-content-between p-3"
+                          style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
+                        >
+                          <p className="fw-bold mb-0">{message.user.username}</p>
+                          <p className="text-light small mb-0">
+                            <MDBIcon far icon="clock" /> {momentServices(message.created)}
+                          </p>
+                        </MDBCardHeader>
+                        <MDBCardBody>
+                          <p className="mb-0">{message.content}</p>
+                        </MDBCardBody>
+                      </MDBCard>
+                    </div>
+                  </>
+                ) : (
+                  // Render other users' messages on the left
+                  <>
+                    <div className="pt-1 me-auto"> 
+                      <MDBCard className="mask-custom">
+                        <MDBCardHeader
+                          className="d-flex justify-content-between p-3"
+                          style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
+                        >
+                          <p className="fw-bold mb-0">{message.user.username}</p>
+                          <p className="text-light small mb-0">
+                            <MDBIcon far icon="clock" /> {momentServices(message.created)}
+                          </p>
+                        </MDBCardHeader>
+                        <MDBCardBody>
+                          <p className="mb-0">{message.content}</p>
+                        </MDBCardBody>
+                      </MDBCard>
+                    </div>
+                  </>
+                )}
+              </li>
+            ))}
             <li className="mb-3">
               <MDBTextArea
                 label="Message"
