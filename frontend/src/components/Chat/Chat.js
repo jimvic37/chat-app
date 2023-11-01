@@ -38,7 +38,6 @@ const Chat = () => {
       setShowChatHideMessage(!showChatHideMessage);
     } else {
       // Set the currently selected chat when a chat is clicked
-      console.log('Clicked chat:', chat);
       setCurrentChat(chat);
     }
   };
@@ -116,13 +115,7 @@ const Chat = () => {
           Authorization: `Bearer ${jwtToken}`, // Include the token as a bearer token
         },
       };
-
-      console.log("This is body: ", body);
       const bodyString = JSON.stringify(body);
-      console.log(jwtToken);
-
-      console.log(bodyString);
-      console.log(body);
       const response = await axios.post(endpoint, body, config);
 
       // Handle the response as needed
@@ -140,7 +133,6 @@ const Chat = () => {
     try {
       const response = await axios.get("http://localhost:8080/api/users");
       const usersData = response.data; // Get the users data from the response
-      console.log("Jwt userId: ", decodedJwt.userId);
       // Filter out the user with the specified ID
       const filteredUsers = usersData.filter(
         (user) => user.id !== decodedJwt.userId
@@ -160,7 +152,7 @@ const Chat = () => {
     let decodedJwt;
     if (token) {
       decodedJwt = decodeJWT(token);
-      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
+      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId, profile: decodedJwt.profile});
     }
     fetchUsers(decodedJwt);
   }, []);
@@ -238,6 +230,7 @@ const Chat = () => {
             handleClickGroupChat={handleClickGroupChat}
             messageInputText={messageInputText}
             setMessageInputText={setMessageInputText}
+            currentChat={currentChat}
           />
         ) : (
           <MessageWindowMobile
