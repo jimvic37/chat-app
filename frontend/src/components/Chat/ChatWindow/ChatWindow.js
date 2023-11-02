@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./ChatWindow.css";
-import axios from "axios";
 import momentServices from "../../../Services/momentServices";
 import NavBar from "../../NavBar/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 
-import decodeJWT from "../../../Services/jwtService.js";
 
 
 import {
@@ -18,7 +16,7 @@ import {
   MDBBtn,
   MDBTypography,
   MDBTextArea,
-  MDBCardHeader,
+  MDBCardHeader
 } from "mdb-react-ui-kit";
 
 
@@ -28,14 +26,11 @@ const ChatWindow = ({
   handleSendMessage,
   messageInputText,
   setMessageInputText,
-  currentChat,
+  userInfo,
+  userChats,
+  currentChatMessages
 }) => {
   const messagesContainerRef = useRef(null);
-  const [userInfo, setUserInfo] = useState(null);
-  const [userChats, setUserChats] = useState([]);
-  const [currentChatMessages, setCurrentChatMessages] = useState([]); 
-
-  console.log('Current chat:', currentChat);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -46,41 +41,9 @@ const ChatWindow = ({
     } else {
       console.log(false);
     }
-    const token = localStorage.getItem("jwtToken");
-    let decodedJwt;
-    if (token) {
-      decodedJwt = decodeJWT(token);
-      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId });
-      axios.get(`/api/chat/${decodedJwt.userId}`)
-        .then((response) => {
-          setUserChats(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user chats: ", error);
-        });
-    }
-
     
   }, []);
 
-  useEffect(() => {
-    if (currentChat) {
-      axios
-        .get(`/api/message/chat/${currentChat.chat.id}`)
-        .then((response) => {
-          console.log('Messages:', response.data);
-          setCurrentChatMessages(response.data);
-        })
-        .catch((error) => {
-          if (error.response && error.response.status === 404) {
-            // Handle the case where no messages were found for this chat
-            setCurrentChatMessages([]);
-          } else {
-            console.error("Error fetching messages for the current chat: ", error);
-          }
-        });
-    }
-  }, [currentChat]);
 
   return (
     <MDBContainer fluid className="py-5 gradient-custom">

@@ -34,6 +34,7 @@ public class User implements Serializable {
 	
 	@Column(nullable = false)
 	@NotBlank
+	@JsonIgnore
 	private String password;
 	
 //	@Column(columnDefinition = "varchar(255) default 'https://static.thenounproject.com/png/4530368-200.png'")
