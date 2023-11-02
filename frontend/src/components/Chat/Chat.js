@@ -68,7 +68,7 @@ const Chat = () => {
     console.log("Selected users:", groupSelect);
     console.log("Chat name:", createGroupNameInput);
   
-      try {
+    try {
       const jwtToken = localStorage.getItem("jwtToken");
 
       if (!jwtToken) {
@@ -84,8 +84,10 @@ const Chat = () => {
       };
 
       const response = await axios.post(endpoint, body, config);
-
+      JSON.stringify(response);    
       console.log("Chat created successfully:", response.data);
+      const editedResponse = {chat: response.data, mostRecentMessage: null};
+      setUserChats((prevChats) => [...prevChats, editedResponse]);
 
       setGroupSelect([]); // Clear the selected users
       setCreateGroupNameInput("");
@@ -98,6 +100,7 @@ const Chat = () => {
 
   const handleSendMessage = async () => {
     console.log("This is a test");
+    console.log(currentChat);
 
     const endpoint =
       BASE_URL + `/api/chat/${currentChat.chat.id}/user/${userInfo.id}/message`;
@@ -120,7 +123,10 @@ const Chat = () => {
       };
       const bodyString = JSON.stringify(body);
       const response = await axios.post(endpoint, body, config);
-
+      setCurrentChat((prevChat) => ({
+        ...prevChat,
+        messages: [...prevChat.chat.messages, response.data],
+      }));
       // Handle the response as needed
       console.log("Message sent successfully:", response.data);
 
@@ -155,8 +161,7 @@ const Chat = () => {
       axios.get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
           setUserChats(response.data);
-          console.log(userChats);
-
+          console.log(response.data);
         })
       . catch((error) => {
           console.error("Error fetching current chats: ", error);
