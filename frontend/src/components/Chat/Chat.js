@@ -238,7 +238,6 @@ const Chat = () => {
     transition: "background-color 0.2s ease-in-out",
     "&:hover": {},
   };
-
   const groupNameInputWrapStyles = {
     marginBottom: "3rem",
     width: "100%",
@@ -339,3 +338,4 @@ const Chat = () => {
 };
 
 export default Chat;
+
