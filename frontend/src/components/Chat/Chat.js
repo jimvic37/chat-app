@@ -25,6 +25,8 @@ const Chat = () => {
   const [groupSelect, setGroupSelect] = useState([]);
   const [createGroupNameInput, setCreateGroupNameInput] = useState("");
   const [messageInputText, setMessageInputText] = useState("");
+  const [userChats, setUserChats] = useState([]);
+  const [currentChatMessages, setCurrentChatMessages] = useState([]); 
 
   const handleClose = () => {
     setOpen(false);
@@ -39,6 +41,7 @@ const Chat = () => {
     } else {
       // Set the currently selected chat when a chat is clicked
       setCurrentChat(chat);
+
     }
   };
  
@@ -147,6 +150,38 @@ const Chat = () => {
     }
   };
 
+  const getCurrentChats = async(decodedJwt) => {
+    try {
+      axios.get(`/api/chat/${decodedJwt.userId}`)
+        .then((response) => {
+          setUserChats(response.data);
+          console.log(userChats);
+
+        })
+      . catch((error) => {
+          console.error("Error fetching current chats: ", error);
+      });
+    }catch (error) {
+      console.error("Error fetching current chats:", error);
+    }
+  };
+
+  const handleFetchMessages = async (currentChat) => {
+    console.log(currentChat)
+    if (currentChat) {
+      try {
+        const response = await axios.get(`/api/message/chat/${currentChat.chat.id}`);
+        setCurrentChatMessages(response.data);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setCurrentChatMessages([]);
+        } else {
+          console.error("Error fetching messages for the current chat: ", error);
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     let decodedJwt;
@@ -155,7 +190,10 @@ const Chat = () => {
       setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId, profile: decodedJwt.profile});
     }
     fetchUsers(decodedJwt);
-  }, []);
+    getCurrentChats(decodedJwt);
+    handleFetchMessages(currentChat)
+
+  }, [currentChat]);
 
   const modalStyles = {
     position: "absolute",
@@ -231,6 +269,9 @@ const Chat = () => {
             messageInputText={messageInputText}
             setMessageInputText={setMessageInputText}
             currentChat={currentChat}
+            currentChatMessages={currentChatMessages}
+            userChats={userChats}
+            handleFetchMessages = {handleFetchMessages}
           />
         ) : (
           <MessageWindowMobile
