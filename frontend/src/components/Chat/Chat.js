@@ -121,11 +121,17 @@ const Chat = () => {
           Authorization: `Bearer ${jwtToken}`, // Include the token as a bearer token
         },
       };
-      const bodyString = JSON.stringify(body);
+      const currentChatMessages = currentChat.chat.messages || [];
       const response = await axios.post(endpoint, body, config);
+      const updatedMessages = [...currentChatMessages, response.data];
+
+
       setCurrentChat((prevChat) => ({
         ...prevChat,
-        messages: [...prevChat.chat.messages, response.data],
+        chat: {
+          ...prevChat.chat,
+          messages: updatedMessages,
+        },
       }));
       // Handle the response as needed
       console.log("Message sent successfully:", response.data);
