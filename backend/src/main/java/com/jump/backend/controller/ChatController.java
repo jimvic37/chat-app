@@ -131,7 +131,6 @@ public class ChatController {
 				userChatRepo.save(userChat);
 			}
 		}
-
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdChat);
 	}
 }
