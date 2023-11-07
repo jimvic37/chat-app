@@ -17,6 +17,15 @@
   padding-top: 0 !important;
   height: 100vh;
 }
+#chat-list-window {
+  overflow-y: scroll;
+}
+#chat-list-window::-webkit-scrollbar {
+  width: 0px;
+}
+#chat-list-window::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+}
 #message-window {
   height: 85vh;
   overflow-y: scroll;

@@ -1,10 +1,7 @@
-package com.jump.backend.config;
-
-
+package com.jump.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
 import com.jump.backend.dto.ResponseMessage;
 
 @Service
@@ -18,12 +15,15 @@ public class WSService {
         this.messagingTemplate = messagingTemplate;
         this.notificationService = notificationService;
     }
-    public void notifyUser(final String id, final String message) {
+    public void notifyGroupChat(final String id, final String message) {
     	ResponseMessage response = new ResponseMessage(message);
     	
-    	notificationService.sendPrivateNotification(id);
-    	messagingTemplate.convertAndSendToUser(id, "/topic/private-messages", response);
-    }
+//    	notificationService.sendPrivateNotification(id);
+
+    	messagingTemplate.convertAndSend("/topic/messages/" + id, response);
+    } 
+    
+    
 
 // KEEP FOR REFERENCE 
     
@@ -40,3 +40,4 @@ public class WSService {
 //        messagingTemplate.convertAndSendToUser(id, "/topic/private-messages", response);
 //    }
 }
+
