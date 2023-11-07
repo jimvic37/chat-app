@@ -169,9 +169,9 @@ const Chat = () => {
       axios
         .get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
-          setUserChats(response.data);
+          const allCurrentChats = response.data.filter(chat => chat.leftChat === false);
+          setUserChats(allCurrentChats);
           connectToChats(response.data);
-          console.log(userChats);
         })
         .catch((error) => {
           console.error("Error fetching current chats: ", error);
@@ -182,7 +182,6 @@ const Chat = () => {
   };
 
   const handleFetchMessages = async (currentChat) => {
-    console.log(currentChat);
     if (currentChat) {
       try {
         const response = await axios.get(
@@ -202,6 +201,29 @@ const Chat = () => {
     }
   };
 
+  const handleLeaveChat = async () => {
+    const endpoint = BASE_URL + `/api/userChat/leave/${currentChat.chat.id}/${userInfo.id}`;
+    try {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        console.error("JWT token not found in localStorage");
+        return;
+      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
+      const response = await axios.put(endpoint, config);
+      console.log("Left chat successfully:", response.data);
+      setCurrentChat([]);
+      setCurrentChatMessages([]);
+      console.log("Current chat after leaving:", currentChat);
+      console.log("Current chat message after leaving:", currentChatMessages);
+    } catch (error) {
+      console.error("Error leaving chat:", error);
+    }
+  }
   const connectToChats = (chatsToConnectTo) => {
     const connectionURL = "http://localhost:8080/chat";
     const subscriptionAddress = "/topic/messages/";
@@ -214,7 +236,7 @@ const Chat = () => {
       () => {
         console.log("SOCKET CONNECTED SUCCESSFULLY");
         for (let c of chatsToConnectTo) {
-          console.log("This is a chatToConnectTo: ", JSON.stringify(c));
+          // console.log("This is a chatToConnectTo: ", JSON.stringify(c));
           socket.subscribe(subscriptionAddress + c.chat.id, (message) => {
             // console.log(
             //   "Got this message from a subscription: ",
@@ -330,7 +352,8 @@ const Chat = () => {
             currentChat={currentChat}
             currentChatMessages={currentChatMessages}
             userChats={userChats}
-            handleFetchMessages={handleFetchMessages}
+            handleFetchMessages = {handleFetchMessages}
+            handleLeaveChat = {handleLeaveChat}
           />
         ) : (
           <MessageWindowMobile

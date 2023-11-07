@@ -23,7 +23,7 @@ const Signup = () => {
     const requestObject =
     {
       "username": username,
-      "profile": profile,
+      "profile": profile || "https://static.thenounproject.com/png/4530368-200.png",
       "password": password
     }
 

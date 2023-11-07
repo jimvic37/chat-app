@@ -75,3 +75,21 @@
     display: none;
   }
 }
+
+/* -------------leave chat-------------- */
+.leave-box{
+  display: flex;
+  color: black;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  z-index: 4;
+  flex-direction: column;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.leave-box-btn {
+  display: flex;
+  justify-content: space-around;
+}
