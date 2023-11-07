@@ -30,7 +30,8 @@ const ChatWindow = ({
   currentChat
 }) => {
   const messagesContainerRef = useRef(null);
-  const [leaveBox, setLeaveBox] = useState(false);
+  const [leaveBoxes, setLeaveBoxes] = useState({});
+  // const leaveBoxRef = useRef(null);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -41,11 +42,40 @@ const ChatWindow = ({
     } else {
       console.log(false);
     }
+
+    // // Add click event listener to close the confirm leave chat box
+    // const handleClickOutside = (event) => {
+    //   const leaveBox = document.querySelector(".leave-box");
+    //   if (leaveBoxRef.current && !leaveBoxRef.current.contains(event.target)) {
+    //     closeAllConfirmLeaveBoxes();
+    //   }
+    // };
+
+    // document.addEventListener("click", handleClickOutside);
+
+    // // Cleanup the event listener when the component unmounts
+    // return () => {
+    //   document.removeEventListener("click", handleClickOutside);
+    // };
   }, []);
 
-  const openConfirmLeaveBox = () => {
-    setLeaveBox(true);
-  }
+  const openConfirmLeaveBox = (chatId) => {
+    setLeaveBoxes((prevLeaveBoxes) => ({
+      ...prevLeaveBoxes,
+      [chatId]: true, // Set leave state for the specific chat
+    }));
+  };
+
+  const closeConfirmLeaveBox = (chatId) => {
+    setLeaveBoxes((prevLeaveBoxes) => ({
+      ...prevLeaveBoxes,
+      [chatId]: false, // Close leave state for the specific chat
+    }));
+  };
+  
+  // const closeAllConfirmLeaveBoxes = () => {
+  //   setLeaveBoxes({});
+  // }
 
   return (
     <MDBContainer fluid className="py-5 gradient-custom">
@@ -99,18 +129,7 @@ const ChatWindow = ({
                           </p>
                         </div>
                       </div>
-                      
-                        {/* <MDBBtn
-                          color="dark"
-                          size="sm"
-                          rounded
-                          className="float-end"
-                          onClick={handleLeaveChat}
-                        >
-                          X
-                        </MDBBtn> */}
-                        
-                        {leaveBox ? (
+                        {leaveBoxes[chat.chat.id] ? (
                           <div className="leave-box">
                             <p className="leave-box-text">
                               Confirm leave chat
@@ -130,7 +149,7 @@ const ChatWindow = ({
                                 size="sm"
                                 rounded
                                 className="float-end"
-                                onClick={() => setLeaveBox(false)}
+                                onClick={() => closeConfirmLeaveBox(chat.chat.id)}
                               >
                                 No
                               </MDBBtn>
@@ -148,7 +167,7 @@ const ChatWindow = ({
                               size="sm"
                               rounded
                               className="float-end"
-                              onClick={openConfirmLeaveBox}
+                              onClick={() => openConfirmLeaveBox(chat.chat.id)}
                             >
                               Leave
                             </MDBBtn>
