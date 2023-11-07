@@ -26,6 +26,7 @@ import com.jump.backend.model.User;
 import com.jump.backend.repository.ChatRepository;
 import com.jump.backend.repository.MessageRepository;
 import com.jump.backend.repository.UserRepository;
+import com.jump.backend.service.WSService;
 
 @RestController
 @RequestMapping("/api")
@@ -39,6 +40,9 @@ public class MessageController {
 
 	@Autowired
 	UserRepository userRepo;
+	
+    @Autowired
+    WSService socketService;
 
 	// Create message
 	@PostMapping("/chat/{chatId}/user/{user_id}/message")
@@ -68,6 +72,8 @@ public class MessageController {
 
 		  // Create a custom response object with the message and userDTO
 	    CustomMessageResponse response = new CustomMessageResponse(created);
+	    
+	    socketService.notifyGroupChat(chatId.toString(), message.getContent());
 
 	    return ResponseEntity.status(201).body(response);
 	}

@@ -7,6 +7,7 @@ import {
   RouterProvider,
   BrowserRouter,
 } from "react-router-dom";
+// import { StompSessionProvider } from "react-stomp-hooks";
 import { AppContextProvider } from "./Contexts/AppContext";
 import AuthGuard from "./components/Auth/AuthGuard.js";
 // import UnAuthGuard from "./components/Auth/UnAuthGuard";
@@ -28,7 +29,9 @@ function App() {
           path="/chat"
           element={
             // <AuthGuard>
+
             <Chat />
+
             // </AuthGuard>
           }
         ></Route>

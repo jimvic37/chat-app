@@ -3,6 +3,9 @@ import "./Chat.css";
 import axios from "axios";
 import ChatWindow from "./ChatWindow/ChatWindow";
 import decodeJWT from "../../Services/jwtService";
+import SockJS from "sockjs-client";
+import { over } from "stompjs";
+
 import {
   Modal,
   Box,
@@ -18,6 +21,7 @@ const BASE_URL = "http://localhost:8080";
 
 const Chat = () => {
   const [open, setOpen] = useState(false);
+  const [stompClient, setStompClient] = useState(null);
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
@@ -26,7 +30,8 @@ const Chat = () => {
   const [createGroupNameInput, setCreateGroupNameInput] = useState("");
   const [messageInputText, setMessageInputText] = useState("");
   const [userChats, setUserChats] = useState([]);
-  const [currentChatMessages, setCurrentChatMessages] = useState([]); 
+  const [currentChatMessages, setCurrentChatMessages] = useState([]);
+  const [lastMessage, setLastMessage] = useState("No message received yet");
 
   const handleClose = () => {
     setOpen(false);
@@ -41,10 +46,9 @@ const Chat = () => {
     } else {
       // Set the currently selected chat when a chat is clicked
       setCurrentChat(chat);
-
     }
   };
- 
+
   const handleCreateChat = async (value) => {
     const endpoint = BASE_URL + "/api/chat";
     let userIds = [];
@@ -64,11 +68,10 @@ const Chat = () => {
       },
       userIds,
     };
-  
+
     console.log("Selected users:", groupSelect);
     console.log("Chat name:", createGroupNameInput);
-  
-      try {
+    try {
       const jwtToken = localStorage.getItem("jwtToken");
 
       if (!jwtToken) {
@@ -84,8 +87,10 @@ const Chat = () => {
       };
 
       const response = await axios.post(endpoint, body, config);
-
+      JSON.stringify(response);
       console.log("Chat created successfully:", response.data);
+      const editedResponse = { chat: response.data, mostRecentMessage: null };
+      setUserChats((prevChats) => [...prevChats, editedResponse]);
 
       setGroupSelect([]); // Clear the selected users
       setCreateGroupNameInput("");
@@ -98,6 +103,7 @@ const Chat = () => {
 
   const handleSendMessage = async () => {
     console.log("This is a test");
+    console.log(currentChat);
 
     const endpoint =
       BASE_URL + `/api/chat/${currentChat.chat.id}/user/${userInfo.id}/message`;
@@ -118,9 +124,17 @@ const Chat = () => {
           Authorization: `Bearer ${jwtToken}`, // Include the token as a bearer token
         },
       };
-      const bodyString = JSON.stringify(body);
+      const currentChatMessages = currentChat.chat.messages || [];
       const response = await axios.post(endpoint, body, config);
+      const updatedMessages = [...currentChatMessages, response.data];
 
+      setCurrentChat((prevChat) => ({
+        ...prevChat,
+        chat: {
+          ...prevChat.chat,
+          messages: updatedMessages,
+        },
+      }));
       // Handle the response as needed
       console.log("Message sent successfully:", response.data);
 
@@ -150,33 +164,39 @@ const Chat = () => {
     }
   };
 
-  const getCurrentChats = async(decodedJwt) => {
+  const getCurrentChats = async (decodedJwt) => {
     try {
-      axios.get(`/api/chat/${decodedJwt.userId}`)
+      axios
+        .get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
           setUserChats(response.data);
+          connectToChats(response.data);
           console.log(userChats);
-
         })
-      . catch((error) => {
+        .catch((error) => {
           console.error("Error fetching current chats: ", error);
-      });
-    }catch (error) {
+        });
+    } catch (error) {
       console.error("Error fetching current chats:", error);
     }
   };
 
   const handleFetchMessages = async (currentChat) => {
-    console.log(currentChat)
+    console.log(currentChat);
     if (currentChat) {
       try {
-        const response = await axios.get(`/api/message/chat/${currentChat.chat.id}`);
+        const response = await axios.get(
+          `/api/message/chat/${currentChat.chat.id}`
+        );
         setCurrentChatMessages(response.data);
       } catch (error) {
         if (error.response && error.response.status === 404) {
           setCurrentChatMessages([]);
         } else {
-          console.error("Error fetching messages for the current chat: ", error);
+          console.error(
+            "Error fetching messages for the current chat: ",
+            error
+          );
         }
       }
     }
@@ -202,18 +222,57 @@ const Chat = () => {
       console.error("Error leaving chat:", error);
     }
   }
+  const connectToChats = (chatsToConnectTo) => {
+    const connectionURL = "http://localhost:8080/chat";
+    const subscriptionAddress = "/topic/messages/";
+    let socket = new SockJS(connectionURL);
+    socket = over(socket);
+    setStompClient(socket);
+
+    socket.connect(
+      {},
+      () => {
+        console.log("SOCKET CONNECTED SUCCESSFULLY");
+        for (let c of chatsToConnectTo) {
+          console.log("This is a chatToConnectTo: ", JSON.stringify(c));
+          socket.subscribe(subscriptionAddress + c.chat.id, (message) => {
+            // console.log(
+            //   "Got this message from a subscription: ",
+            //   JSON.stringify(message)
+            // );
+            setCurrentChat((prevChat) => ({
+              ...prevChat,
+              messages: [...prevChat.chat.messages, message],
+            }));
+          });
+        }
+
+        // socket.subscribe(chatId3, (message) => {
+
+        // });
+      },
+      onConnectError
+    );
+  };
+
+  const onConnectError = (err) => {
+    console.log(err);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     let decodedJwt;
     if (token) {
       decodedJwt = decodeJWT(token);
-      setUserInfo({ username: decodedJwt.sub, id: decodedJwt.userId, profile: decodedJwt.profile});
+      setUserInfo({
+        username: decodedJwt.sub,
+        id: decodedJwt.userId,
+        profile: decodedJwt.profile,
+      });
     }
     fetchUsers(decodedJwt);
     getCurrentChats(decodedJwt);
-    handleFetchMessages(currentChat)
-
+    handleFetchMessages(currentChat);
   }, [currentChat]);
 
   const modalStyles = {
@@ -259,7 +318,6 @@ const Chat = () => {
     transition: "background-color 0.2s ease-in-out",
     "&:hover": {},
   };
-
   const groupNameInputWrapStyles = {
     marginBottom: "3rem",
     width: "100%",
