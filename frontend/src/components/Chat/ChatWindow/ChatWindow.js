@@ -28,7 +28,8 @@ const ChatWindow = ({
   setMessageInputText,
   userInfo,
   userChats,
-  currentChatMessages
+  currentChatMessages,
+  handleLeaveChat
 }) => {
   const messagesContainerRef = useRef(null);
 
@@ -161,15 +162,26 @@ const ChatWindow = ({
                 onChange={(e) => setMessageInputText(e.target.value)}
               />
             </li>
-            <MDBBtn
-              color="light"
-              size="lg"
-              rounded
-              className="float-end"
-              onClick={handleSendMessage}
-            >
-              Send
-            </MDBBtn>
+            <div className="chat-btn-div">
+              <MDBBtn
+                color="dark"
+                size="sm"
+                rounded
+                className="float-end"
+                onClick={handleLeaveChat}
+              >
+                X
+              </MDBBtn>
+              <MDBBtn
+                color="light"
+                size="lg"
+                rounded
+                className="float-end"
+                onClick={handleSendMessage}
+              >
+                Send
+              </MDBBtn>
+            </div>
           </MDBTypography>
         </MDBCol>
       </MDBRow>

@@ -24,7 +24,8 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
     	       "LEFT JOIN Message m " +
     	       "ON c.id = m.chat.id " +
     	       "AND m.created = (SELECT MAX(m2.created) FROM Message m2 WHERE m2.chat.id = c.id) " +
-    	       "WHERE u.id = :userId")
+    	       "WHERE u.id = :userId" +
+    	       "AND uc.leftChat = true")
      List<Object[]> findChatsWithMostRecentMessageByUserId(@Param("userId") Integer userId);
 
 }

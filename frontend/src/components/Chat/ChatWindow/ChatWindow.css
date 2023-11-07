@@ -61,3 +61,8 @@
     display: none;
   }
 }
+
+.chat-btn-div {
+  display: flex;
+  justify-content: space-between;
+}
