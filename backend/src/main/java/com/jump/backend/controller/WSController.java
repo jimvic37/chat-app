@@ -1,6 +1,6 @@
 package com.jump.backend.controller;
-import com.jump.backend.config.WSService;
 import com.jump.backend.model.Message;
+import com.jump.backend.service.WSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +20,12 @@ public class WSController {
  
 //    @PostMapping("/send-message")
 //    public void sendMessage(@RequestBody final Message message) {
-//        service.notifyFrontend(message.getMessageContent());
+//        service.notifyFrontend(message.getContent());
 //    }
-//
-//    @PostMapping("/send-private-message/{id}")
+
+//    @PostMapping("/send-message/{id}")
 //    public void sendPrivateMessage(@PathVariable final String id,
 //                                   @RequestBody final Message message) {
-//        service.notifyUser(id, message.getMessageContent());
+//        service.notifyGroupChat(id, message.getContent());
 //    }
 }
