@@ -87,7 +87,9 @@ public class MessageController {
 		if (existingMessageOptional.isPresent()) {
 			Message existingMessage = existingMessageOptional.get();
 			existingMessage.setContent(updatedMessage.getContent());
-			existingMessage.setCreated(LocalDateTime.now(ZoneOffset.UTC));
+			existingMessage.setEdited(true);
+			existingMessage.setEditedTime(LocalDateTime.now(ZoneOffset.UTC));
+//			existingMessage.setCreated(LocalDateTime.now(ZoneOffset.UTC));
 
 			Message updated = repo.save(existingMessage);
 

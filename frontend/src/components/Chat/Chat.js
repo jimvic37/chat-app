@@ -32,6 +32,44 @@ const Chat = () => {
   const [userChats, setUserChats] = useState([]);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState("No message received yet");
+  const [editingMessageId, setEditingMessageId] = useState(null);
+  const [editedMessage, setEditedMessage] = useState("");
+  const [originalMessageContent, setOriginalMessageContent] = useState("");
+
+
+
+  const handleEditClick = (messageId, messageContent) => {
+    setEditingMessageId(messageId);
+    setOriginalMessageContent(messageContent);
+  };
+
+
+  const handleSaveEdit = async (messageId) => {
+    try {
+      const editedMessageIndex = currentChatMessages.findIndex(
+        (message) => message.id === messageId
+      );
+      if (editedMessageIndex !== -1) {
+        const updatedMessages = [...currentChatMessages];
+        updatedMessages[editedMessageIndex].content = originalMessageContent;
+        updatedMessages[editedMessageIndex].edited = true;
+        updatedMessages[editedMessageIndex].editedTime = new Date();
+
+        setCurrentChatMessages(updatedMessages);
+      }
+  
+      await axios.put(`/api/message/${messageId}`, { content: originalMessageContent });
+      setOriginalMessageContent(originalMessageContent);
+      setEditingMessageId(null);
+
+    } catch (error) {
+      console.error('Error updating message:', error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMessageId(null);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -239,6 +277,8 @@ const Chat = () => {
     console.log(err);
   };
 
+
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     let decodedJwt;
@@ -331,6 +371,14 @@ const Chat = () => {
             currentChatMessages={currentChatMessages}
             userChats={userChats}
             handleFetchMessages={handleFetchMessages}
+            handleEditClick = {handleEditClick}
+            handleCancelEdit = {handleCancelEdit}
+            handleSaveEdit = {handleSaveEdit}
+            editingMessageId = {editingMessageId}
+            setEditedMessage = {setEditedMessage}
+            originalMessageContent = {originalMessageContent}
+            setOriginalMessageContent = {setOriginalMessageContent}
+            
           />
         ) : (
           <MessageWindowMobile

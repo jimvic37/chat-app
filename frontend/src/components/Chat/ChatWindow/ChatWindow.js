@@ -26,7 +26,12 @@ const ChatWindow = ({
   userInfo,
   userChats,
   currentChatMessages,
-  currentChat,
+  editingMessageId,
+  handleSaveEdit,
+  handleCancelEdit,
+  handleEditClick,
+  originalMessageContent,
+  setOriginalMessageContent
 }) => {
   const messagesContainerRef = useRef(null);
 
@@ -124,63 +129,94 @@ const ChatWindow = ({
               </li>
             ) : (
               currentChatMessages.map((message) => (
-                <li
-                  key={message.id}
-                  className="d-flex justify-content-between mb-4"
-                >
-                  {message.user.id === userInfo.id ? ( // Check if the message is from the current user
-                    <>
-                      <div className="pt-1 ms-auto">
-                        <MDBCard className="mask-custom">
-                          <MDBCardHeader
-                            className="d-flex justify-content-between p-3"
-                            style={{
-                              borderBottom: "1px solid rgba(255,255,255,.3)",
-                            }}
+                <li key={message.id} className="d-flex justify-content-between mb-4">
+                  {message.user.id === userInfo.id ? (
+                  <>
+                    <div className="pt-1 ms-auto">
+                      {message.id === editingMessageId ? (
+                        <>
+                          <MDBTextArea
+                            value={originalMessageContent}
+                            onChange={(e) => setOriginalMessageContent(e.target.value)}
+                          />
+                          <MDBBtn
+                            color="light"
+                            size="sm"
+                            onClick={() => handleSaveEdit(message.id)}
                           >
-                            <p className="fw-bold mb-0">
-                              {message.user.username}
-                            </p>
-                            <p className="text-light small mb-0">
-                              <MDBIcon far icon="clock" />{" "}
-                              {momentServices(message.created)}
-                            </p>
-                          </MDBCardHeader>
-                          <MDBCardBody>
-                            <p className="mb-0">{message.content}</p>
-                          </MDBCardBody>
-                        </MDBCard>
-                      </div>
-                    </>
-                  ) : (
-                    // Render other users' messages on the left
-                    <>
-                      <div className="pt-1 me-auto">
-                        <MDBCard className="mask-custom">
-                          <MDBCardHeader
-                            className="d-flex justify-content-between p-3"
-                            style={{
-                              borderBottom: "1px solid rgba(255,255,255,.3)",
-                            }}
+                            Save
+                          </MDBBtn>
+                          <MDBBtn
+                            color="light"
+                            size="sm"
+                            onClick={handleCancelEdit}
                           >
-                            <p className="fw-bold mb-0">
-                              {message.user.username}
-                            </p>
-                            <p className="text-light small mb-0">
-                              <MDBIcon far icon="clock" />{" "}
-                              {momentServices(message.created)}
-                            </p>
-                          </MDBCardHeader>
-                          <MDBCardBody>
-                            <p className="mb-0">{message.content}</p>
-                          </MDBCardBody>
-                        </MDBCard>
-                      </div>
-                    </>
-                  )}
-                </li>
-              ))
-            )}
+                            Cancel
+                          </MDBBtn>
+                        </>
+                      ) : (
+                        <>
+
+                          <MDBCard className="mask-custom">
+                            <MDBCardHeader
+                              className="d-flex justify-content-between p-3"
+                              style={{
+                                borderBottom: "1px solid rgba(255,255,255,.3)",
+                              }}
+                            >
+                              <p className="fw-bold mb-0">
+                                {message.user.username}
+                              </p>
+                              <p className="text-light small mb-0">
+                                <MDBIcon far icon="clock" />{" "}
+                                {momentServices(message.created)}
+                                <span
+                                  onClick={() => handleEditClick(message.id, message.content)}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  <MDBIcon far icon="edit" />{" "}
+                                </span>
+                              </p>
+                            </MDBCardHeader>
+                            <MDBCardBody>
+                              <p className="mb-0">{message.content}</p>
+                              {message.edited && <span className="edited-marker">(Edited){momentServices(message.editedTime)}</span>}
+                              
+                            </MDBCardBody>
+                          </MDBCard>
+                        </>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  // Render other users' messages on the left
+                  <>
+                    <div className="pt-1 me-auto">
+                      <MDBCard className="mask-custom">
+                        <MDBCardHeader
+                          className="d-flex justify-content-between p-3"
+                          style={{
+                            borderBottom: "1px solid rgba(255,255,255,.3)",
+                          }}
+                        >
+                          <p className="fw-bold mb-0">
+                            {message.user.username}
+                          </p>
+                          <p className="text-light small mb-0">
+                            <MDBIcon far icon="clock" />{" "}
+                            {momentServices(message.created)}
+                          </p>
+                        </MDBCardHeader>
+                        <MDBCardBody>
+                          <p className="mb-0">{message.content}</p>
+                        </MDBCardBody>
+                      </MDBCard>
+                    </div>
+                  </>
+                )}
+              </li>
+            ))
+          )}
             <li className="mb-3">
               <MDBTextArea
                 label="Message"
