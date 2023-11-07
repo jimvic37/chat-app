@@ -17,25 +17,17 @@
   padding-top: 0 !important;
   height: 100vh;
 }
-#chat-list-window {
-  overflow-y: scroll;
-}
-#chat-list-window::-webkit-scrollbar {
-  width: 0px;
-}
-#chat-list-window::-webkit-scrollbar-thumb {
-  background: #888; /* Color of the scrollbar thumb */
-}
+
 #message-window {
   height: 85vh;
   overflow-y: scroll;
   padding-bottom: 5px;
 }
 #message-window::-webkit-scrollbar {
-  width: 0px;
+  width: 5px;
 }
 #message-window::-webkit-scrollbar-thumb {
-  background: #888; /* Color of the scrollbar thumb */
+  background: rgb(136, 136, 136, 0.5); /* Color of the scrollbar thumb */
 }
 .member-header {
   display: flex;
@@ -43,12 +35,25 @@
   font-size: 1.4rem;
   padding: 0 1rem;
   color: black !important;
+  margin: 1rem 0 0 0;
 }
 .member-header > span:hover {
   color: white;
   cursor: pointer;
 }
-
+#chat-list-window {
+  height: 85vh;
+  overflow-y: scroll;
+  padding-bottom: 5px;
+  border-right: 2px solid rgb(136, 136, 136, 0.3);
+  border-bottom: 2px solid rgb(136, 136, 136, 0.3);
+}
+#chat-list-window::-webkit-scrollbar {
+  width: 5px;
+}
+#chat-list-window::-webkit-scrollbar-thumb {
+  background: rgb(136, 136, 136, 0.3); /* Color of the scrollbar thumb */
+}
 .mask-custom {
   background: rgba(24, 24, 16, 0.2);
   border-radius: 2em;
