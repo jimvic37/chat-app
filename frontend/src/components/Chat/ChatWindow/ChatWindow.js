@@ -31,9 +31,8 @@ const ChatWindow = ({
   handleCancelEdit,
   handleEditClick,
   originalMessageContent,
-  setOriginalMessageContent
-  handleLeaveChat,
-  currentChat
+  setOriginalMessageContent,
+  handleLeaveChat
 }) => {
   const messagesContainerRef = useRef(null);
   const [leaveBoxes, setLeaveBoxes] = useState({});
