@@ -1,6 +1,5 @@
 package com.jump.backend.model;
 
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,27 +22,27 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(unique = true, nullable = false)
 	@NotBlank
 	private String username;
-	
+
 	@Column(nullable = false)
 	@NotBlank
 	@JsonIgnore
 	private String password;
-	
+
 //	@Column(columnDefinition = "varchar(255) default 'https://static.thenounproject.com/png/4530368-200.png'")
 	private String profile;
-	
+
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserChat> userChat;
-	
+
 //	@JsonIgnore
 //	@OneToOne(mappedBy ="user", cascade = CascadeType.ALL)
 //	private Message message;
@@ -115,7 +114,5 @@ public class User implements Serializable {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", profile=" + profile
 				+ ", userChat=" + userChat + "]";
 	}
-
-	
 
 }

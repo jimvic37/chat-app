@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import com.jump.backend.dto.ResponseMessage;
+import com.jump.backend.dto.TypingMessage;
 
 @Service
 public class WSService {
@@ -21,6 +22,11 @@ public class WSService {
 //    	notificationService.sendPrivateNotification(id);
 
     	messagingTemplate.convertAndSend("/topic/messages/" + id, response);
+    } 
+    
+    public void notifyGroupChatTyping(String to, TypingMessage message) {
+    	System.out.println("------------ WE GOT TO THE notifyGroupChatTyping METHOD -------------");
+    	messagingTemplate.convertAndSend("/topic/typing-messages/" + to, message);
     } 
     
     

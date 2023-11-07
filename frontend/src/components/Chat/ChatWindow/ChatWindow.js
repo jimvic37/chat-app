@@ -27,6 +27,8 @@ const ChatWindow = ({
   userChats,
   currentChatMessages,
   currentChat,
+  handleTyping,
+  otherUserIsTyping,
 }) => {
   const messagesContainerRef = useRef(null);
 
@@ -181,13 +183,14 @@ const ChatWindow = ({
                 </li>
               ))
             )}
+            <p className="typing-message">{otherUserIsTyping ? otherUserIsTyping : ""}</p>
             <li className="mb-3">
               <MDBTextArea
                 label="Message"
                 id="textAreaExample"
                 rows={4}
                 value={messageInputText}
-                onChange={(e) => setMessageInputText(e.target.value)}
+                onChange={(e) => handleTyping(e.target.value)}
               />
             </li>
             <MDBBtn
