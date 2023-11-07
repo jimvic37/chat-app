@@ -12,12 +12,12 @@ import com.jump.backend.model.Chat;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 	
-    @Query("SELECT c FROM Chat c JOIN c.userChat uc WHERE uc.user.id = :userId")
+    @Query("SELECT c, uc.leftChat FROM Chat c JOIN c.userChat uc WHERE uc.user.id = :userId")
     List<Chat> findChatsByUserId(@Param("userId") int userId);
 	
 //	@Query("SELECT new com.jump.backend.dto.ChatWithMessageDTO(c, (SELECT m FROM Message m WHERE m.chat = c ORDER BY m.created DESC)) FROM Chat c JOIN c.userChat uc WHERE uc.user.id = :userId")
 //	List<ChatWithMessageDTO> findChatsWithMostRecentMessageByUserId(@Param("userId") Integer userId);
-    @Query("SELECT c, m " +
+    @Query("SELECT c, m, uc.leftChat " +
     	       "FROM Chat c " +
     	       "JOIN c.userChat uc " +
     	       "JOIN uc.user u " +
