@@ -71,7 +71,6 @@ const Chat = () => {
 
     console.log("Selected users:", groupSelect);
     console.log("Chat name:", createGroupNameInput);
-
     try {
       const jwtToken = localStorage.getItem("jwtToken");
 
@@ -88,8 +87,10 @@ const Chat = () => {
       };
 
       const response = await axios.post(endpoint, body, config);
-
+      JSON.stringify(response);
       console.log("Chat created successfully:", response.data);
+      const editedResponse = { chat: response.data, mostRecentMessage: null };
+      setUserChats((prevChats) => [...prevChats, editedResponse]);
 
       setGroupSelect([]); // Clear the selected users
       setCreateGroupNameInput("");
@@ -102,6 +103,7 @@ const Chat = () => {
 
   const handleSendMessage = async () => {
     console.log("This is a test");
+    console.log(currentChat);
 
     const endpoint =
       BASE_URL + `/api/chat/${currentChat.chat.id}/user/${userInfo.id}/message`;
@@ -122,9 +124,17 @@ const Chat = () => {
           Authorization: `Bearer ${jwtToken}`, // Include the token as a bearer token
         },
       };
-      const bodyString = JSON.stringify(body);
+      const currentChatMessages = currentChat.chat.messages || [];
       const response = await axios.post(endpoint, body, config);
+      const updatedMessages = [...currentChatMessages, response.data];
 
+      setCurrentChat((prevChat) => ({
+        ...prevChat,
+        chat: {
+          ...prevChat.chat,
+          messages: updatedMessages,
+        },
+      }));
       // Handle the response as needed
       console.log("Message sent successfully:", response.data);
 
