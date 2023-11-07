@@ -234,7 +234,7 @@ const Chat = () => {
       () => {
         console.log("SOCKET CONNECTED SUCCESSFULLY");
         for (let c of chatsToConnectTo) {
-          console.log("This is a chatToConnectTo: ", JSON.stringify(c));
+          // console.log("This is a chatToConnectTo: ", JSON.stringify(c));
           socket.subscribe(subscriptionAddress + c.chat.id, (message) => {
             // console.log(
             //   "Got this message from a subscription: ",
@@ -335,6 +335,8 @@ const Chat = () => {
       textAlign: "center",
     },
   };
+
+  console.log("userChats: ", userChats);
 
   return (
     <div className="chat-container">

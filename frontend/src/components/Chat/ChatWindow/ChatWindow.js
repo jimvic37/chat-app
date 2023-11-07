@@ -27,7 +27,7 @@ const ChatWindow = ({
   userChats,
   currentChatMessages,
   handleLeaveChat,
-  currentChat,
+  currentChat
 }) => {
   const messagesContainerRef = useRef(null);
 

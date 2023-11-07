@@ -53,7 +53,8 @@ public class ChatController {
 	    for (Object[] result : results) {
 	        Chat chat = (Chat) result[0];
 	        Message message = (Message) result[1];
-	        chatWithMessages.add(new ChatWithMessageDTO(chat, message));
+	        boolean leftChat = (boolean) result[2];
+	        chatWithMessages.add(new ChatWithMessageDTO(chat, message, leftChat));
 	    }
 
 	    if (chatWithMessages.isEmpty()) {
