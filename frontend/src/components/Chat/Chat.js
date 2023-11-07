@@ -22,6 +22,7 @@ const BASE_URL = "http://localhost:8080";
 const Chat = () => {
   const [open, setOpen] = useState(false);
   const [stompClient, setStompClient] = useState(null);
+  const [typing, setTyping] = useState(null);
   const [showChatHideMessage, setShowChatHideMessage] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [users, setUsers] = useState([]); // State variable to hold users data
@@ -32,6 +33,46 @@ const Chat = () => {
   const [userChats, setUserChats] = useState([]);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState("No message received yet");
+  const [otherUserIsTyping, setOtherUserIsTyping] = useState("");
+
+  // Triggers when current user is typing
+  const handleTyping = (typingText) => {
+    let typingMessage = {
+      content: typingText,
+      typer: userInfo.id,
+      typerName: userInfo.username,
+      chatId: currentChat.chat.id,
+    };
+    stompClient.send(
+      "/ws/typing-messages/" + currentChat.chat.id,
+      {},
+      JSON.stringify(typingMessage)
+    );
+    setMessageInputText(typingText);
+  };
+
+  // Triggers when other users are typing
+  const handleOtherUsersTyping = (typingMessage) => {
+    if (typingMessage) {
+      typingMessage = JSON.parse(typingMessage.body);
+      console.log("This is the typer: ", typingMessage.typer);
+      // console.log("This is the userInfo.id: ", userInfo.id.toString());
+
+      // console.log("They are equal or not? :  ", res);
+      const token = localStorage.getItem("jwtToken");
+      let decodedJwt;
+      if (token) {
+        decodedJwt = decodeJWT(token);
+      }
+      if (decodedJwt.userId.toString() !== typingMessage.typer.toString()) {
+        setOtherUserIsTyping(`${typingMessage.typerName} is typing...`);
+
+        setTimeout(() => {
+          setOtherUserIsTyping("");
+        }, 1000);
+      }
+    }
+  };
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [originalMessageContent, setOriginalMessageContent] = useState("");
 
@@ -242,6 +283,7 @@ const Chat = () => {
   const connectToChats = (chatsToConnectTo) => {
     const connectionURL = "http://localhost:8080/chat";
     const subscriptionAddress = "/topic/messages/";
+    const typingSubscriptionAddress = "/topic/typing-messages/";
     let socket = new SockJS(connectionURL);
     socket = over(socket);
     setStompClient(socket);
@@ -251,22 +293,19 @@ const Chat = () => {
       () => {
         console.log("SOCKET CONNECTED SUCCESSFULLY");
         for (let c of chatsToConnectTo) {
-          console.log("This is a chatToConnectTo: ", JSON.stringify(c));
           socket.subscribe(subscriptionAddress + c.chat.id, (message) => {
-            // console.log(
-            //   "Got this message from a subscription: ",
-            //   JSON.stringify(message)
-            // );
             setCurrentChat((prevChat) => ({
               ...prevChat,
               messages: [...prevChat.chat.messages, message],
             }));
           });
+          socket.subscribe(
+            typingSubscriptionAddress + c.chat.id,
+            (typingMessage) => {
+              handleOtherUsersTyping(typingMessage);
+            }
+          );
         }
-
-        // socket.subscribe(chatId3, (message) => {
-
-        // });
       },
       onConnectError
     );
@@ -370,6 +409,8 @@ const Chat = () => {
             currentChatMessages={currentChatMessages}
             userChats={userChats}
             handleFetchMessages={handleFetchMessages}
+            handleTyping={handleTyping}
+            otherUserIsTyping={otherUserIsTyping}
             handleEditClick = {handleEditClick}
             handleCancelEdit = {handleCancelEdit}
             handleSaveEdit = {handleSaveEdit}

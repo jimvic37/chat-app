@@ -41,6 +41,13 @@
   color: white;
   cursor: pointer;
 }
+.typing-message {
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: rgb(0, 0, 0, 0.7);
+}
 #chat-list-window {
   height: 85vh;
   overflow-y: scroll;
