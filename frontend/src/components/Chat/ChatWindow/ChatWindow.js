@@ -30,6 +30,7 @@ const ChatWindow = ({
   currentChat
 }) => {
   const messagesContainerRef = useRef(null);
+  const [leaveBox, setLeaveBox] = useState(false);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -41,6 +42,10 @@ const ChatWindow = ({
       console.log(false);
     }
   }, []);
+
+  const openConfirmLeaveBox = () => {
+    setLeaveBox(true);
+  }
 
   return (
     <MDBContainer fluid className="py-5 gradient-custom">
@@ -94,16 +99,64 @@ const ChatWindow = ({
                           </p>
                         </div>
                       </div>
-                      <div className="pt-1">
-                        <p className="small mb-1 text-white">
-                          {chat.mostRecentMessage
-                            ? momentServices(chat.mostRecentMessage.created)
-                            : "No recent messages"}
-                        </p>
+                      
+                        {/* <MDBBtn
+                          color="dark"
+                          size="sm"
+                          rounded
+                          className="float-end"
+                          onClick={handleLeaveChat}
+                        >
+                          X
+                        </MDBBtn> */}
+                        
+                        {leaveBox ? (
+                          <div className="leave-box">
+                            <p className="leave-box-text">
+                              Confirm leave chat
+                            </p>
+                            <div className="leave-box-btn">
+                              <MDBBtn
+                                color="dark"
+                                size="sm"
+                                rounded
+                                className="float-end"
+                                onClick={handleLeaveChat}
+                              >
+                                Yes
+                              </MDBBtn>
+                              <MDBBtn
+                                color="dark"
+                                size="sm"
+                                rounded
+                                className="float-end"
+                                onClick={() => setLeaveBox(false)}
+                              >
+                                No
+                              </MDBBtn>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="pt-1">
+                            <p className="small mb-1 text-white">
+                            {chat.mostRecentMessage
+                              ? momentServices(chat.mostRecentMessage.created)
+                              : "No recent messages"}
+                            </p>
+                            <MDBBtn
+                              color="dark"
+                              size="sm"
+                              rounded
+                              className="float-end"
+                              onClick={openConfirmLeaveBox}
+                            >
+                              Leave
+                            </MDBBtn>
+                          </div>
+                        )}
                         {/*<span className="badge bg-danger float-end">
                       {chat.unreadMessages || 0} 
                     </span>*/}
-                      </div>
                     </a>
                   </li>
                 ))}
@@ -191,26 +244,15 @@ const ChatWindow = ({
                 onChange={(e) => setMessageInputText(e.target.value)}
               />
             </li>
-            <div className="chat-btn-div">
-              <MDBBtn
-                color="dark"
-                size="sm"
-                rounded
-                className="float-end"
-                onClick={handleLeaveChat}
-              >
-                X
+            <MDBBtn
+              color="light"
+              size="lg"
+              rounded
+              className="float-end"
+              onClick={handleSendMessage}
+            >
+              Send
               </MDBBtn>
-              <MDBBtn
-                color="light"
-                size="lg"
-                rounded
-                className="float-end"
-                onClick={handleSendMessage}
-              >
-                Send
-              </MDBBtn>
-            </div>
           </MDBTypography>
         </MDBCol>
       </MDBRow>

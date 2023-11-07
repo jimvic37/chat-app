@@ -169,9 +169,9 @@ const Chat = () => {
       axios
         .get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
-          setUserChats(response.data);
+          const allCurrentChats = response.data.filter(chat => chat.leftChat === false);
+          setUserChats(allCurrentChats);
           connectToChats(response.data);
-          console.log(userChats);
         })
         .catch((error) => {
           console.error("Error fetching current chats: ", error);
@@ -182,7 +182,6 @@ const Chat = () => {
   };
 
   const handleFetchMessages = async (currentChat) => {
-    console.log(currentChat);
     if (currentChat) {
       try {
         const response = await axios.get(
@@ -217,7 +216,10 @@ const Chat = () => {
       };
       const response = await axios.put(endpoint, config);
       console.log("Left chat successfully:", response.data);
-      setCurrentChat(null);
+      setCurrentChat([]);
+      setCurrentChatMessages([]);
+      console.log("Current chat after leaving:", currentChat);
+      console.log("Current chat message after leaving:", currentChatMessages);
     } catch (error) {
       console.error("Error leaving chat:", error);
     }
@@ -335,8 +337,6 @@ const Chat = () => {
       textAlign: "center",
     },
   };
-
-  console.log("userChats: ", userChats);
 
   return (
     <div className="chat-container">
