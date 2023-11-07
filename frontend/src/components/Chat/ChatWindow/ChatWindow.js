@@ -29,8 +29,17 @@ const ChatWindow = ({
   currentChat,
   handleTyping,
   otherUserIsTyping,
+  editingMessageId,
+  handleSaveEdit,
+  handleCancelEdit,
+  handleEditClick,
+  originalMessageContent,
+  setOriginalMessageContent,
+  handleLeaveChat,
 }) => {
   const messagesContainerRef = useRef(null);
+  const [leaveBoxes, setLeaveBoxes] = useState({});
+  // const leaveBoxRef = useRef(null);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -41,7 +50,40 @@ const ChatWindow = ({
     } else {
       console.log(false);
     }
+
+    // // Add click event listener to close the confirm leave chat box
+    // const handleClickOutside = (event) => {
+    //   const leaveBox = document.querySelector(".leave-box");
+    //   if (leaveBoxRef.current && !leaveBoxRef.current.contains(event.target)) {
+    //     closeAllConfirmLeaveBoxes();
+    //   }
+    // };
+
+    // document.addEventListener("click", handleClickOutside);
+
+    // // Cleanup the event listener when the component unmounts
+    // return () => {
+    //   document.removeEventListener("click", handleClickOutside);
+    // };
   }, []);
+
+  const openConfirmLeaveBox = (chatId) => {
+    setLeaveBoxes((prevLeaveBoxes) => ({
+      ...prevLeaveBoxes,
+      [chatId]: true, // Set leave state for the specific chat
+    }));
+  };
+
+  const closeConfirmLeaveBox = (chatId) => {
+    setLeaveBoxes((prevLeaveBoxes) => ({
+      ...prevLeaveBoxes,
+      [chatId]: false, // Close leave state for the specific chat
+    }));
+  };
+
+  // const closeAllConfirmLeaveBoxes = () => {
+  //   setLeaveBoxes({});
+  // }
 
   return (
     <MDBContainer fluid className="py-5 gradient-custom">
@@ -95,16 +137,51 @@ const ChatWindow = ({
                           </p>
                         </div>
                       </div>
-                      <div className="pt-1">
-                        <p className="small mb-1 text-white">
-                          {chat.mostRecentMessage
-                            ? momentServices(chat.mostRecentMessage.created)
-                            : "No recent messages"}
-                        </p>
-                        {/*<span className="badge bg-danger float-end">
+                      {leaveBoxes[chat.chat.id] ? (
+                        <div className="leave-box">
+                          <p className="leave-box-text">Confirm leave chat</p>
+                          <div className="leave-box-btn">
+                            <MDBBtn
+                              color="dark"
+                              size="sm"
+                              rounded
+                              className="float-end"
+                              onClick={handleLeaveChat}
+                            >
+                              Yes
+                            </MDBBtn>
+                            <MDBBtn
+                              color="dark"
+                              size="sm"
+                              rounded
+                              className="float-end"
+                              onClick={() => closeConfirmLeaveBox(chat.chat.id)}
+                            >
+                              No
+                            </MDBBtn>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="pt-1">
+                          <p className="small mb-1 text-white">
+                            {chat.mostRecentMessage
+                              ? momentServices(chat.mostRecentMessage.created)
+                              : "No recent messages"}
+                          </p>
+                          <MDBBtn
+                            color="dark"
+                            size="sm"
+                            rounded
+                            className="float-end"
+                            onClick={() => openConfirmLeaveBox(chat.chat.id)}
+                          >
+                            Leave
+                          </MDBBtn>
+                        </div>
+                      )}
+                      {/*<span className="badge bg-danger float-end">
                       {chat.unreadMessages || 0} 
                     </span>*/}
-                      </div>
                     </a>
                   </li>
                 ))}
@@ -130,28 +207,72 @@ const ChatWindow = ({
                   key={message.id}
                   className="d-flex justify-content-between mb-4"
                 >
-                  {message.user.id === userInfo.id ? ( // Check if the message is from the current user
+                  {message.user.id === userInfo.id ? (
                     <>
                       <div className="pt-1 ms-auto">
-                        <MDBCard className="mask-custom">
-                          <MDBCardHeader
-                            className="d-flex justify-content-between p-3"
-                            style={{
-                              borderBottom: "1px solid rgba(255,255,255,.3)",
-                            }}
-                          >
-                            <p className="fw-bold mb-0">
-                              {message.user.username}
-                            </p>
-                            <p className="text-light small mb-0">
-                              <MDBIcon far icon="clock" />{" "}
-                              {momentServices(message.created)}
-                            </p>
-                          </MDBCardHeader>
-                          <MDBCardBody>
-                            <p className="mb-0">{message.content}</p>
-                          </MDBCardBody>
-                        </MDBCard>
+                        {message.id === editingMessageId ? (
+                          <>
+                            <MDBTextArea
+                              value={originalMessageContent}
+                              onChange={(e) =>
+                                setOriginalMessageContent(e.target.value)
+                              }
+                            />
+                            <MDBBtn
+                              color="light"
+                              size="sm"
+                              onClick={() => handleSaveEdit(message.id)}
+                            >
+                              Save
+                            </MDBBtn>
+                            <MDBBtn
+                              color="light"
+                              size="sm"
+                              onClick={handleCancelEdit}
+                            >
+                              Cancel
+                            </MDBBtn>
+                          </>
+                        ) : (
+                          <>
+                            <MDBCard className="mask-custom">
+                              <MDBCardHeader
+                                className="d-flex justify-content-between p-3"
+                                style={{
+                                  borderBottom:
+                                    "1px solid rgba(255,255,255,.3)",
+                                }}
+                              >
+                                <p className="fw-bold mb-0">
+                                  {message.user.username}
+                                </p>
+                                <p className="text-light small mb-0">
+                                  <MDBIcon far icon="clock" />{" "}
+                                  {momentServices(message.created)}
+                                  <span
+                                    onClick={() =>
+                                      handleEditClick(
+                                        message.id,
+                                        message.content
+                                      )
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <MDBIcon far icon="edit" />{" "}
+                                  </span>
+                                </p>
+                              </MDBCardHeader>
+                              <MDBCardBody>
+                                <p className="mb-0">{message.content}</p>
+                                {message.edited && (
+                                  <span className="edited-marker">
+                                    (Edited){momentServices(message.editedTime)}
+                                  </span>
+                                )}
+                              </MDBCardBody>
+                            </MDBCard>
+                          </>
+                        )}
                       </div>
                     </>
                   ) : (
@@ -183,7 +304,9 @@ const ChatWindow = ({
                 </li>
               ))
             )}
-            <p className="typing-message">{otherUserIsTyping ? otherUserIsTyping : ""}</p>
+            <p className="typing-message">
+              {otherUserIsTyping ? otherUserIsTyping : ""}
+            </p>
             <li className="mb-3">
               <MDBTextArea
                 label="Message"

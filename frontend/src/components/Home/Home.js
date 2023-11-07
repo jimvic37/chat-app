@@ -30,12 +30,14 @@ const Home = () => {
       <h1 className="logo">BlinkTalk</h1>
       {(loggedIn && userInfo) ? (
         <div className="home-user-div">
-          <img 
-            onClick={handleLogin} 
-            src={userInfo.profile} 
-            alt="profile" 
-            className="home-profile-img"
-          />
+          <button className="profile-btn">
+            <img 
+              onClick={handleLogin} 
+              src={userInfo.profile} 
+              alt="profile" 
+              className="home-profile-img"
+            />
+          </button>
           <h4 className="home-username">{userInfo.username}</h4>
         </div>
       ) : (

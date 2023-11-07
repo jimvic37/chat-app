@@ -38,6 +38,13 @@ public class Message implements Serializable {
 	@Column(nullable = false)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime created;
+	
+	@Column
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime editedTime;
+	
+    @Column(columnDefinition = "boolean default false")
+    private boolean edited;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -56,11 +63,13 @@ public class Message implements Serializable {
 	public Message() {
 	}
 
-	public Message(Integer id, @NotBlank String content, LocalDateTime created, User user, Chat chat) {
+	public Message(Integer id, String content, LocalDateTime created, LocalDateTime editedTime, boolean edited, User user, Chat chat) {
 		super();
 		this.id = id;
 		this.content = content;
 		this.created = created;
+		this.editedTime = editedTime;
+		this.edited = edited;
 		this.user = user;
 		this.chat = chat;
 	}
@@ -113,10 +122,27 @@ public class Message implements Serializable {
 		this.chat = chat;
 	}
 
+	public boolean isEdited() {
+		return edited;
+	}
+
+	public void setEdited(boolean edited) {
+		this.edited = edited;
+	}
+
+	public LocalDateTime getEditedTime() {
+		return editedTime;
+	}
+
+	public void setEditedTime(LocalDateTime editedTime) {
+		this.editedTime = editedTime;
+	}
+
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", content=" + content + ", created=" + created + ", user=" + user + ", chat="
-				+ chat + ", userDTO=" + userDTO + "]";
+		return "Message [id=" + id + ", content=" + content + ", created=" + created + ", editedTime=" + editedTime
+				+ ", edited=" + edited + ", user=" + user + ", chat=" + chat + ", userDTO=" + userDTO + "]";
 	}
+
 
 }

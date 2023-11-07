@@ -42,7 +42,7 @@ public class UserController {
 			
 			String profile = user.getProfile();
 
-			user.setProfile((profile != null) ? profile : "https://static.thenounproject.com/png/4530368-200.png");
+			user.setProfile(profile);
 
 			User created = repo.save(user);
 

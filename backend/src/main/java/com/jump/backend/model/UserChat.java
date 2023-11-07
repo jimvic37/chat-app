@@ -48,10 +48,6 @@ public class UserChat {
 	public User getUser() {
 		return user;
 	}
-	
-	public boolean isLeftChat() {
-		return leftChat;
-	}
 
 	public void setUser(User user) {
 		this.user = user;
@@ -65,6 +61,10 @@ public class UserChat {
 		this.chat = chat;
 	}
 	
+	public boolean getLeftChat() {
+		return leftChat;
+	}
+
 	public void setLeftChat(boolean leftChat) {
 		this.leftChat = leftChat;
 	}
