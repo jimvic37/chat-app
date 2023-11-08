@@ -307,24 +307,26 @@ const ChatWindow = ({
             <p className="typing-message">
               {otherUserIsTyping ? otherUserIsTyping : ""}
             </p>
-            <li className="mb-3">
+            <li className="mb-3 message-input-wrap" >
               <MDBTextArea
                 label="Message"
                 id="textAreaExample"
                 rows={4}
                 value={messageInputText}
                 onChange={(e) => handleTyping(e.target.value)}
+                className="message-input"
               />
+              <MDBBtn
+                color="light"
+                size="lg"
+                rounded
+                className="float-end message-send-button"
+                onClick={handleSendMessage}
+
+              >
+                Send
+              </MDBBtn>
             </li>
-            <MDBBtn
-              color="light"
-              size="lg"
-              rounded
-              className="float-end"
-              onClick={handleSendMessage}
-            >
-              Send
-            </MDBBtn>
           </MDBTypography>
         </MDBCol>
       </MDBRow>
