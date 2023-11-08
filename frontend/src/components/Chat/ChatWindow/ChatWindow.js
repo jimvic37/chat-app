@@ -81,6 +81,18 @@ const ChatWindow = ({
     }));
   };
 
+  const handleKeyDown = (event) => {
+    console.log("User pressed: ", event.key);
+
+    if (event.key === "Enter") {
+      // 👇️ your logic here
+      event.preventDefault();
+      setMessageInputText("");
+      handleSendMessage();
+      console.log("Enter key pressed ✅");
+    }
+  };
+
   // const closeAllConfirmLeaveBoxes = () => {
   //   setLeaveBoxes({});
   // }
@@ -307,13 +319,14 @@ const ChatWindow = ({
             <p className="typing-message">
               {otherUserIsTyping ? otherUserIsTyping : ""}
             </p>
-            <li className="mb-3 message-input-wrap" >
+            <li className="mb-3 message-input-wrap">
               <MDBTextArea
                 label="Message"
                 id="textAreaExample"
                 rows={4}
                 value={messageInputText}
                 onChange={(e) => handleTyping(e.target.value)}
+                onKeyDown={handleKeyDown}
                 className="message-input"
               />
               <MDBBtn
@@ -322,7 +335,6 @@ const ChatWindow = ({
                 rounded
                 className="float-end message-send-button"
                 onClick={handleSendMessage}
-
               >
                 Send
               </MDBBtn>
