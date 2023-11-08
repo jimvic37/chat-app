@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../Contexts/AppContext";
+import PasswordChecklist from "react-password-checklist";
 
 import './Signup.css'
 
@@ -53,6 +54,13 @@ const Signup = () => {
     <div className="form-container">
       <h1>Sign Up</h1>
       <form className="form" onSubmit={handleSignup}>
+        <PasswordChecklist
+          rules={["minLength","specialChar","number","capital","match"]}
+          minLength={5}
+          value={password}
+          valueAgain={confirmPassword}
+          onChange={(isValid) => {}}
+        />
         <ul>
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
