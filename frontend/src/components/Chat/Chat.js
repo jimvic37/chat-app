@@ -5,6 +5,7 @@ import ChatWindow from "./ChatWindow/ChatWindow";
 import decodeJWT from "../../Services/jwtService";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import * as styles from "./ChatMuiStyles";
 
 import {
   Modal,
@@ -35,6 +36,7 @@ const Chat = () => {
   const [lastMessage, setLastMessage] = useState("No message received yet");
   const [otherUserIsTyping, setOtherUserIsTyping] = useState("");
   const messagesContainerRef = useRef(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Triggers when current user is typing
   const handleTyping = (typingText) => {
@@ -246,7 +248,9 @@ const Chat = () => {
       axios
         .get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
-          const allCurrentChats = response.data.filter(chat => chat.leftChat === false);
+          const allCurrentChats = response.data.filter(
+            (chat) => chat.leftChat === false
+          );
           setUserChats(allCurrentChats);
           connectToChats(response.data);
         })
@@ -351,71 +355,24 @@ const Chat = () => {
     fetchUsers(decodedJwt);
     getCurrentChats(decodedJwt);
     handleFetchMessages(currentChat);
-  
   }, [currentChat]);
 
-  
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      if (window.innerWidth >= 768) {
+        setShowChatHideMessage(true);
+      }
+    };
 
-  const modalStyles = {
-    position: "absolute",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-  const modalContentBoxStyles = {
-    transition: "background-color 0.3s ease-in",
-    borderRadius: "10px",
-    width: "70%",
-    padding: "2rem",
-    backgroundColor: "white",
+    // Attach the event listener when the component mounts
+    window.addEventListener("resize", handleResize);
 
-    "&:hover": {},
-    "@media (max-width: 780px)": {
-      width: "95%",
-      padding: "1rem",
-    },
-  };
-  const modalHeaderStyles = {
-    fontSize: "1.7rem",
-    marginBottom: "2rem",
-  };
-  const autoCompleteStackStyles = {
-    marginBottom: "2rem",
-    width: "50%",
-    "@media (max-width: 1000px)": {
-      width: "90%",
-      margin: "0 auto 2rem auto",
-    },
-  };
-  const createButtonWrapStyles = {
-    textAlign: "center",
-  };
-  const createButtonStyles = {
-    textAlign: "center",
-    backgroundColor: "black",
-    width: "100%",
-    padding: "1rem 0 1rem",
-    fontSize: "1.4rem",
-    transition: "background-color 0.2s ease-in-out",
-    "&:hover": {},
-  };
-  const groupNameInputWrapStyles = {
-    marginBottom: "3rem",
-    width: "100%",
-  };
-  const groupNameInputStyles = {
-    width: "50%",
-    "@media (max-width: 1000px)": {
-      width: "90%",
-    },
-  };
-  const formInputsWrapStyles = {
-    padding: "0 0 0 2rem",
-    "@media (max-width: 1000px)": {
-      padding: 0,
-      textAlign: "center",
-    },
-  };
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
     <div className="chat-container">
@@ -451,23 +408,23 @@ const Chat = () => {
           />
         )}
         <Modal
-          sx={modalStyles}
+          sx={styles.modalStyles}
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={modalContentBoxStyles}>
+          <Box sx={styles.modalContentBoxStyles}>
             <Typography
               id="modal-modal-title"
               variant="h6"
               component="h2"
-              sx={modalHeaderStyles}
+              sx={styles.modalHeaderStyles}
             >
               Create a group chat
             </Typography>
-            <Box sx={formInputsWrapStyles}>
-              <Stack spacing={3} sx={autoCompleteStackStyles}>
+            <Box sx={styles.formInputsWrapStyles}>
+              <Stack spacing={3} sx={styles.autoCompleteStackStyles}>
                 <Autocomplete
                   multiple
                   id="tags-standard"
@@ -485,9 +442,9 @@ const Chat = () => {
                   )}
                 />
               </Stack>
-              <Box sx={groupNameInputWrapStyles}>
+              <Box sx={styles.groupNameInputWrapStyles}>
                 <TextField
-                  sx={groupNameInputStyles}
+                  sx={styles.groupNameInputStyles}
                   id="standard-basic"
                   label="Group name"
                   variant="standard"
@@ -496,8 +453,8 @@ const Chat = () => {
                 />
               </Box>
             </Box>
-            <Box sx={createButtonWrapStyles}>
-              <Button sx={createButtonStyles} onClick={handleCreateChat}>
+            <Box sx={styles.createButtonWrapStyles}>
+              <Button sx={styles.createButtonStyles} onClick={handleCreateChat}>
                 Create
               </Button>
             </Box>
