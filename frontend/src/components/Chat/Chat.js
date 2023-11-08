@@ -314,7 +314,7 @@ const Chat = () => {
   };
 
   const handleLeaveChat = async (chatId) => {
-    const endpoint = BASE_URL + `/api/userChat/leave/${currentChat.chat.id}/${userInfo.id}`;
+    const endpoint = BASE_URL + `/api/userChat/leave/${chatId}/${userInfo.id}`;
     try {
       const jwtToken = localStorage.getItem("jwtToken");
       if (!jwtToken) {

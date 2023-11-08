@@ -158,7 +158,7 @@ const ChatWindow = ({
                               size="sm"
                               rounded
                               className="float-end"
-                              onClick={handleLeaveChat}
+                              onClick={() => handleLeaveChat(chat.chat.id)}
                             >
                               Yes
                             </MDBBtn>
