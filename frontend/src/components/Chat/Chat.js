@@ -294,7 +294,10 @@ const Chat = () => {
           socket.subscribe(subscriptionAddress + c.chat.id, (message) => {
             setCurrentChat((prevChat) => ({
               ...prevChat,
-              messages: [...prevChat.chat.messages, message],
+              chat: {
+                ...prevChat.chat,
+                messages: message,
+              },
             }));
           });
           socket.subscribe(
