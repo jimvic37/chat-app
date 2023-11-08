@@ -36,6 +36,7 @@ const Chat = () => {
   const [lastMessage, setLastMessage] = useState("No message received yet");
   const [otherUserIsTyping, setOtherUserIsTyping] = useState("");
   const messagesContainerRef = useRef(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Triggers when current user is typing
   const handleTyping = (typingText) => {
@@ -356,6 +357,23 @@ const Chat = () => {
     getCurrentChats(decodedJwt);
     handleFetchMessages(currentChat);
   }, [currentChat]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      if (window.innerWidth >= 768) {
+        setShowChatHideMessage(true);
+      }
+    };
+
+    // Attach the event listener when the component mounts
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
     <div className="chat-container">
