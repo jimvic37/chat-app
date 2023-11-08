@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Chat.css";
 import axios from "axios";
 import ChatWindow from "./ChatWindow/ChatWindow";
@@ -34,6 +34,7 @@ const Chat = () => {
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [lastMessage, setLastMessage] = useState("No message received yet");
   const [otherUserIsTyping, setOtherUserIsTyping] = useState("");
+  const messagesContainerRef = useRef(null);
 
   // Triggers when current user is typing
   const handleTyping = (typingText) => {
@@ -76,13 +77,10 @@ const Chat = () => {
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [originalMessageContent, setOriginalMessageContent] = useState("");
 
-
-
   const handleEditClick = (messageId, messageContent) => {
     setEditingMessageId(messageId);
     setOriginalMessageContent(messageContent);
   };
-
 
   const handleSaveEdit = async (messageId) => {
     try {
@@ -97,13 +95,14 @@ const Chat = () => {
 
         setCurrentChatMessages(updatedMessages);
       }
-      
-      await axios.put(`/api/message/${messageId}`, { content: originalMessageContent });
+
+      await axios.put(`/api/message/${messageId}`, {
+        content: originalMessageContent,
+      });
       setOriginalMessageContent(originalMessageContent);
       setEditingMessageId(null);
-
     } catch (error) {
-      console.error('Error updating message:', error);
+      console.error("Error updating message:", error);
     }
   };
 
@@ -315,8 +314,6 @@ const Chat = () => {
     console.log(err);
   };
 
-
-
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     let decodedJwt;
@@ -331,7 +328,10 @@ const Chat = () => {
     fetchUsers(decodedJwt);
     getCurrentChats(decodedJwt);
     handleFetchMessages(currentChat);
+  
   }, [currentChat]);
+
+  
 
   const modalStyles = {
     position: "absolute",
@@ -411,12 +411,13 @@ const Chat = () => {
             handleFetchMessages={handleFetchMessages}
             handleTyping={handleTyping}
             otherUserIsTyping={otherUserIsTyping}
-            handleEditClick = {handleEditClick}
-            handleCancelEdit = {handleCancelEdit}
-            handleSaveEdit = {handleSaveEdit}
-            editingMessageId = {editingMessageId}
-            originalMessageContent = {originalMessageContent}
-            setOriginalMessageContent = {setOriginalMessageContent}
+            handleEditClick={handleEditClick}
+            handleCancelEdit={handleCancelEdit}
+            handleSaveEdit={handleSaveEdit}
+            editingMessageId={editingMessageId}
+            originalMessageContent={originalMessageContent}
+            setOriginalMessageContent={setOriginalMessageContent}
+            messagesContainerRef={messagesContainerRef}
           />
         ) : (
           <MessageWindowMobile
