@@ -246,9 +246,9 @@ const Chat = () => {
       axios
         .get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
-          setUserChats(response.data);
+          const allCurrentChats = response.data.filter(chat => chat.leftChat === false);
+          setUserChats(allCurrentChats);
           connectToChats(response.data);
-          console.log(userChats);
         })
         .catch((error) => {
           console.error("Error fetching current chats: ", error);
@@ -259,7 +259,6 @@ const Chat = () => {
   };
 
   const handleFetchMessages = async (currentChat) => {
-    console.log(currentChat);
     if (currentChat) {
       try {
         const response = await axios.get(
