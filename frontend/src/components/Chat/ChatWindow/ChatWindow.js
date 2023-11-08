@@ -36,19 +36,19 @@ const ChatWindow = ({
   originalMessageContent,
   setOriginalMessageContent,
   handleLeaveChat,
+  messagesContainerRef,
 }) => {
-  const messagesContainerRef = useRef(null);
   const [leaveBoxes, setLeaveBoxes] = useState({});
   // const leaveBoxRef = useRef(null);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
-      console.log(true);
       const container = messagesContainerRef.current;
-      console.log(messagesContainerRef.current);
+      console.log(
+        "This is the messagesContainerRef.current: ",
+        messagesContainerRef.current
+      );
       container.scrollTop = container.scrollHeight; // Initialize scroll to the bottom
-    } else {
-      console.log(false);
     }
 
     // // Add click event listener to close the confirm leave chat box
@@ -65,7 +65,7 @@ const ChatWindow = ({
     // return () => {
     //   document.removeEventListener("click", handleClickOutside);
     // };
-  }, []);
+  }, [currentChat, currentChatMessages, userChats]);
 
   const openConfirmLeaveBox = (chatId) => {
     setLeaveBoxes((prevLeaveBoxes) => ({
