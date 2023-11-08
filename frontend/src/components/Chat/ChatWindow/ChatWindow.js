@@ -48,6 +48,10 @@ const ChatWindow = ({
         "This is the messagesContainerRef.current: ",
         messagesContainerRef.current
       );
+      container.scroll({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
       container.scrollTop = container.scrollHeight; // Initialize scroll to the bottom
     }
 
