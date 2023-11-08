@@ -313,6 +313,27 @@ const Chat = () => {
     console.log(err);
   };
 
+  const handleLeaveChat = async (chatId) => {
+    const endpoint = BASE_URL + `/api/userChat/leave/${currentChat.chat.id}/${userInfo.id}`;
+    try {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        console.error("JWT token not found in localStorage");
+        return;
+      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
+      const response = await axios.put(endpoint, config);
+      setCurrentChat([]);
+      setCurrentChatMessages([]);
+    } catch (error) {
+      console.error("Error leaving chat:", error);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     let decodedJwt;
@@ -417,6 +438,7 @@ const Chat = () => {
             originalMessageContent={originalMessageContent}
             setOriginalMessageContent={setOriginalMessageContent}
             messagesContainerRef={messagesContainerRef}
+            handleLeaveChat={handleLeaveChat}
           />
         ) : (
           <MessageWindowMobile
