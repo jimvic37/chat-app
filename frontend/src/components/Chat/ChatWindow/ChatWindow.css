@@ -19,9 +19,10 @@
 }
 
 #message-window {
+  position: relative;
   height: 85vh;
   overflow-y: scroll;
-  padding-bottom: 5px;
+  padding-bottom: 11rem;
 }
 #message-window::-webkit-scrollbar {
   width: 5px;
@@ -69,7 +70,36 @@
   background-clip: padding-box;
   box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
 }
+.message-input-wrap {
+  position: fixed;
+  bottom: 0;
+  width: 66%;
+  right: 0;
+  padding-right: 1%;
+  padding-bottom: 1%;
+}
+.message-input {
+  background: rgb(0, 0, 0, 0.05) !important;
+  color: black !important;
+}
+.message-input:focus {
+  border: none;
+  outline: none;
+}
+.message-send-button {
+  margin-top: 0.5rem;
+}
 
+@media screen and (max-width: 1199px) {
+  .message-input-wrap {
+    width: 57.3%;
+  }
+}
+@media screen and (max-width: 991px) {
+  .message-input-wrap {
+    width: 49%;
+  }
+}
 @media screen and (max-width: 768px) {
   .gradient-custom {
     height: auto;
@@ -84,7 +114,7 @@
 }
 
 /* -------------leave chat-------------- */
-.leave-box{
+.leave-box {
   display: flex;
   color: black;
   position: relative;
