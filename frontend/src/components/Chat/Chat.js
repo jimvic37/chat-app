@@ -248,9 +248,27 @@ const Chat = () => {
       axios
         .get(`/api/chat/${decodedJwt.userId}`)
         .then((response) => {
-          const allCurrentChats = response.data.filter(
-            (chat) => chat.leftChat === false
-          );
+          const allCurrentChats = response.data.filter((chat) => !chat.leftChat);
+          // Sort the chats based on the most recent message's created timestamp
+          allCurrentChats.sort((chatA, chatB) => {
+            const messageA = chatA.mostRecentMessage;
+            const messageB = chatB.mostRecentMessage;
+  
+            if (!messageA && !messageB) {
+              return 0; 
+            }
+            if (!messageA) {
+              return 1; 
+            }
+            if (!messageB) {
+              return -1; 
+            }
+  
+            const timestampA = new Date(messageA.created).getTime();
+            const timestampB = new Date(messageB.created).getTime();
+  
+            return timestampB - timestampA;
+          });
           setUserChats(allCurrentChats);
           connectToChats(response.data);
         })
@@ -374,6 +392,9 @@ const Chat = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []); // Empty dependency array ensures this effect runs only once on component mount
+
+
+
 
   return (
     <div className="chat-container">
