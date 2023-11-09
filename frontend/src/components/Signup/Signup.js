@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../Contexts/AppContext";
 import PasswordChecklist from "react-password-checklist";
+import Login from "../Login/Login";
 
 import './Signup.css'
 
@@ -12,16 +13,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const { closeModal } = useContext(AppContext);
+  const { closeModal, setModalContent } = useContext(AppContext);
 
   const handleSignup = async (e) => {
     e.preventDefault(); 
-    if (password !== confirmPassword) {
-      setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
-      return
-    }
     const requestObject =
     {
       "username": username,
@@ -38,7 +33,7 @@ const Signup = () => {
         body: JSON.stringify(requestObject),
       });
       if (response.ok) {
-        closeModal()
+        setModalContent(<Login />)
       } else {
         const data = await response.json()
         setErrors([data.error])
