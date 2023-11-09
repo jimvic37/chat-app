@@ -18,3 +18,18 @@
 }
 @media screen and (max-width: 768) {
 }
+
+.message-input-wrap-mobile {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding-right: 1%;
+  padding-left: 1%;
+  padding-bottom: 1%;
+  width: 100%;
+}
+
+.float-end-mobile {
+  float: right;
+  margin-right: 1rem;
+}

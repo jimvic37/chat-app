@@ -37,9 +37,13 @@ const ChatWindow = ({
   setOriginalMessageContent,
   handleLeaveChat,
   messagesContainerRef,
+  openConfirmLeaveBox,
+  closeConfirmLeaveBox,
+  handleKeyDown,
+  leaveBoxes,
+  setLeaveBoxes
 }) => {
-  const [leaveBoxes, setLeaveBoxes] = useState({});
-  // const leaveBoxRef = useRef(null);
+  
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -51,51 +55,7 @@ const ChatWindow = ({
       container.scrollTop = container.scrollHeight; // Initialize scroll to the bottom
     }
 
-    // // Add click event listener to close the confirm leave chat box
-    // const handleClickOutside = (event) => {
-    //   const leaveBox = document.querySelector(".leave-box");
-    //   if (leaveBoxRef.current && !leaveBoxRef.current.contains(event.target)) {
-    //     closeAllConfirmLeaveBoxes();
-    //   }
-    // };
-
-    // document.addEventListener("click", handleClickOutside);
-
-    // // Cleanup the event listener when the component unmounts
-    // return () => {
-    //   document.removeEventListener("click", handleClickOutside);
-    // };
   }, [currentChat, currentChatMessages, userChats]);
-
-  const openConfirmLeaveBox = (chatId) => {
-    setLeaveBoxes((prevLeaveBoxes) => ({
-      ...prevLeaveBoxes,
-      [chatId]: true, // Set leave state for the specific chat
-    }));
-  };
-
-  const closeConfirmLeaveBox = (chatId) => {
-    setLeaveBoxes((prevLeaveBoxes) => ({
-      ...prevLeaveBoxes,
-      [chatId]: false, // Close leave state for the specific chat
-    }));
-  };
-
-  const handleKeyDown = (event) => {
-    console.log("User pressed: ", event.key);
-
-    if (event.key === "Enter") {
-      // 👇️ your logic here
-      event.preventDefault();
-      setMessageInputText("");
-      handleSendMessage();
-      console.log("Enter key pressed ✅");
-    }
-  };
-
-  // const closeAllConfirmLeaveBoxes = () => {
-  //   setLeaveBoxes({});
-  // }
 
   return (
     <MDBContainer fluid className="py-5 gradient-custom">
@@ -140,6 +100,7 @@ const ChatWindow = ({
                           alt="avatar"
                           className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
                           width="60"
+                          height="60"
                         />
                         <div className="pt-1">
                           <p className="fw-bold mb-0">{chat.chat.chatName}</p>
@@ -191,9 +152,6 @@ const ChatWindow = ({
                           </MDBBtn>
                         </div>
                       )}
-                      {/*<span className="badge bg-danger float-end">
-                      {chat.unreadMessages || 0} 
-                    </span>*/}
                     </a>
                   </li>
                 ))}
@@ -221,6 +179,7 @@ const ChatWindow = ({
                 >
                   {message.user.id === userInfo.id ? (
                     <>
+                    
                       <div className="pt-1 ms-auto">
                         {message.id === editingMessageId ? (
                           <>
@@ -255,9 +214,18 @@ const ChatWindow = ({
                                     "1px solid rgba(255,255,255,.3)",
                                 }}
                               >
-                                <p className="fw-bold mb-0">
-                                  {message.user.username}
-                                </p>
+                                <div className="d-flex">
+                                  <img
+                                        src={message.user.profile}
+                                        alt="avatar"
+                                        className="rounded-circle d-flex align-self-start me-2 shadow-1-strong"
+                                        width="30"
+                                        height="30"
+                                      />
+                                  <p className="fw-bold mb-0 me-2">
+                                    {message.user.username}
+                                  </p>
+                                </div>
                                 <p className="text-light small mb-0">
                                   <MDBIcon far icon="clock" />{" "}
                                   {momentServices(message.created)}
@@ -268,7 +236,7 @@ const ChatWindow = ({
                                         message.content
                                       )
                                     }
-                                    style={{ cursor: "pointer" }}
+                                    style={{ cursor: "pointer", marginLeft: "10px" }}
                                   >
                                     <MDBIcon far icon="edit" />{" "}
                                   </span>
@@ -298,9 +266,18 @@ const ChatWindow = ({
                               borderBottom: "1px solid rgba(255,255,255,.3)",
                             }}
                           >
-                            <p className="fw-bold mb-0">
-                              {message.user.username}
-                            </p>
+                            <div className="d-flex">
+                              <img
+                                    src={message.user.profile}
+                                    alt="avatar"
+                                    className="rounded-circle d-flex align-self-start me-2 shadow-1-strong"
+                                    width="30"
+                                    height="30"
+                                  />
+                              <p className="fw-bold mb-0 me-2">
+                                {message.user.username}
+                              </p>
+                            </div>
                             <p className="text-light small mb-0">
                               <MDBIcon far icon="clock" />{" "}
                               {momentServices(message.created)}

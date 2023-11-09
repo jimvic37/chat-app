@@ -37,6 +37,7 @@ const Chat = () => {
   const [otherUserIsTyping, setOtherUserIsTyping] = useState("");
   const messagesContainerRef = useRef(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [leaveBoxes, setLeaveBoxes] = useState({});
 
   // Triggers when current user is typing
   const handleTyping = (typingText) => {
@@ -341,6 +342,32 @@ const Chat = () => {
     }
   };
 
+  const openConfirmLeaveBox = (chatId) => {
+    setLeaveBoxes((prevLeaveBoxes) => ({
+      ...prevLeaveBoxes,
+      [chatId]: true, // Set leave state for the specific chat
+    }));
+  };
+
+  const closeConfirmLeaveBox = (chatId) => {
+    setLeaveBoxes((prevLeaveBoxes) => ({
+      ...prevLeaveBoxes,
+      [chatId]: false, // Close leave state for the specific chat
+    }));
+  };
+
+  const handleKeyDown = (event) => {
+    console.log("User pressed: ", event.key);
+
+    if (event.key === "Enter") {
+      // 👇️ your logic here
+      event.preventDefault();
+      setMessageInputText("");
+      handleSendMessage();
+      console.log("Enter key pressed ✅");
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     let decodedJwt;
@@ -399,12 +426,39 @@ const Chat = () => {
             setOriginalMessageContent={setOriginalMessageContent}
             messagesContainerRef={messagesContainerRef}
             handleLeaveChat={handleLeaveChat}
+            openConfirmLeaveBox={openConfirmLeaveBox}
+            closeConfirmLeaveBox={closeConfirmLeaveBox}
+            handleKeyDown={handleKeyDown}
+            leaveBoxes={leaveBoxes}
+            setLeaveBoxes={setLeaveBoxes}
           />
         ) : (
           <MessageWindowMobile
             handleOpen={handleOpen}
+            handleSendMessage={handleSendMessage}
             userInfo={userInfo}
             handleClickGroupChat={handleClickGroupChat}
+            messageInputText={messageInputText}
+            setMessageInputText={setMessageInputText}
+            currentChat={currentChat}
+            currentChatMessages={currentChatMessages}
+            userChats={userChats}
+            handleFetchMessages={handleFetchMessages}
+            handleTyping={handleTyping}
+            otherUserIsTyping={otherUserIsTyping}
+            handleEditClick={handleEditClick}
+            handleCancelEdit={handleCancelEdit}
+            handleSaveEdit={handleSaveEdit}
+            editingMessageId={editingMessageId}
+            originalMessageContent={originalMessageContent}
+            setOriginalMessageContent={setOriginalMessageContent}
+            messagesContainerRef={messagesContainerRef}
+            handleLeaveChat={handleLeaveChat}
+            openConfirmLeaveBox={openConfirmLeaveBox}
+            closeConfirmLeaveBox={closeConfirmLeaveBox}
+            handleKeyDown={handleKeyDown}
+            leaveBoxes={leaveBoxes}
+            setLeaveBoxes={setLeaveBoxes}
           />
         )}
         <Modal

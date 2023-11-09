@@ -79,7 +79,7 @@
   padding-bottom: 1%;
 }
 .message-input {
-  background: rgb(0, 0, 0, 0.05) !important;
+  background: rgb(0, 0, 0, 0.2) !important;
   color: black !important;
 }
 .message-input:focus {
