@@ -33,3 +33,7 @@
   float: right;
   margin-right: 1rem;
 }
+
+.profile-img-msg {
+  min-width: 40px;
+}

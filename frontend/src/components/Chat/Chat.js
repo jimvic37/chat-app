@@ -123,6 +123,7 @@ const Chat = () => {
   const handleClickGroupChat = (chat) => {
     if (window.innerWidth < 768) {
       setShowChatHideMessage(!showChatHideMessage);
+      setCurrentChat(chat);
     } else {
       // Set the currently selected chat when a chat is clicked
       setCurrentChat(chat);

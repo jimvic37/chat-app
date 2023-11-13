@@ -355,9 +355,9 @@ const MessageWindowMobile = ({
                             </MDBBtn>
                           </>
                         ) : (
-                          <>
-                            <MDBCard className="mask-custom">
-                              <MDBCardHeader
+                          <div className="d-flex justify-self-end">
+                            <MDBCard className="mask-custom me-2">
+                              {/* <MDBCardHeader
                                 className="d-flex justify-content-between p-3"
                                 style={{
                                   borderBottom:
@@ -382,7 +382,7 @@ const MessageWindowMobile = ({
                                     <MDBIcon far icon="edit" />{" "}
                                   </span>
                                 </p>
-                              </MDBCardHeader>
+                              </MDBCardHeader> */}
                               <MDBCardBody>
                                 <p className="mb-0">{message.content}</p>
                                 {message.edited && (
@@ -392,16 +392,30 @@ const MessageWindowMobile = ({
                                 )}
                               </MDBCardBody>
                             </MDBCard>
-                          </>
+                            <img
+                              src={message.user.profile}
+                              alt="avatar"
+                              className="profile-img-msg rounded-circle d-flex align-self-end mb-3 me-2 shadow-1-strong"
+                              // minWidth="40"
+                              height="40"
+                            />
+                          </div>
                         )}
                       </div>
                     </>
                   ) : (
                     // Render other users' messages on the left
                     <>
-                      <div className="pt-1 me-auto">
+                      <div className="d-flex pt-1 ms-2">
+                        <img
+                          src={message.user.profile}
+                          alt="avatar"
+                          className="profile-img-msg rounded-circle d-flex align-self-end mb-3 me-2 shadow-1-strong"
+                          width="40"
+                          height="40"
+                        />
                         <MDBCard className="mask-custom">
-                          <MDBCardHeader
+                          {/* <MDBCardHeader
                             className="d-flex justify-content-between p-3"
                             style={{
                               borderBottom: "1px solid rgba(255,255,255,.3)",
@@ -414,7 +428,7 @@ const MessageWindowMobile = ({
                               <MDBIcon far icon="clock" />{" "}
                               {momentServices(message.created)}
                             </p>
-                          </MDBCardHeader>
+                          </MDBCardHeader> */}
                           <MDBCardBody>
                             <p className="mb-0">{message.content}</p>
                           </MDBCardBody>
@@ -438,7 +452,7 @@ const MessageWindowMobile = ({
                 onKeyDown={handleKeyDown}
                 className="message-input"
               />
-              <MDBBtn
+              {/* <MDBBtn
                 color="light"
                 size="sm"
                 rounded
@@ -446,7 +460,7 @@ const MessageWindowMobile = ({
                 onClick={handleSendMessage}
               >
                 Send
-              </MDBBtn>
+              </MDBBtn> */}
             </li>
           </MDBTypography>
 
