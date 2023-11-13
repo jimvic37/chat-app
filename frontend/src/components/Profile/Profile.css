@@ -1,5 +1,7 @@
 .profile-page-wrap {
-  background: linear-gradient(to right, #a020f0, #ffb6c1, #1e90ff);
+  background: linear-gradient(to bottom right,
+  rgba(252, 203, 144, 1),
+  rgba(213, 126, 235, 1));
   min-height: 100vh;
 }
 .profile-container {

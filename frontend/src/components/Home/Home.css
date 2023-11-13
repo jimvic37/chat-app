@@ -6,7 +6,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #ffb6c1, #a020f0, #1e90ff);
+  /* background: linear-gradient(to right, #ffb6c1, #a020f0); */
+  background: linear-gradient(to bottom right,
+  rgba(252, 203, 144, 1),
+  rgba(213, 126, 235, 1));
   font-family: Arial, sans-serif;
   color: #fff;
 }

@@ -3,8 +3,9 @@
   overflow-y: scroll;
   padding-bottom: 5px;
 }
-.backspace-icon-wrap {
+.backspace-icon-wrap{
   padding: 0 1rem 1rem 1rem;
+  position: fixed;
 }
 .backspace-icon:hover{
     color: white;
@@ -36,4 +37,10 @@
 
 .profile-img-msg {
   min-width: 40px;
+  height: 40px;
+}
+
+.mobile-group-name {
+  margin-left: 1rem;
+  color: black;
 }

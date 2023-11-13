@@ -48,6 +48,8 @@ const MessageWindowMobile = ({
   setLeaveBoxes
 }) => {
 
+  console.log(currentChat.chat.chatName);
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       const container = messagesContainerRef.current;
@@ -63,11 +65,11 @@ const MessageWindowMobile = ({
       </Button> */}
       <MDBContainer fluid className="py-5 gradient-custom">
         <NavBar />
-        <div className="backspace-icon-wrap">
-          <span onClick={() => handleClickGroupChat(true)}>
-            <KeyboardBackspaceIcon className="backspace-icon" />
-          </span>
-        </div>
+        <span className="backspace-icon-wrap d-flex mt-2">
+          {/* <span > */}
+          <KeyboardBackspaceIcon onClick={() => handleClickGroupChat(true)} />
+          {/* <h4 className="mobile-group-name">{currentChat.chat.chatName}</h4> */}
+        </span>
         <MDBRow>
           <MDBCol
             md="6"
@@ -76,248 +78,8 @@ const MessageWindowMobile = ({
             id="message-window-mobile"
             ref={messagesContainerRef}
           >
-            {/* <MDBTypography listUnStyled className="text-white">
-              <li className="d-flex justify-content-between mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
-                <MDBCard className="mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Brad Pitt</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 12 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <MDBCard className="w-100 mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Lara Croft</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 13 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Sed ut perspiciatis unde omnis iste natus error sit
-                      voluptatem accusantium doloremque laudantium.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
-                  width="60"
-                />
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
-                <MDBCard className="mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Brad Pitt</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 10 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
-                <MDBCard className="mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Brad Pitt</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 12 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <MDBCard className="w-100 mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Lara Croft</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 13 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Sed ut perspiciatis unde omnis iste natus error sit
-                      voluptatem accusantium doloremque laudantium.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
-                  width="60"
-                />
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
-                <MDBCard className="mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Brad Pitt</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 10 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
-                <MDBCard className="mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Brad Pitt</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 12 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <MDBCard className="w-100 mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Lara Croft</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 13 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Sed ut perspiciatis unde omnis iste natus error sit
-                      voluptatem accusantium doloremque laudantium.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
-                  width="60"
-                />
-              </li>
-              <li className="d-flex justify-content-between mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
-                <MDBCard className="mask-custom">
-                  <MDBCardHeader
-                    className="d-flex justify-content-between p-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,.3)" }}
-                  >
-                    <p className="fw-bold mb-0">Brad Pitt</p>
-                    <p className="text-light small mb-0">
-                      <MDBIcon far icon="clock" /> 10 mins ago
-                    </p>
-                  </MDBCardHeader>
-                  <MDBCardBody>
-                    <p className="mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </MDBCardBody>
-                </MDBCard>
-              </li> 
-              <li className="mb-3">
-                <MDBTextArea label="Message" id="textAreaExample" rows={4} />
-              </li>
-              
-              <MDBBtn color="light" size="lg" rounded className="float-end">
-                Send
-              </MDBBtn>  
-            </MDBTypography> */}
 
-            <MDBTypography listUnStyled className="text-white">
+            <MDBTypography listUnStyled className="message-container text-white">
             {currentChatMessages.length === 0 ? (
               <li className="text-center text-muted">
                 No messages available for this chat.
@@ -355,8 +117,9 @@ const MessageWindowMobile = ({
                             </MDBBtn>
                           </>
                         ) : (
+                          // Render current user's own messages on the right
                           <div className="d-flex justify-self-end">
-                            <MDBCard className="mask-custom me-2">
+                            <MDBCard className="mask-custom me-2 ms-5">
                               {/* <MDBCardHeader
                                 className="d-flex justify-content-between p-3"
                                 style={{
@@ -396,8 +159,6 @@ const MessageWindowMobile = ({
                               src={message.user.profile}
                               alt="avatar"
                               className="profile-img-msg rounded-circle d-flex align-self-end mb-3 me-2 shadow-1-strong"
-                              // minWidth="40"
-                              height="40"
                             />
                           </div>
                         )}
@@ -411,10 +172,8 @@ const MessageWindowMobile = ({
                           src={message.user.profile}
                           alt="avatar"
                           className="profile-img-msg rounded-circle d-flex align-self-end mb-3 me-2 shadow-1-strong"
-                          width="40"
-                          height="40"
                         />
-                        <MDBCard className="mask-custom">
+                        <MDBCard className="mask-custom me-5">
                           {/* <MDBCardHeader
                             className="d-flex justify-content-between p-3"
                             style={{
