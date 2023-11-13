@@ -23,6 +23,7 @@
   height: 85vh;
   overflow-y: scroll;
   padding-bottom: 11rem;
+  mask-image: linear-gradient(to bottom, black calc(100% - 50%), transparent 100%)
 }
 #message-window::-webkit-scrollbar {
   width: 5px;
@@ -79,7 +80,7 @@
   padding-bottom: 1%;
 }
 .message-input {
-  background: rgb(0, 0, 0, 0.05) !important;
+  background: rgb(0, 0, 0, 0.2) !important;
   color: black !important;
 }
 .message-input:focus {

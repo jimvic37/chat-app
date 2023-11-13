@@ -3,8 +3,9 @@
   overflow-y: scroll;
   padding-bottom: 5px;
 }
-.backspace-icon-wrap {
+.backspace-icon-wrap{
   padding: 0 1rem 1rem 1rem;
+  position: fixed;
 }
 .backspace-icon:hover{
     color: white;
@@ -17,4 +18,29 @@
   background: #888; /* Color of the scrollbar thumb */
 }
 @media screen and (max-width: 768) {
+}
+
+.message-input-wrap-mobile {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding-right: 1%;
+  padding-left: 1%;
+  padding-bottom: 1%;
+  width: 100%;
+}
+
+.float-end-mobile {
+  float: right;
+  margin-right: 1rem;
+}
+
+.profile-img-msg {
+  min-width: 40px;
+  height: 40px;
+}
+
+.mobile-group-name {
+  margin-left: 1rem;
+  color: black;
 }
